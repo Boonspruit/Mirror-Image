@@ -1,0 +1,704 @@
+[
+  {
+    "id": "surprised-pikachu",
+    "name": "Surprised Pikachu",
+    "image": "/memes/surprised_pikachu.jpg",
+    "alt": "Pikachu with wide eyes and an open mouth.",
+    "expressionLabel": "Open-mouthed surprise",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.93,
+      "eyeSquint": 0.02,
+      "browInnerUp": 0.81,
+      "browDown": 0.03,
+      "jawOpen": 0.72,
+      "smile": 0.03,
+      "frown": 0.05,
+      "mouthPucker": 0.08,
+      "cheekSquint": 0.02,
+      "noseSneer": 0.01
+    },
+    "headPose": null,
+    "notes": "Cartoon approximation: wide eyes and a dropped jaw. Brow values describe a human imitation, not measured cartoon anatomy.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/1489672-surprised-pikachu",
+      "imageUrl": "https://i.imgflip.com/2lrhcv.jpg",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "rock-eyebrow",
+    "name": "The Rock Eyebrow",
+    "image": "/memes/rock_eyebrow.png",
+    "alt": "The Rock raising one eyebrow with his mouth closed.",
+    "expressionLabel": "Raised-brow suspicion",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.22,
+      "eyeSquint": 0.3,
+      "browInnerUp": 0.45,
+      "browDown": 0.4,
+      "jawOpen": 0.02,
+      "smile": 0.03,
+      "frown": 0.08,
+      "mouthPucker": 0.08,
+      "cheekSquint": 0.08,
+      "noseSneer": 0.12
+    },
+    "headPose": null,
+    "notes": "Averaging loses the one-sided eyebrow raise; this starter profile approximates the overall brow tension and closed mouth.",
+    "source": {
+      "pageUrl": "https://imgflip.com/memetemplate/358954228/The-Rock-Eyebrow",
+      "imageUrl": "https://i.imgflip.com/5xpmus.png",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "side-eye-chloe",
+    "name": "Side Eye Chloe",
+    "image": "/memes/side_eye_chloe.jpg",
+    "alt": "Chloe glancing sideways with a tense brow and slightly open mouth.",
+    "expressionLabel": "Uneasy side-eye",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.28,
+      "eyeSquint": 0.25,
+      "browInnerUp": 0.08,
+      "browDown": 0.58,
+      "jawOpen": 0.12,
+      "smile": 0.02,
+      "frown": 0.24,
+      "mouthPucker": 0.02,
+      "cheekSquint": 0.06,
+      "noseSneer": 0.16
+    },
+    "headPose": null,
+    "notes": "Tense brows and a slightly open mouth. Gaze direction is not represented by the current ten-feature vector.",
+    "source": {
+      "pageUrl": "https://imgflip.com/memetemplate/35002949/Side-eye-chloe",
+      "imageUrl": "https://i.imgflip.com/ku8g5.jpg",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "crying-cat",
+    "name": "Crying Cat",
+    "image": "/memes/crying_cat.jpg",
+    "alt": "A white cat with edited teary eyes.",
+    "expressionLabel": "Teary pout",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.42,
+      "eyeSquint": 0.08,
+      "browInnerUp": 0.78,
+      "browDown": 0.02,
+      "jawOpen": 0.02,
+      "smile": 0,
+      "frown": 0.58,
+      "mouthPucker": 0.12,
+      "cheekSquint": 0.02,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "Animal-face analogy: imitate raised inner brows and a downturned mouth. Tears themselves are not an expression feature.",
+    "source": {
+      "pageUrl": "https://imgflip.com/memetemplate/88285515/Sad-cat-tears",
+      "imageUrl": "https://i.imgflip.com/1gk9jf.jpg",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "confused-math-lady",
+    "name": "Confused Math Lady",
+    "image": "/memes/confused_math_lady.jpg",
+    "alt": "Four views of a woman looking puzzled with math equations overlaid.",
+    "expressionLabel": "Concentrated confusion",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.15,
+      "eyeSquint": 0.36,
+      "browInnerUp": 0.16,
+      "browDown": 0.55,
+      "jawOpen": 0.02,
+      "smile": 0.01,
+      "frown": 0.2,
+      "mouthPucker": 0.14,
+      "cheekSquint": 0.04,
+      "noseSneer": 0.08
+    },
+    "headPose": null,
+    "notes": "One representative profile for the collage: narrowed eyes, lowered brows, and a closed mouth. No automatic multi-face processing.",
+    "source": {
+      "pageUrl": "https://imgflip.com/memetemplate/96805086/Confused-Math-Lady",
+      "imageUrl": "https://i.imgflip.com/1lmva6.jpg",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "hide-the-pain-harold",
+    "name": "Hide the Pain Harold",
+    "image": "/memes/hide_the_pain_harold.jpg",
+    "alt": "Harold with a tight, toothy smile.",
+    "expressionLabel": "Tense smile",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.08,
+      "eyeSquint": 0.4,
+      "browInnerUp": 0.34,
+      "browDown": 0.12,
+      "jawOpen": 0.08,
+      "smile": 0.65,
+      "frown": 0.06,
+      "mouthPucker": 0,
+      "cheekSquint": 0.46,
+      "noseSneer": 0.04
+    },
+    "headPose": null,
+    "notes": "A restrained smile with cheek tension and some inner-brow lift. This describes visible movements, not the person's emotional state.",
+    "source": {
+      "pageUrl": "https://imgflip.com/memetemplate/81332206/Hide-the-Pain-Harold",
+      "imageUrl": "https://i.imgflip.com/1cf8by.jpg",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "futurama-fry",
+    "name": "Futurama Fry",
+    "image": "/memes/futurama_fry.jpg",
+    "alt": "Fry squinting suspiciously with his mouth closed.",
+    "expressionLabel": "Narrow-eyed suspicion",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.01,
+      "eyeSquint": 0.94,
+      "browInnerUp": 0.02,
+      "browDown": 0.65,
+      "jawOpen": 0,
+      "smile": 0,
+      "frown": 0.08,
+      "mouthPucker": 0.02,
+      "cheekSquint": 0.12,
+      "noseSneer": 0.04
+    },
+    "headPose": null,
+    "notes": "Cartoon approximation dominated by a strong squint and lowered brows.",
+    "source": {
+      "pageUrl": "https://imgflip.com/memetemplate/61520/Futurama-Fry",
+      "imageUrl": "https://i.imgflip.com/1bgw.jpg",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "skeptical-kid",
+    "name": "Skeptical Kid",
+    "image": "/memes/skeptical_kid.jpg",
+    "alt": "A boy tilting his head with narrowed eyes and pursed lips.",
+    "expressionLabel": "Pursed-lip skepticism",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.06,
+      "eyeSquint": 0.48,
+      "browInnerUp": 0.2,
+      "browDown": 0.42,
+      "jawOpen": 0,
+      "smile": 0.05,
+      "frown": 0.2,
+      "mouthPucker": 0.48,
+      "cheekSquint": 0.12,
+      "noseSneer": 0.1
+    },
+    "headPose": null,
+    "notes": "Profile the boy on the right, not the other person. Pursed lips distinguish this starter profile; head tilt is not assigned a synthetic angle.",
+    "source": {
+      "pageUrl": "https://imgflip.com/memetemplate/101288/Third-World-Skeptical-Kid",
+      "imageUrl": "https://i.imgflip.com/265k.jpg",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "oprah-you-get-a",
+    "name": "Oprah You Get A",
+    "image": "/memes/oprah_you_get_a.jpg",
+    "alt": "Oprah gesturing with her arms apart and her mouth wide open.",
+    "expressionLabel": "Open-mouthed excitement",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.12,
+      "eyeSquint": 0.64,
+      "browInnerUp": 0.18,
+      "browDown": 0.08,
+      "jawOpen": 0.94,
+      "smile": 0.78,
+      "frown": 0,
+      "mouthPucker": 0,
+      "cheekSquint": 0.64,
+      "noseSneer": 0.03
+    },
+    "headPose": null,
+    "notes": "A wide-open mouth with a strong smile and narrowed eyes.",
+    "source": {
+      "pageUrl": "https://imgflip.com/memetemplate/28251713/Oprah-You-Get-A",
+      "imageUrl": "https://i.imgflip.com/gtj5t.jpg",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "leonardo-cheers",
+    "name": "Leonardo Cheers",
+    "image": "/memes/leonardo_cheers.jpg",
+    "alt": "Leonardo DiCaprio raising a glass with a closed-mouth smile.",
+    "expressionLabel": "Knowing smile",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.05,
+      "eyeSquint": 0.45,
+      "browInnerUp": 0.12,
+      "browDown": 0.1,
+      "jawOpen": 0.01,
+      "smile": 0.58,
+      "frown": 0,
+      "mouthPucker": 0.04,
+      "cheekSquint": 0.5,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "A closed-mouth smile with cheek lift and a mild squint.",
+    "source": {
+      "pageUrl": "https://imgflip.com/memetemplate/5496396/Leonardo-Dicaprio-Cheers",
+      "imageUrl": "https://i.imgflip.com/39t1o.jpg",
+      "retrievedAt": "2026-09-18"
+    }
+  },
+  {
+    "id": "alma-heart-eyes",
+    "name": "Alma Heart Eyes",
+    "image": "/memes/alma-hamsters/alma-hamster-3132148.jpg",
+    "alt": "Almarts27 hamster with heart-shaped eyes and an open delighted smile.",
+    "expressionLabel": "Heart-eyed delight",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.62,
+      "eyeSquint": 0.08,
+      "browInnerUp": 0.38,
+      "browDown": 0.03,
+      "jawOpen": 0.48,
+      "smile": 0.82,
+      "frown": 0,
+      "mouthPucker": 0.02,
+      "cheekSquint": 0.38,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "A human imitation uses wide eyes, an open mouth, and a strong smile. The heart-shaped pupils are not represented by the current feature vector.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132148-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://i.kym-cdn.com/photos/images/original/003/132/148/f1f.jpg",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-happy-hamster",
+    "name": "Alma Happy Hamster",
+    "image": "/memes/alma-hamsters/alma-hamster-3132149.jpg",
+    "alt": "Almarts27 hamster grinning broadly with lifted cheeks.",
+    "expressionLabel": "Big cheerful grin",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.04,
+      "eyeSquint": 0.7,
+      "browInnerUp": 0.25,
+      "browDown": 0.02,
+      "jawOpen": 0.12,
+      "smile": 0.95,
+      "frown": 0,
+      "mouthPucker": 0,
+      "cheekSquint": 0.82,
+      "noseSneer": 0.03
+    },
+    "headPose": null,
+    "notes": "A broad closed-mouth grin with strong cheek lift and narrowed smiling eyes.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132149-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://i.kym-cdn.com/photos/images/original/003/132/149/971.jpg",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-raised-brow",
+    "name": "Alma Raised Brow",
+    "image": "/memes/alma-hamsters/alma-hamster-3132150.jpg",
+    "alt": "Almarts27 hamster raising one eyebrow with a skeptical expression.",
+    "expressionLabel": "One-brow suspicion",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.18,
+      "eyeSquint": 0.42,
+      "browInnerUp": 0.5,
+      "browDown": 0.36,
+      "jawOpen": 0.01,
+      "smile": 0.03,
+      "frown": 0.1,
+      "mouthPucker": 0.12,
+      "cheekSquint": 0.12,
+      "noseSneer": 0.12
+    },
+    "headPose": null,
+    "notes": "The current vector averages left and right, so this strongly asymmetric eyebrow is approximated as combined brow lift and tension.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132150-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://i.kym-cdn.com/photos/images/original/003/132/150/e6b.jpg",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-shocked-hamster",
+    "name": "Alma Shocked Hamster",
+    "image": "/memes/alma-hamsters/alma-hamster-3132151.jpg",
+    "alt": "Almarts27 hamster staring with a very wide rectangular open mouth.",
+    "expressionLabel": "Maximum open-mouth shock",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.42,
+      "eyeSquint": 0.02,
+      "browInnerUp": 0.72,
+      "browDown": 0.02,
+      "jawOpen": 0.98,
+      "smile": 0.05,
+      "frown": 0.04,
+      "mouthPucker": 0.05,
+      "cheekSquint": 0.03,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "A human imitation emphasizes a fully dropped jaw and lifted brows. The drawn rectangular mouth shape is not separately encoded.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132151-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://i.kym-cdn.com/photos/images/original/003/132/151/8ed.jpg",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-blank-stare",
+    "name": "Alma Blank Stare",
+    "image": "/memes/alma-hamsters/alma-hamster-3132152.jpg",
+    "alt": "Almarts27 hamster staring forward with round eyes and a flat mouth.",
+    "expressionLabel": "Empty neutral stare",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.5,
+      "eyeSquint": 0.02,
+      "browInnerUp": 0.1,
+      "browDown": 0.05,
+      "jawOpen": 0.03,
+      "smile": 0,
+      "frown": 0.08,
+      "mouthPucker": 0.06,
+      "cheekSquint": 0,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "A forward blank stare with open eyes and almost no mouth movement.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132152-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://i.kym-cdn.com/photos/images/original/003/132/152/744.jpg",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-chomping-hamster",
+    "name": "Alma Chomping Hamster",
+    "image": "/memes/alma-hamsters/alma-hamster-3132144.jpg",
+    "alt": "Almarts27 hamster with puffed cheeks and front teeth showing.",
+    "expressionLabel": "Puffed-cheek chomp",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.12,
+      "eyeSquint": 0.25,
+      "browInnerUp": 0.1,
+      "browDown": 0.12,
+      "jawOpen": 0.58,
+      "smile": 0.05,
+      "frown": 0.02,
+      "mouthPucker": 0.05,
+      "cheekSquint": 0.7,
+      "noseSneer": 0.05
+    },
+    "headPose": null,
+    "notes": "A human imitation uses full cheeks with the jaw open enough to show the front teeth.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132144-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132144-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-worried-hamster",
+    "name": "Alma Worried Hamster",
+    "image": "/memes/alma-hamsters/alma-hamster-3132145.jpg",
+    "alt": "Almarts27 hamster with raised inner brows and a deep worried frown.",
+    "expressionLabel": "Deep worried frown",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.38,
+      "eyeSquint": 0.05,
+      "browInnerUp": 0.92,
+      "browDown": 0.05,
+      "jawOpen": 0.08,
+      "smile": 0,
+      "frown": 0.82,
+      "mouthPucker": 0.28,
+      "cheekSquint": 0.02,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "Strong inner-brow lift and a downturned, slightly pursed mouth define this worried profile.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132145-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132145-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-sleepy-hamster",
+    "name": "Alma Sleepy Hamster",
+    "image": "/memes/alma-hamsters/alma-hamster-3132146.jpg",
+    "alt": "Almarts27 hamster sleeping with closed eyes and a small slack mouth.",
+    "expressionLabel": "Sleepy closed-eye mumble",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0,
+      "eyeSquint": 0.96,
+      "browInnerUp": 0.08,
+      "browDown": 0.1,
+      "jawOpen": 0.08,
+      "smile": 0,
+      "frown": 0.12,
+      "mouthPucker": 0.25,
+      "cheekSquint": 0.12,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "Nearly closed eyes dominate, with a small relaxed mouth movement.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132146-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132146-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-crying-hamster",
+    "name": "Alma Crying Hamster",
+    "image": "/memes/alma-hamsters/alma-hamster-3132147.jpg",
+    "alt": "Almarts27 hamster crying heavily with a trembling open mouth.",
+    "expressionLabel": "Full crying face",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.05,
+      "eyeSquint": 0.72,
+      "browInnerUp": 0.94,
+      "browDown": 0.1,
+      "jawOpen": 0.48,
+      "smile": 0,
+      "frown": 0.9,
+      "mouthPucker": 0.18,
+      "cheekSquint": 0.6,
+      "noseSneer": 0.1
+    },
+    "headPose": null,
+    "notes": "A strong frown, raised inner brows, squeezed eyes, and an open mouth approximate the drawn crying face.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132147-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132147-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-wizard-stare",
+    "name": "Alma Wizard Stare",
+    "image": "/memes/alma-hamsters/alma-hamster-3132154.jpg",
+    "alt": "Almarts27 hamster in a wizard hat with half-closed eyes and a tiny mouth.",
+    "expressionLabel": "Half-lidded wizard stare",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.02,
+      "eyeSquint": 0.82,
+      "browInnerUp": 0.05,
+      "browDown": 0.32,
+      "jawOpen": 0.03,
+      "smile": 0,
+      "frown": 0.04,
+      "mouthPucker": 0.22,
+      "cheekSquint": 0.2,
+      "noseSneer": 0.02
+    },
+    "headPose": null,
+    "notes": "A heavy squint and a tiny pursed mouth approximate the unimpressed wizard expression.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132154-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132154-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-pepper-panic",
+    "name": "Alma Pepper Panic",
+    "image": "/memes/alma-hamsters/alma-hamster-3132155.jpg",
+    "alt": "Red pepper-costumed Almarts27 hamster with round eyes and a long open mouth.",
+    "expressionLabel": "Wide-eyed pepper panic",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.82,
+      "eyeSquint": 0.02,
+      "browInnerUp": 0.65,
+      "browDown": 0.05,
+      "jawOpen": 0.88,
+      "smile": 0,
+      "frown": 0.18,
+      "mouthPucker": 0.1,
+      "cheekSquint": 0.02,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "Wide eyes and a long dropped mouth define the red pepper character's startled face.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132155-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132155-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-glam-hamster",
+    "name": "Alma Glam Hamster",
+    "image": "/memes/alma-hamsters/alma-hamster-3132156.jpg",
+    "alt": "Almarts27 hamster wearing bright makeup and smiling broadly.",
+    "expressionLabel": "Glamorous broad smile",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.3,
+      "eyeSquint": 0.36,
+      "browInnerUp": 0.55,
+      "browDown": 0.03,
+      "jawOpen": 0.28,
+      "smile": 0.9,
+      "frown": 0,
+      "mouthPucker": 0.03,
+      "cheekSquint": 0.72,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "A broad smile, lifted cheeks, and moderately raised brows approximate the made-up face.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132156-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132156-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-cowboy-hamster",
+    "name": "Alma Cowboy Hamster",
+    "image": "/memes/alma-hamsters/alma-hamster-3132157.jpg",
+    "alt": "Almarts27 hamster in a cowboy hat laughing with its mouth wide open.",
+    "expressionLabel": "Big cowboy laugh",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.28,
+      "eyeSquint": 0.1,
+      "browInnerUp": 0.38,
+      "browDown": 0.02,
+      "jawOpen": 0.9,
+      "smile": 0.88,
+      "frown": 0,
+      "mouthPucker": 0,
+      "cheekSquint": 0.6,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "A fully open laughing mouth with a strong smile and cheek lift.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132157-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132157-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-saucy-hamster",
+    "name": "Alma Saucy Hamster",
+    "image": "/memes/alma-hamsters/alma-hamster-3132158.jpg",
+    "alt": "Almarts27 hamster holding hot sauce with a crooked squinting grin.",
+    "expressionLabel": "Saucy crooked grin",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.03,
+      "eyeSquint": 0.78,
+      "browInnerUp": 0.08,
+      "browDown": 0.18,
+      "jawOpen": 0.12,
+      "smile": 0.72,
+      "frown": 0,
+      "mouthPucker": 0.15,
+      "cheekSquint": 0.76,
+      "noseSneer": 0.08
+    },
+    "headPose": null,
+    "notes": "A narrowed-eye grin with strong cheek lift. The asymmetric mouth is represented by averaged features.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132158-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132158-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-pepper-sidekick",
+    "name": "Alma Pepper Sidekick",
+    "image": "/memes/alma-hamsters/alma-hamster-3132159.jpg",
+    "alt": "Red pepper-costumed Almarts27 hamster standing beside a small costumed person.",
+    "expressionLabel": "Frozen pepper surprise",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.74,
+      "eyeSquint": 0.02,
+      "browInnerUp": 0.58,
+      "browDown": 0.04,
+      "jawOpen": 0.82,
+      "smile": 0.02,
+      "frown": 0.14,
+      "mouthPucker": 0.08,
+      "cheekSquint": 0.02,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "The profile follows the red pepper character: open round eyes and a long surprised mouth.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3132159-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3132159-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  },
+  {
+    "id": "alma-rainbow-tears",
+    "name": "Alma Rainbow Tears",
+    "image": "/memes/alma-hamsters/alma-hamster-3273252.png",
+    "alt": "Almarts27 hamster crying joyful tears under a rainbow with its mouth wide open.",
+    "expressionLabel": "Joyful rainbow tears",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.08,
+      "eyeSquint": 0.58,
+      "browInnerUp": 0.85,
+      "browDown": 0.02,
+      "jawOpen": 0.92,
+      "smile": 0.96,
+      "frown": 0.04,
+      "mouthPucker": 0,
+      "cheekSquint": 0.8,
+      "noseSneer": 0
+    },
+    "headPose": null,
+    "notes": "A large open smile, squeezed eyes, raised inner brows, and lifted cheeks approximate the joyful crying face.",
+    "source": {
+      "pageUrl": "https://knowyourmeme.com/photos/3273252-hamster-drawing-memes-almarts27-hamster",
+      "imageUrl": "https://knowyourmeme.com/photos/3273252-hamster-drawing-memes-almarts27-hamster",
+      "retrievedAt": "2026-09-19"
+    }
+  }
+]
