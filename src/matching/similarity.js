@@ -15,9 +15,10 @@ export const DEFAULT_FEATURE_WEIGHTS = Object.freeze({
 })
 
 export const HAND_FEATURE_WEIGHTS = Object.freeze({
-  handPresent: 1,
-  handNearFace: 2,
-  fingertipNearMouth: 4,
+  handPresent: 4,
+  twoHandsPresent: 4,
+  handNearFace: 8,
+  fingertipNearMouth: 32,
 })
 
 export const DEFAULT_MATCH_WEIGHTS = Object.freeze({

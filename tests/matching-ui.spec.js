@@ -16,7 +16,7 @@ function categoriesFor(features) {
     : [{ categoryName: single[name], score }])
 }
 
-async function installControlledTracker(page, initialFeatures, { handToMouth = false } = {}) {
+async function installControlledTracker(page, initialFeatures, { handToMouth = false, handCount = handToMouth ? 1 : 0 } = {}) {
   await page.addInitScript((categories) => {
     const landmarks = Array.from({ length: 478 }, () => ({ x: 0.5, y: 0.5, z: 0 }))
     landmarks[13] = { x: 0.5, y: 0.49, z: 0 }
@@ -28,10 +28,10 @@ async function installControlledTracker(page, initialFeatures, { handToMouth = f
       facialTransformationMatrixes: [{ rows: 4, columns: 4, data: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -50, 1] }],
     }
   }, categoriesFor(initialFeatures))
-  await page.addInitScript((showHand) => {
+  await page.addInitScript((count) => {
     const landmarks = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 }))
-    window.handFixture = { landmarks: showHand ? [landmarks] : [], worldLandmarks: [], handedness: [] }
-  }, handToMouth)
+    window.handFixture = { landmarks: Array.from({ length: count }, () => landmarks), worldLandmarks: [], handedness: [] }
+  }, handCount)
   await page.route('**/src/tracking/faceTracker.js*', (route) => route.fulfill({
     contentType: 'application/javascript',
     body: `
@@ -120,7 +120,7 @@ test('live result shows an exact winner and switches immediately to a stronger f
 
 test('a hand-to-mouth gesture activates a hand-aware meme profile', async ({ page }) => {
   const monkey = memes.find((meme) => meme.id === 'thinking-monkey')
-  await installControlledTracker(page, monkey.features, { handToMouth: true })
+  await installControlledTracker(page, monkey.features, { handToMouth: true, handCount: 2 })
   await page.goto('/')
   await page.getByRole('button', { name: 'Start camera' }).click()
 
@@ -130,8 +130,23 @@ test('a hand-to-mouth gesture activates a hand-aware meme profile', async ({ pag
   await expect(display.locator('.group-matches dt')).toContainText(['Eyes', 'Brows', 'Mouth & cheeks', 'Hand gesture'])
   await page.getByRole('link', { name: 'Settings', exact: true }).click()
   const metrics = page.locator('.metrics')
-  await expect(metrics.getByText('Hands detected', { exact: true }).locator('..').locator('dd')).toContainText('1')
+  await expect(metrics.getByText('Hands detected', { exact: true }).locator('..').locator('dd')).toContainText('2 / 2')
   await expect(metrics.getByText('Fingertip near mouth', { exact: true }).locator('..').locator('dd')).toContainText('100%')
+})
+
+test('a newly shown hand gesture overrides an existing face-only match', async ({ page }) => {
+  const pikachu = memes.find((meme) => meme.id === 'surprised-pikachu')
+  await installControlledTracker(page, pikachu.features)
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Start camera' }).click()
+
+  const display = page.locator('#live-match')
+  await expect(display.getByRole('heading', { name: 'Surprised Pikachu', exact: true })).toBeVisible()
+  await page.evaluate(() => {
+    const touching = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 }))
+    window.handFixture.landmarks = [touching, touching]
+  })
+  await expect(display.getByRole('heading', { name: 'Thinking Monkey', exact: true })).toBeVisible({ timeout: 1000 })
 })
 
 test('neutral calibration counts down, saves a baseline, and subtracts it from live values', async ({ page }) => {

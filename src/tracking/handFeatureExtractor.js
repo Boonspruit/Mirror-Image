@@ -1,11 +1,13 @@
 export const HAND_FEATURES = Object.freeze([
   'handPresent',
+  'twoHandsPresent',
   'handNearFace',
   'fingertipNearMouth',
 ])
 
 export const EMPTY_HAND_FEATURES = Object.freeze({
   handPresent: 0,
+  twoHandsPresent: 0,
   handNearFace: 0,
   fingertipNearMouth: 0,
 })
@@ -31,22 +33,30 @@ function proximityTo(target, landmarks, indices, faceWidth) {
 }
 
 export function extractHandFeatures(handResult, faceLandmarks) {
-  const handLandmarks = handResult?.landmarks?.[0]
-  if (!handLandmarks?.length) return { ...EMPTY_HAND_FEATURES }
+  const detectedHands = (handResult?.landmarks ?? []).filter((landmarks) => landmarks?.length)
+  if (!detectedHands.length) return { ...EMPTY_HAND_FEATURES }
+
+  const presence = {
+    handPresent: 1,
+    twoHandsPresent: detectedHands.length >= 2 ? 1 : 0,
+  }
 
   const mouthTop = point(faceLandmarks, 13)
   const mouthBottom = point(faceLandmarks, 14)
   const leftCheek = point(faceLandmarks, 234)
   const rightCheek = point(faceLandmarks, 454)
   if (!mouthTop || !mouthBottom || !leftCheek || !rightCheek) {
-    return { handPresent: 1, handNearFace: null, fingertipNearMouth: null }
+    return { ...presence, handNearFace: null, fingertipNearMouth: null }
   }
 
   const mouth = midpoint(mouthTop, mouthBottom)
   const faceWidth = distance(leftCheek, rightCheek)
+  const strongestProximity = (indices) => Math.max(
+    ...detectedHands.map((landmarks) => proximityTo(mouth, landmarks, indices, faceWidth) ?? 0),
+  )
   return {
-    handPresent: 1,
-    handNearFace: proximityTo(mouth, handLandmarks, PALM_INDICES, faceWidth),
-    fingertipNearMouth: proximityTo(mouth, handLandmarks, FINGERTIP_INDICES, faceWidth),
+    ...presence,
+    handNearFace: strongestProximity(PALM_INDICES),
+    fingertipNearMouth: strongestProximity(FINGERTIP_INDICES),
   }
 }

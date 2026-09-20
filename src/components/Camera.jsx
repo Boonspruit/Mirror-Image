@@ -187,7 +187,7 @@ export default function Camera({ library, view }) {
             const previousFeatures = latestHandResult.current.features
             latestHandResult.current = {
               hands: handResult.landmarks.length,
-              landmarks: handResult.landmarks[0]?.length ?? 0,
+              landmarks: handResult.landmarks.reduce((total, landmarks) => total + landmarks.length, 0),
               features: smoothValues(previousFeatures, currentFeatures, 0.55),
             }
           }, (cause) => {
@@ -323,7 +323,7 @@ export default function Camera({ library, view }) {
           {phase === 'loading' && <div className="loading-label">Preparing MediaPipe…</div>}
           {calibration.status === 'countdown' && <div className="calibration-countdown" role="status" aria-live="assertive"><span>NEUTRAL FACE</span><strong>{calibration.count}</strong><p>{calibration.message}</p></div>}
         </div>
-        <div className="camera-controls"><p>{phase === 'running' ? (result.faces ? `Face detected${result.hands ? ' · Hand detected' : ''}` : 'Look toward the camera') : 'Your camera stays private.'}</p><button onClick={active ? stop : start} className={active ? 'secondary' : 'primary'}>{active ? (phase === 'requesting' ? 'Cancel' : 'Stop camera') : 'Start camera'}</button></div>
+        <div className="camera-controls"><p>{phase === 'running' ? (result.faces ? `Face detected${result.hands ? ` · ${result.hands} hand${result.hands === 1 ? '' : 's'} detected` : ''}` : 'Look toward the camera') : 'Your camera stays private.'}</p><button onClick={active ? stop : start} className={active ? 'secondary' : 'primary'}>{active ? (phase === 'requesting' ? 'Cancel' : 'Stop camera') : 'Start camera'}</button></div>
         {error && <p className="error-message" role="alert">{error}</p>}
       </div>
       <MemeDisplay matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} handFeatures={result.handFeatures} phase={phase} calibrated={Boolean(calibration.baseline)} />
@@ -340,11 +340,11 @@ export default function Camera({ library, view }) {
       {calibration.status === 'countdown' && <p role="status">Look at the camera with a relaxed face. {calibration.count}</p>}
       <aside className="tracking-panel tracking-strip">
         <div className="tracking-intro">
-        <p className="eyebrow">UNDER THE HOOD</p><h2>A face, a hand, a set of signals.</h2><p className="panel-description">MediaPipe finds facial and hand landmarks directly on your device.</p>
+        <p className="eyebrow">UNDER THE HOOD</p><h2>A face, two hands, a set of signals.</h2><p className="panel-description">MediaPipe finds facial and hand landmarks directly on your device.</p>
         </div>
         <div className="tracking-readout">
-        <div className="tracking-status" role="status" aria-live="polite"><span className={`signal-dot ${phase === 'running' ? 'on' : ''}`} /><div><strong>{LABELS[phase]}</strong><p>{phase === 'running' ? (result.faces ? `Face detected.${result.hands ? ' One hand detected.' : ' Show a hand for gesture-aware memes.'}` : 'No face detected. Look toward the camera.') : 'One face and one hand at a time.'}</p></div></div>
-        <dl className="metrics"><div><dt>Faces detected</dt><dd>{result.faces} <small>/ 1</small></dd></div><div><dt>Hands detected</dt><dd>{result.hands} <small>/ 1</small></dd></div><div><dt>Facial landmarks</dt><dd>{result.landmarks}</dd></div><div><dt>Hand landmarks</dt><dd>{result.handLandmarks}</dd></div><div><dt>Fingertip near mouth</dt><dd>{Math.round((result.handFeatures.fingertipNearMouth ?? 0) * 100)}<small>%</small></dd></div><div><dt>Blendshape signals</dt><dd>{result.blendshapes}</dd></div><div><dt>Head transform</dt><dd className="text-value">{result.pose ? 'Available' : 'Waiting'}</dd></div><div><dt>Processing</dt><dd className="text-value">{delegate}</dd></div></dl>
+        <div className="tracking-status" role="status" aria-live="polite"><span className={`signal-dot ${phase === 'running' ? 'on' : ''}`} /><div><strong>{LABELS[phase]}</strong><p>{phase === 'running' ? (result.faces ? `Face detected.${result.hands ? ` ${result.hands} hand${result.hands === 1 ? '' : 's'} detected.` : ' Show a hand for gesture-aware memes.'}` : 'No face detected. Look toward the camera.') : 'One face and up to two hands at a time.'}</p></div></div>
+        <dl className="metrics"><div><dt>Faces detected</dt><dd>{result.faces} <small>/ 1</small></dd></div><div><dt>Hands detected</dt><dd>{result.hands} <small>/ 2</small></dd></div><div><dt>Facial landmarks</dt><dd>{result.landmarks}</dd></div><div><dt>Hand landmarks</dt><dd>{result.handLandmarks}</dd></div><div><dt>Fingertip near mouth</dt><dd>{Math.round((result.handFeatures.fingertipNearMouth ?? 0) * 100)}<small>%</small></dd></div><div><dt>Blendshape signals</dt><dd>{result.blendshapes}</dd></div><div><dt>Head transform</dt><dd className="text-value">{result.pose ? 'Available' : 'Waiting'}</dd></div><div><dt>Processing</dt><dd className="text-value">{delegate}</dd></div></dl>
         </div>
         <div className="tracking-notes">
         {error && <p className="error-message" role="alert">{error}</p>}

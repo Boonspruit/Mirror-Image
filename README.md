@@ -95,7 +95,7 @@ directly or using an ordinary HTTP LAN address will not work for camera access.
 | `src/tracking/faceTracker.js` | Creates Face Landmarker, tries GPU then CPU, and runs/cancels the detection loop. It has no React dependency. |
 | `src/components/HandOverlay.jsx` | Draws the detected hand skeleton over the mirrored camera preview. |
 | `src/tracking/handTracker.js` | Creates Hand Landmarker and runs hand inference at up to 15 Hz after face matching starts. |
-| `src/tracking/handFeatureExtractor.js` | Converts hand landmarks into presence, near-face, and fingertip-near-mouth scores. |
+| `src/tracking/handFeatureExtractor.js` | Combines up to two hands into presence, two-hand, near-face, and fingertip-near-mouth scores. |
 | `src/index.css` | Responsive styling, mirrored preview, layout, focus states, and error styling. |
 | `scripts/prepareAssets.js` | Copies matching package WASM assets and downloads the versioned pretrained models. Runs after npm install, or via npm run setup. |
 | `public/models/*.task` | Generated/downloaded face and hand model bundles; used for inference, never trained here. |
@@ -338,10 +338,13 @@ The initial weights are `eyeWide: 2`, `jawOpen: 2`, `browInnerUp: 1.5`,
 influence. Multiplying every weight by the same amount leaves the normalized
 result unchanged.
 
-Hand-aware profiles add `handPresent: 1`, `handNearFace: 2`, and
-`fingertipNearMouth: 4`. Face-only profiles omit these values, so their scores
-remain based on the same ten facial features. A matching hand gesture supplies
-extra evidence when distances tie.
+Hand-aware profiles can use `handPresent: 4`, `twoHandsPresent: 4`,
+`handNearFace: 8`, and `fingertipNearMouth: 32`. Face-only profiles omit these
+values, so their scores remain based on the same ten facial features. Either of
+the two tracked hands can satisfy a proximity requirement. When every required
+hand signal reaches the live threshold, matching hand-aware profiles are ranked
+before face-only profiles; weighted distance still ranks profiles within that
+group and supplies the displayed percentage.
 
 Missing or invalid readings are omitted rather than interpreted as zero. The
 returned `coverage` reports the fraction of configured weight that was usable.
@@ -461,7 +464,8 @@ values, not a photo or biometric face template; camera frames are never stored.
 - Deny permission: readable error and Start available for retry after restoring permission.
 - Disconnect a USB webcam during tracking: session stops with an error.
 - Toggle **Show face mesh + hands** off/on: the camera keeps running and both overlays disappear/reappear.
-- Hold a fingertip near your mouth: Settings should show one hand and a rising proximity score, and Thinking Monkey should become competitive when the face also matches.
+- Show one or two hands: Settings should report both independently and draw both meshes.
+- Hold either fingertip near your mouth: the proximity score should rise and Thinking Monkey should become the active match once the gesture threshold is reached.
 - Move and tilt your head: the mesh should follow your eyes, brows, and mouth.
 - Resize the window: the mesh stays aligned and controls remain usable.
 - Leave the frame or stop the camera: the mesh clears immediately after detection/stop.

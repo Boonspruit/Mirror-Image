@@ -28,7 +28,20 @@ export function createMatchStabilizer({ holdMs = 900, switchMargin = 0.015 } = {
         return { selectedId, pendingId }
       }
 
-      if (best.meme.id === selectedId || selected.comparison.distance - best.comparison.distance <= switchMargin) {
+      if (best.meme.id === selectedId) {
+        pendingId = null
+        return { selectedId, pendingId }
+      }
+
+      // A satisfied gesture is an explicit ranking tier, so it can override a
+      // lower raw face-only distance without waiting for the distance margin.
+      if ((best.priority ?? 0) > (selected.priority ?? 0)) {
+        selectedId = best.meme.id
+        pendingId = null
+        return { selectedId, pendingId }
+      }
+
+      if (selected.comparison.distance - best.comparison.distance <= switchMargin) {
         pendingId = null
         return { selectedId, pendingId }
       }

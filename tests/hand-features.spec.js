@@ -20,13 +20,27 @@ test('hand and fingertip proximity are normalized by face width', () => {
 
   expect(extractHandFeatures({ landmarks: [touching] }, faceLandmarks())).toEqual({
     handPresent: 1,
+    twoHandsPresent: 0,
     handNearFace: 1,
     fingertipNearMouth: 1,
   })
   expect(extractHandFeatures({ landmarks: [farAway] }, faceLandmarks())).toEqual({
     handPresent: 1,
+    twoHandsPresent: 0,
     handNearFace: 0,
     fingertipNearMouth: 0,
+  })
+})
+
+test('either of two hands can satisfy a face-relative gesture', () => {
+  const farAway = Array.from({ length: 21 }, () => ({ x: 1, y: 1 }))
+  const touching = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5 }))
+
+  expect(extractHandFeatures({ landmarks: [farAway, touching] }, faceLandmarks())).toEqual({
+    handPresent: 1,
+    twoHandsPresent: 1,
+    handNearFace: 1,
+    fingertipNearMouth: 1,
   })
 })
 
@@ -34,6 +48,7 @@ test('a hand remains detectable when face-relative proximity is unavailable', ()
   const hand = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5 }))
   expect(extractHandFeatures({ landmarks: [hand] }, [])).toEqual({
     handPresent: 1,
+    twoHandsPresent: 0,
     handNearFace: null,
     fingertipNearMouth: null,
   })

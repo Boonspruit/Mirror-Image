@@ -34,6 +34,18 @@ test('zero hold switches to a clearly stronger result in the same update', () =>
   expect(stabilizer.update([result('b', 0.05), result('a', 0.2)], 100)).toEqual({ selectedId: 'b', pendingId: null })
 })
 
+test('zero hold trusts a priority-aware ranking over raw distance', () => {
+  const stabilizer = createMatchStabilizer({ holdMs: 0, switchMargin: 0.01 })
+  stabilizer.update([{ ...result('face', 0.05), priority: 0 }], 0)
+  expect(stabilizer.update([
+    { ...result('gesture', 0.2), priority: 1 },
+    { ...result('face', 0.05), priority: 0 },
+  ], 10)).toEqual({
+    selectedId: 'gesture',
+    pendingId: null,
+  })
+})
+
 test('an empty ranking clears held state', () => {
   const stabilizer = createMatchStabilizer()
   stabilizer.update([result('a', 0.1)], 0)

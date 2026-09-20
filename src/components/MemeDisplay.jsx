@@ -56,7 +56,7 @@ export default function MemeDisplay({ matches, expression, handFeatures, phase, 
           {groupScores.map(([name, percentage]) => <div key={name}><dt>{name}</dt><dd>{Number.isFinite(percentage) ? `${Math.round(percentage)}%` : '—'}</dd></div>)}
         </dl>
         <div className="match-meta"><span>Distance {best.comparison.distance.toFixed(3)}</span><span>Coverage {Math.round(best.comparison.coverage * 100)}%</span>{pending && <span>Checking {pending.meme.name}…</span>}</div>
-      <p className="match-caveat">{calibrated ? 'Your neutral baseline is subtracted before smoothing. ' : ''}The latest frame contributes 65% of each smoothed face value. Hand-aware memes also compare hand presence and mouth proximity. Matches are checked every 100 ms, and the strongest result displays immediately. Percentages are distance scores, not confidence.</p>
+      <p className="match-caveat">{calibrated ? 'Your neutral baseline is subtracted before smoothing. ' : ''}The latest frame contributes 65% of each smoothed face value. Hand-aware memes can compare one or two hands and mouth proximity. Matches are checked every 100 ms, and a satisfied gesture displays immediately. Percentages are distance scores, not confidence.</p>
         </details>
       </div>
 
