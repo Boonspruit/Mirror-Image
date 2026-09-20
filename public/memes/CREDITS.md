@@ -1,7 +1,7 @@
 # Meme image sources
 
-These are the ten images currently bundled with Mirror Image. The trained
-expression profiles in `src/data/memes.json` are the project defaults.
+These are the eleven images currently bundled with Mirror Image. The expression
+and optional hand profiles in `src/data/memes.json` are the project defaults.
 
 ## Almarts27 hamster reference set
 
@@ -27,6 +27,12 @@ the asset folder for the per-file source URL pattern.
 - File: `/memes/shocked.jpeg`
 - Source: promoted from the user's saved browser library
 - Expression profile: trained in Mirror Image
+
+## Thinking Monkey
+
+- File: `/memes/monkey-thinking.png`
+- Source: supplied by the user
+- Profile: manual face approximation with a hand-to-mouth requirement
 
 The source pages identify the downloaded variants; they are not license grants.
 Images remain subject to their original owners' rights.

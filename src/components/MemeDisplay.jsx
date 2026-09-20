@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { compareExpressions, DEFAULT_FEATURE_WEIGHTS } from '../matching/similarity.js'
+import { compareExpressions, DEFAULT_FEATURE_WEIGHTS, HAND_FEATURE_WEIGHTS } from '../matching/similarity.js'
 import MatchMeter from './MatchMeter.jsx'
 
 const GROUPS = {
@@ -18,7 +18,7 @@ function MatchImage({ meme }) {
   return <img src={localImage(meme.image)} alt={meme.alt} onError={() => setFailed(true)} />
 }
 
-export default function MemeDisplay({ matches, expression, phase, pendingId, calibrated }) {
+export default function MemeDisplay({ matches, expression, handFeatures, phase, pendingId, calibrated }) {
   const best = matches[0]
   const pending = matches.find(({ meme }) => meme.id === pendingId)
   if (!best?.comparison) {
@@ -38,6 +38,9 @@ export default function MemeDisplay({ matches, expression, phase, pendingId, cal
     const weights = Object.fromEntries(features.map((feature) => [feature, DEFAULT_FEATURE_WEIGHTS[feature]]))
     return [name, compareExpressions(expression, best.meme.features, weights)?.percentage]
   })
+  if (best.meme.handFeatures) {
+    groupScores.push(['Hand gesture', compareExpressions(handFeatures, best.meme.handFeatures, HAND_FEATURE_WEIGHTS)?.percentage])
+  }
 
   return (
     <section id="live-match" className="match-display" aria-labelledby="match-title">
@@ -53,7 +56,7 @@ export default function MemeDisplay({ matches, expression, phase, pendingId, cal
           {groupScores.map(([name, percentage]) => <div key={name}><dt>{name}</dt><dd>{Number.isFinite(percentage) ? `${Math.round(percentage)}%` : '—'}</dd></div>)}
         </dl>
         <div className="match-meta"><span>Distance {best.comparison.distance.toFixed(3)}</span><span>Coverage {Math.round(best.comparison.coverage * 100)}%</span>{pending && <span>Checking {pending.meme.name}…</span>}</div>
-      <p className="match-caveat">{calibrated ? 'Your neutral baseline is subtracted before smoothing. ' : ''}The latest frame contributes 65% of each smoothed value. Matches are checked every 100 ms, and the strongest result displays immediately. Percentages are expression-distance scores, not confidence.</p>
+      <p className="match-caveat">{calibrated ? 'Your neutral baseline is subtracted before smoothing. ' : ''}The latest frame contributes 65% of each smoothed face value. Hand-aware memes also compare hand presence and mouth proximity. Matches are checked every 100 ms, and the strongest result displays immediately. Percentages are distance scores, not confidence.</p>
         </details>
       </div>
 

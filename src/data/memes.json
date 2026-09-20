@@ -264,5 +264,33 @@
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to a built-in meme.",
     "source": null
+  },
+  {
+    "id": "thinking-monkey",
+    "name": "Thinking Monkey",
+    "image": "/memes/monkey-thinking.png",
+    "alt": "A monkey looking upward with one fingertip touching its mouth.",
+    "expressionLabel": "Thinking with hand to mouth",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.12,
+      "eyeSquint": 0.32,
+      "browInnerUp": 0.12,
+      "browDown": 0.1,
+      "jawOpen": 0.06,
+      "smile": 0,
+      "frown": 0.05,
+      "mouthPucker": 0.28,
+      "cheekSquint": 0.08,
+      "noseSneer": 0.05
+    },
+    "handFeatures": {
+      "handPresent": 1,
+      "handNearFace": 0.95,
+      "fingertipNearMouth": 0.95
+    },
+    "headPose": null,
+    "notes": "Hand-aware profile: hold one hand near your face with a fingertip close to your mouth. The face values are a manual human imitation of the source image.",
+    "source": null
   }
 ]

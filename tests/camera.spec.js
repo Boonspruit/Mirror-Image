@@ -253,6 +253,16 @@ test('debug panel maps category names and updates raw scores without stale readi
       }
     `,
   }))
+  await page.route('**/src/tracking/handTracker.js*', (route) => route.fulfill({
+    contentType: 'application/javascript',
+    body: `
+      export async function createHandTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }
+      export function startHandTracking(video, tracker, onResult) {
+        const timer = setInterval(() => onResult({ landmarks: [], worldLandmarks: [], handedness: [] }), 50)
+        return () => clearInterval(timer)
+      }
+    `,
+  }))
   await page.goto('/#settings')
   const debug = page.getByRole('region', { name: 'Live blendshapes' })
   const value = (name) => debug.locator('.feature-groups [data-feature="' + name + '"] .feature-value')

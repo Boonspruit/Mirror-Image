@@ -16,14 +16,14 @@ test('retained Almarts27 hamster references are stored locally with valid image 
 })
 
 test('all default meme profiles share the exact expression schema and have local image files', () => {
-  expect(memes).toHaveLength(10)
-  expect(new Set(memes.map((m) => m.id)).size).toBe(10)
-  expect(new Set(memes.map((m) => m.image)).size).toBe(10)
+  expect(memes).toHaveLength(11)
+  expect(new Set(memes.map((m) => m.id)).size).toBe(11)
+  expect(new Set(memes.map((m) => m.image)).size).toBe(11)
   for (const meme of memes) {
     expect(meme.id).toMatch(/^[a-z0-9-]+$/)
     expect(meme.name.length).toBeGreaterThan(0)
     expect(meme.alt.length).toBeGreaterThan(0)
-    expect(meme.profileSource).toBe('trained')
+    expect(['manual', 'trained']).toContain(meme.profileSource)
     expect(meme.headPose).toBeNull()
     expect(Object.keys(meme.features).sort()).toEqual(Object.keys(EXPRESSION_FEATURES).sort())
     for (const score of Object.values(meme.features)) {
@@ -62,7 +62,7 @@ test('gallery loads local images, switches profiles, and works without webcam or
   await page.getByRole('link', { name: 'Library', exact: true }).click()
   const gallery = page.getByRole('region', { name: 'Meet your meme counterparts' })
   const inspector = gallery.getByRole('region', { name: 'Selected meme profile' })
-  await expect(gallery.locator('.meme-card')).toHaveCount(10)
+  await expect(gallery.locator('.meme-card')).toHaveCount(11)
   await expect.poll(() => gallery.locator('.meme-thumbnail img').evaluateAll((images) => images.every((i) => i.complete && i.naturalWidth > 0))).toBe(true)
   const imagesClearLabels = await gallery.locator('.meme-card').evaluateAll((cards) => cards.every((card) => {
     const image = card.querySelector('img').getBoundingClientRect()
@@ -77,8 +77,8 @@ test('gallery loads local images, switches profiles, and works without webcam or
     await expect(gallery.locator('.meme-card[aria-pressed="true"]')).toHaveCount(1)
     await expect(gallery.getByRole('dialog').getByRole('heading', { name: meme.name, exact: true })).toBeVisible()
     await gallery.getByText('Expression values & notes', { exact: true }).click()
-    await expect(inspector.locator('dt')).toHaveCount(10)
-    await expect(inspector.locator('dd')).toHaveText(Object.values(meme.features).map((v) => v.toFixed(2)))
+    await expect(inspector.locator('dt')).toHaveCount(meme.handFeatures ? 13 : 10)
+    await expect(inspector.locator('dd')).toHaveText([...Object.values(meme.features), ...Object.values(meme.handFeatures ?? {})].map((v) => v.toFixed(2)))
     if (meme.source) await expect(inspector.getByRole('link', { name: 'Image source' })).toHaveAttribute('href', meme.source.pageUrl)
     await expect.poll(() => inspector.locator('img').evaluate((i) => i.complete && i.naturalWidth > 0)).toBe(true)
     await gallery.getByRole('button', { name: 'Close', exact: true }).click()

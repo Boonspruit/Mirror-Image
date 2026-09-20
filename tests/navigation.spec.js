@@ -12,6 +12,16 @@ async function trackingFixture(page) {
       }
     `,
   }))
+  await page.route('**/src/tracking/handTracker.js*', route => route.fulfill({
+    contentType: 'application/javascript',
+    body: `
+      export async function createHandTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }
+      export function startHandTracking(video, tracker, onResult) {
+        const timer = setInterval(() => onResult({ landmarks: [], worldLandmarks: [], handedness: [] }), 50)
+        return () => clearInterval(timer)
+      }
+    `,
+  }))
 }
 
 test('focused navigation preserves one camera session and trains beside a live preview', async ({ page }) => {

@@ -18,7 +18,7 @@ test('a custom meme can be added, persists across reloads, and can be removed', 
   await gallery.getByRole('slider', { name: 'browDown' }).fill('0.61')
   await gallery.getByRole('button', { name: 'Add to collection' }).click()
 
-  await expect(gallery.locator('.meme-card')).toHaveCount(11)
+  await expect(gallery.locator('.meme-card')).toHaveCount(12)
   await expect(gallery.getByRole('heading', { name: 'My Test Hamster' })).toBeVisible()
   await expect(gallery.getByText('Stored in this browser')).toBeVisible()
 
@@ -28,7 +28,7 @@ test('a custom meme can be added, persists across reloads, and can be removed', 
   await expect(gallery.getByRole('heading', { name: 'My Test Hamster' })).toBeVisible()
   await gallery.getByRole('button', { name: 'Remove meme' }).click()
   await expect(gallery.getByRole('button', { name: 'Inspect My Test Hamster' })).toHaveCount(0)
-  await expect(gallery.locator('.meme-card')).toHaveCount(10)
+  await expect(gallery.locator('.meme-card')).toHaveCount(11)
 })
 
 test('a built-in meme can be hidden and restored', async ({ page }) => {
@@ -38,9 +38,9 @@ test('a built-in meme can be hidden and restored', async ({ page }) => {
   await gallery.getByRole('button', { name: 'Inspect Surprised Pikachu' }).click()
   await gallery.getByRole('button', { name: 'Remove meme' }).click()
   await expect(gallery.getByRole('button', { name: 'Inspect Surprised Pikachu' })).toHaveCount(0)
-  await expect(gallery.locator('.meme-card')).toHaveCount(9)
+  await expect(gallery.locator('.meme-card')).toHaveCount(10)
 
   await gallery.getByRole('button', { name: 'Restore 1 built-in' }).click()
   await expect(gallery.getByRole('button', { name: 'Inspect Surprised Pikachu' })).toBeVisible()
-  await expect(gallery.locator('.meme-card')).toHaveCount(10)
+  await expect(gallery.locator('.meme-card')).toHaveCount(11)
 })

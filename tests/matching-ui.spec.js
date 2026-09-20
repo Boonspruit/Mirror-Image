@@ -16,19 +16,38 @@ function categoriesFor(features) {
     : [{ categoryName: single[name], score }])
 }
 
-async function installControlledTracker(page, initialFeatures) {
+async function installControlledTracker(page, initialFeatures, { handToMouth = false } = {}) {
   await page.addInitScript((categories) => {
+    const landmarks = Array.from({ length: 478 }, () => ({ x: 0.5, y: 0.5, z: 0 }))
+    landmarks[13] = { x: 0.5, y: 0.49, z: 0 }
+    landmarks[14] = { x: 0.5, y: 0.51, z: 0 }
+    landmarks[234] = { x: 0.3, y: 0.5, z: 0 }
+    landmarks[454] = { x: 0.7, y: 0.5, z: 0 }
     window.matchFixture = {
-      faceLandmarks: [[]], faceBlendshapes: [{ categories }],
+      faceLandmarks: [landmarks], faceBlendshapes: [{ categories }],
       facialTransformationMatrixes: [{ rows: 4, columns: 4, data: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -50, 1] }],
     }
   }, categoriesFor(initialFeatures))
+  await page.addInitScript((showHand) => {
+    const landmarks = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 }))
+    window.handFixture = { landmarks: showHand ? [landmarks] : [], worldLandmarks: [], handedness: [] }
+  }, handToMouth)
   await page.route('**/src/tracking/faceTracker.js*', (route) => route.fulfill({
     contentType: 'application/javascript',
     body: `
       export async function createFaceTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }
       export function startFaceTracking(video, tracker, onResult) {
         const timer = setInterval(() => onResult(window.matchFixture), 50)
+        return () => clearInterval(timer)
+      }
+    `,
+  }))
+  await page.route('**/src/tracking/handTracker.js*', (route) => route.fulfill({
+    contentType: 'application/javascript',
+    body: `
+      export async function createHandTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }
+      export function startHandTracking(video, tracker, onResult) {
+        const timer = setInterval(() => onResult(window.handFixture), 50)
         return () => clearInterval(timer)
       }
     `,
@@ -50,7 +69,7 @@ test('live result shows an exact winner and switches immediately to a stronger f
 
 
   await expect(display.getByRole('heading', { name: 'Surprised Pikachu', exact: true })).toBeVisible()
-  await expect(display.locator('.match-meter')).toHaveAttribute('aria-label', '100% expression match')
+  await expect(display.locator('.match-meter')).toHaveAttribute('aria-label', '100% overall match')
   await display.getByText('Match details', { exact: true }).click()
   await expect(display.locator('.group-matches dd')).toHaveText(['100%', '100%', '100%'])
   await expect(display.locator('.match-meta')).toContainText('Distance 0.000')
@@ -97,6 +116,22 @@ test('live result shows an exact winner and switches immediately to a stronger f
 
   await page.getByRole('button', { name: 'Stop camera' }).click()
   await expect(display).toContainText('Start the camera')
+})
+
+test('a hand-to-mouth gesture activates a hand-aware meme profile', async ({ page }) => {
+  const monkey = memes.find((meme) => meme.id === 'thinking-monkey')
+  await installControlledTracker(page, monkey.features, { handToMouth: true })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Start camera' }).click()
+
+  const display = page.locator('#live-match')
+  await expect(display.getByRole('heading', { name: 'Thinking Monkey', exact: true })).toBeVisible({ timeout: 3000 })
+  await display.getByText('Match details', { exact: true }).click()
+  await expect(display.locator('.group-matches dt')).toContainText(['Eyes', 'Brows', 'Mouth & cheeks', 'Hand gesture'])
+  await page.getByRole('link', { name: 'Settings', exact: true }).click()
+  const metrics = page.locator('.metrics')
+  await expect(metrics.getByText('Hands detected', { exact: true }).locator('..').locator('dd')).toContainText('1')
+  await expect(metrics.getByText('Fingertip near mouth', { exact: true }).locator('..').locator('dd')).toContainText('100%')
 })
 
 test('neutral calibration counts down, saves a baseline, and subtracts it from live values', async ({ page }) => {

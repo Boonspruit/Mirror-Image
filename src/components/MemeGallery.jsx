@@ -249,6 +249,7 @@ export default function MemeGallery({
                 </div>
                 <span className="meme-name">{meme.name}</span>
                 <small className="meme-expression">{meme.expressionLabel}</small>
+                {meme.handFeatures ? <small className="hand-aware-label">HAND-AWARE</small> : null}
               </button>
             ))}
           </div>
@@ -271,8 +272,12 @@ export default function MemeGallery({
                   <div>
                     <strong>Teach this meme your expression</strong>
                     <p>{canTrain
-                      ? 'Hold the face you want to associate with this meme, then save it.'
-                      : 'Start the camera and keep your face visible to capture all ten values.'}</p>
+                      ? (selectedMeme.handFeatures
+                        ? 'Match the face and hand pose shown, then save your facial expression. The required hand gesture stays attached to this meme.'
+                        : 'Hold the face you want to associate with this meme, then save it.')
+                      : (selectedMeme.handFeatures
+                        ? 'Start the camera, keep your face visible, and copy the hand-to-face gesture shown.'
+                        : 'Start the camera and keep your face visible to capture all ten values.')}</p>
                   </div>
                   <div className="profile-training-actions">
                     <button className="train-meme-button" type="button" onClick={handleTrain} disabled={!canTrain}>
@@ -295,6 +300,14 @@ export default function MemeGallery({
                     </div>
                   ))}
                 </dl>
+                {selectedMeme.handFeatures ? <><h3 className="hand-profile-title">Required hand gesture</h3><dl className="meme-features hand-features">
+                  {Object.entries(selectedMeme.handFeatures).map(([feature, value]) => (
+                    <div key={feature}>
+                      <dt>{feature}</dt>
+                      <dd>{Number(value).toFixed(2)}</dd>
+                    </div>
+                  ))}
+                </dl></> : null}
 </details>
                 <div className="inspector-actions meme-source">
                   {selectedMeme.source?.pageUrl ? (

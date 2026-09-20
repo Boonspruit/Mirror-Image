@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createFaceTracker, startFaceTracking } from '../tracking/faceTracker.js'
+import { createHandTracker, startHandTracking } from '../tracking/handTracker.js'
 import FaceOverlay from './FaceOverlay.jsx'
+import HandOverlay from './HandOverlay.jsx'
 import DebugPanel from './DebugPanel.jsx'
 import ExpressionPanel from './ExpressionPanel.jsx'
 import SimilarityPanel from './SimilarityPanel.jsx'
@@ -8,16 +10,17 @@ import MemeDisplay from './MemeDisplay.jsx'
 import MemeGallery from './MemeGallery.jsx'
 import TrainingPreview from './TrainingPreview.jsx'
 import { extractFeatureVector } from '../tracking/featureExtractor.js'
+import { EMPTY_HAND_FEATURES, extractHandFeatures } from '../tracking/handFeatureExtractor.js'
 import { rankMemes } from '../matching/matcher.js'
-import { createVectorSmoother } from '../matching/smoothing.js'
+import { createVectorSmoother, smoothValues } from '../matching/smoothing.js'
 import { createMatchStabilizer } from '../matching/matchStabilizer.js'
 import { applyNeutralBaseline, averageFeatureVectors } from '../tracking/faceCalibration.js'
 
-const EMPTY_RESULT = { faces: 0, landmarks: 0, blendshapes: 0, pose: false, categories: [], vector: null, rawVector: null }
+const EMPTY_RESULT = { faces: 0, landmarks: 0, blendshapes: 0, pose: false, hands: 0, handLandmarks: 0, handFeatures: EMPTY_HAND_FEATURES, categories: [], vector: null, rawVector: null }
 const EMPTY_MATCH = { matches: [], pendingId: null }
 const LABELS = {
   idle: 'Camera is off', requesting: 'Waiting for permission',
-  loading: 'Loading face tracker', running: 'Tracking is running', error: 'Session stopped',
+  loading: 'Loading face and hand trackers', running: 'Tracking is running', error: 'Session stopped',
 }
 function cameraErrorMessage(error) {
   switch (error.name) {
@@ -36,6 +39,9 @@ export default function Camera({ library, view }) {
   const videoRef = useRef(null)
   const memesRef = useRef(memes)
   const overlayRef = useRef(null)
+  const handOverlayRef = useRef(null)
+  const latestFaceLandmarks = useRef(null)
+  const latestHandResult = useRef({ hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES })
   const resources = useRef({})
   const session = useRef(0)
   const pipeline = useRef(null)
@@ -61,13 +67,19 @@ export default function Camera({ library, view }) {
     resources.current = {}
     setPreviewStream(null)
     owned.cancelCalibration?.()
+    if (owned.startHandTimer) window.clearTimeout(owned.startHandTimer)
     owned.cancelLoop?.()
+    owned.cancelHandLoop?.()
     overlayRef.current?.clear()
+    handOverlayRef.current?.clear()
     owned.removeListeners?.()
     owned.stream?.getTracks().forEach((track) => track.stop())
     owned.tracker?.close()
+    owned.handTracker?.close()
     pipeline.current = null
     calibrationCapture.current = null
+    latestFaceLandmarks.current = null
+    latestHandResult.current = { hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES }
     if (videoRef.current) {
       videoRef.current.pause()
       videoRef.current.srcObject = null
@@ -141,14 +153,15 @@ export default function Camera({ library, view }) {
 
       stage = 'tracker'
       setPhase('loading')
-      const { tracker, delegate: activeDelegate } = await createFaceTracker()
+      const faceTracking = await createFaceTracker()
+      const { tracker, delegate: activeDelegate } = faceTracking
       // WASM initialization cannot be cancelled; close a late result immediately.
       if (!isCurrent()) {
         tracker.close()
         return
       }
       resources.current.tracker = tracker
-      setDelegate(activeDelegate)
+      setDelegate(`Face ${activeDelegate} · Hand loading`)
       setPhase('running')
       let lastUpdate = -Infinity
       let lastMatchEvaluation = -Infinity
@@ -156,10 +169,44 @@ export default function Camera({ library, view }) {
       const smoother = createVectorSmoother({ alpha: 0.65 })
       const stabilizer = createMatchStabilizer({ holdMs: 0, switchMargin: 0.005 })
       pipeline.current = { smoother, stabilizer }
+      // Face matching starts immediately. The larger hand model joins the same
+      // session when ready and closes itself if the user stopped in the meantime.
+      resources.current.startHandTimer = window.setTimeout(() => {
+        resources.current.startHandTimer = undefined
+        void createHandTracker().then((handTracking) => {
+          if (!isCurrent()) {
+            handTracking.tracker.close()
+            return
+          }
+          resources.current.handTracker = handTracking.tracker
+          setDelegate(`Face ${activeDelegate} · Hand ${handTracking.delegate}`)
+          resources.current.cancelHandLoop = startHandTracking(video, handTracking.tracker, (handResult) => {
+            if (!isCurrent()) return
+            handOverlayRef.current?.draw(handResult.landmarks, video.videoWidth, video.videoHeight)
+            const currentFeatures = extractHandFeatures(handResult, latestFaceLandmarks.current)
+            const previousFeatures = latestHandResult.current.features
+            latestHandResult.current = {
+              hands: handResult.landmarks.length,
+              landmarks: handResult.landmarks[0]?.length ?? 0,
+              features: smoothValues(previousFeatures, currentFeatures, 0.55),
+            }
+          }, (cause) => {
+            console.error('Hand tracking stopped unexpectedly.', cause)
+            handOverlayRef.current?.clear()
+            latestHandResult.current = { hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES }
+            setDelegate(`Face ${activeDelegate} · Hand unavailable`)
+          })
+        }, (cause) => {
+          if (!isCurrent()) return
+          console.warn('Hand tracking is unavailable; face matching will continue.', cause)
+          setDelegate(`Face ${activeDelegate} · Hand unavailable`)
+        })
+      }, 300)
       resources.current.cancelLoop = startFaceTracking(video, tracker, (trackingResult) => {
         if (!isCurrent()) return
         // Draw every inference; the text summary below stays throttled to 4 Hz.
         overlayRef.current?.draw(trackingResult.faceLandmarks[0], video.videoWidth, video.videoHeight)
+        latestFaceLandmarks.current = trackingResult.faceLandmarks[0] ?? null
         const rawVector = extractFeatureVector(trackingResult)
         const now = performance.now()
 
@@ -180,7 +227,8 @@ export default function Camera({ library, view }) {
         const vector = calibratedVector ? smoother.update(calibratedVector) : null
         if (vector && now - lastMatchEvaluation >= 100) {
           lastMatchEvaluation = now
-          const ranked = rankMemes(vector.expression, memesRef.current).filter(({ comparison }) => comparison)
+          const matchFeatures = { ...vector.expression, ...latestHandResult.current.features }
+          const ranked = rankMemes(matchFeatures, memesRef.current).filter(({ comparison }) => comparison)
           const stabilized = stabilizer.update(ranked, now)
           const selected = ranked.find(({ meme }) => meme.id === stabilized.selectedId)
           const displayMatches = selected
@@ -191,11 +239,15 @@ export default function Camera({ library, view }) {
 
         if (now - lastUpdate < 250) return
         lastUpdate = now
+        const handResult = latestHandResult.current
         setResult({
           faces: trackingResult.faceLandmarks.length,
           landmarks: trackingResult.faceLandmarks[0]?.length ?? 0,
           blendshapes: trackingResult.faceBlendshapes[0]?.categories.length ?? 0,
           pose: Boolean(trackingResult.facialTransformationMatrixes[0]),
+          hands: handResult.hands,
+          handLandmarks: handResult.landmarks,
+          handFeatures: handResult.features,
           vector,
           rawVector,
           // Preserve the raw readings alongside the combined expression vector.
@@ -265,21 +317,22 @@ export default function Camera({ library, view }) {
         <div className="camera-stage">
           <video ref={videoRef} autoPlay muted playsInline className={videoVisible ? 'visible' : ''} aria-label="Mirrored webcam preview" />
           <FaceOverlay ref={overlayRef} enabled={showOverlay} />
+          <HandOverlay ref={handOverlayRef} enabled={showOverlay} />
           {!videoVisible && <div className="camera-placeholder"><div className="face-frame" aria-hidden="true"><span>· ·</span><span>⌣</span></div><h3>{phase === 'requesting' ? 'A quick permission check.' : 'Ready when you are.'}</h3><p>{phase === 'requesting' ? 'Allow camera access in your browser to begin.' : 'Your next expression starts here.'}</p></div>}
           {videoVisible && <span className="preview-label">MIRRORED PREVIEW</span>}
           {phase === 'loading' && <div className="loading-label">Preparing MediaPipe…</div>}
           {calibration.status === 'countdown' && <div className="calibration-countdown" role="status" aria-live="assertive"><span>NEUTRAL FACE</span><strong>{calibration.count}</strong><p>{calibration.message}</p></div>}
         </div>
-        <div className="camera-controls"><p>{phase === 'running' ? (result.faces ? 'Face detected' : 'Look toward the camera') : 'Your camera stays private.'}</p><button onClick={active ? stop : start} className={active ? 'secondary' : 'primary'}>{active ? (phase === 'requesting' ? 'Cancel' : 'Stop camera') : 'Start camera'}</button></div>
+        <div className="camera-controls"><p>{phase === 'running' ? (result.faces ? `Face detected${result.hands ? ' · Hand detected' : ''}` : 'Look toward the camera') : 'Your camera stays private.'}</p><button onClick={active ? stop : start} className={active ? 'secondary' : 'primary'}>{active ? (phase === 'requesting' ? 'Cancel' : 'Stop camera') : 'Start camera'}</button></div>
         {error && <p className="error-message" role="alert">{error}</p>}
       </div>
-      <MemeDisplay matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} phase={phase} calibrated={Boolean(calibration.baseline)} />
+      <MemeDisplay matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} handFeatures={result.handFeatures} phase={phase} calibrated={Boolean(calibration.baseline)} />
     </section>
     <section hidden={view !== 'settings'} className="settings-view" aria-label="Settings">
-      <div className="view-heading"><div><p className="eyebrow">PREFERENCES</p><h1>Make it yours.</h1></div><p>Camera controls and expression diagnostics.</p></div>
+      <div className="view-heading"><div><p className="eyebrow">PREFERENCES</p><h1>Make it yours.</h1></div><p>Camera controls and tracking diagnostics.</p></div>
       <section className="settings-controls" aria-label="Camera preferences"><h2>Camera & calibration</h2>
         <div className="settings-preview"><TrainingPreview stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError="" /></div>
-        <label className="overlay-toggle"><input type="checkbox" checked={showOverlay} onChange={(event) => setShowOverlay(event.target.checked)} />Show face mesh<span>Follows your eyes, brows, and mouth</span></label>
+        <label className="overlay-toggle"><input type="checkbox" checked={showOverlay} onChange={(event) => setShowOverlay(event.target.checked)} />Show face mesh + hands<span>Follows your face and hand landmarks</span></label>
         <p className={`calibration-feedback ${calibration.status}`} aria-live="polite">{calibration.message || 'Calibrate once with a relaxed, neutral expression.'}</p>
         <div className="camera-controls"><p><span className="privacy-dot" /> Camera frames stay in this browser.</p><div className="camera-actions"><button onClick={beginCalibration} className="calibrate-button" disabled={phase !== 'running' || !result.faces || calibration.status === 'countdown'}>{calibration.baseline ? 'Recalibrate face' : 'Calibrate face'}</button><button onClick={active ? stop : start} className={active ? 'secondary' : 'primary'}>{active ? (phase === 'requesting' ? 'Cancel' : 'Stop camera') : 'Start camera'}<span aria-hidden="true">{active ? '■' : '↗'}</span></button></div></div>
 
@@ -287,11 +340,11 @@ export default function Camera({ library, view }) {
       {calibration.status === 'countdown' && <p role="status">Look at the camera with a relaxed face. {calibration.count}</p>}
       <aside className="tracking-panel tracking-strip">
         <div className="tracking-intro">
-        <p className="eyebrow">UNDER THE HOOD</p><h2>A face. A set of signals.</h2><p className="panel-description">MediaPipe finds facial landmarks and expression signals directly on your device.</p>
+        <p className="eyebrow">UNDER THE HOOD</p><h2>A face, a hand, a set of signals.</h2><p className="panel-description">MediaPipe finds facial and hand landmarks directly on your device.</p>
         </div>
         <div className="tracking-readout">
-        <div className="tracking-status" role="status" aria-live="polite"><span className={`signal-dot ${phase === 'running' ? 'on' : ''}`} /><div><strong>{LABELS[phase]}</strong><p>{phase === 'running' ? (result.faces ? 'Face detected. Try moving your head.' : 'No face detected. Look toward the camera.') : 'One face at a time, for this first version.'}</p></div></div>
-        <dl className="metrics"><div><dt>Faces detected</dt><dd>{result.faces} <small>/ 1</small></dd></div><div><dt>Facial landmarks</dt><dd>{result.landmarks}</dd></div><div><dt>Blendshape signals</dt><dd>{result.blendshapes}</dd></div><div><dt>Head transform</dt><dd className="text-value">{result.pose ? 'Available' : 'Waiting'}</dd></div><div><dt>Processing</dt><dd className="text-value">{delegate}</dd></div></dl>
+        <div className="tracking-status" role="status" aria-live="polite"><span className={`signal-dot ${phase === 'running' ? 'on' : ''}`} /><div><strong>{LABELS[phase]}</strong><p>{phase === 'running' ? (result.faces ? `Face detected.${result.hands ? ' One hand detected.' : ' Show a hand for gesture-aware memes.'}` : 'No face detected. Look toward the camera.') : 'One face and one hand at a time.'}</p></div></div>
+        <dl className="metrics"><div><dt>Faces detected</dt><dd>{result.faces} <small>/ 1</small></dd></div><div><dt>Hands detected</dt><dd>{result.hands} <small>/ 1</small></dd></div><div><dt>Facial landmarks</dt><dd>{result.landmarks}</dd></div><div><dt>Hand landmarks</dt><dd>{result.handLandmarks}</dd></div><div><dt>Fingertip near mouth</dt><dd>{Math.round((result.handFeatures.fingertipNearMouth ?? 0) * 100)}<small>%</small></dd></div><div><dt>Blendshape signals</dt><dd>{result.blendshapes}</dd></div><div><dt>Head transform</dt><dd className="text-value">{result.pose ? 'Available' : 'Waiting'}</dd></div><div><dt>Processing</dt><dd className="text-value">{delegate}</dd></div></dl>
         </div>
         <div className="tracking-notes">
         {error && <p className="error-message" role="alert">{error}</p>}

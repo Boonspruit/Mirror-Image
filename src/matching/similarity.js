@@ -14,6 +14,17 @@ export const DEFAULT_FEATURE_WEIGHTS = Object.freeze({
   noseSneer: 0.7,
 })
 
+export const HAND_FEATURE_WEIGHTS = Object.freeze({
+  handPresent: 1,
+  handNearFace: 2,
+  fingertipNearMouth: 4,
+})
+
+export const DEFAULT_MATCH_WEIGHTS = Object.freeze({
+  ...DEFAULT_FEATURE_WEIGHTS,
+  ...HAND_FEATURE_WEIGHTS,
+})
+
 const isScore = (value) => Number.isFinite(value) && value >= 0 && value <= 1
 
 export function compareExpressions(userExpression, memeExpression, weights = DEFAULT_FEATURE_WEIGHTS) {

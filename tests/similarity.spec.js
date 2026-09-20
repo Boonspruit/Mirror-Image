@@ -62,12 +62,26 @@ test('ranking finds an exact profile and does not mutate the dataset', () => {
   const pikachu = memes.find((meme) => meme.id === 'surprised-pikachu')
   const before = structuredClone(memes)
   const ranked = rankMemes(pikachu.features, memes)
-  expect(ranked).toHaveLength(10)
+  expect(ranked).toHaveLength(11)
   expect(ranked[0].meme.id).toBe('surprised-pikachu')
   expect(ranked[0].comparison.percentage).toBe(100)
   expect(ranked.every((entry, index) => index === 0 || entry.comparison.distance >= ranked[index - 1].comparison.distance)).toBe(true)
   expect(findBestMatch(pikachu.features, memes).meme.id).toBe('surprised-pikachu')
   expect(memes).toEqual(before)
+})
+
+test('hand-aware profiles require their configured gesture while face-only profiles stay unchanged', () => {
+  const candidates = [
+    { id: 'face-only', features: { smile: 0.5 } },
+    { id: 'hand-aware', features: { smile: 0.5 }, handFeatures: { handPresent: 1, handNearFace: 1, fingertipNearMouth: 1 } },
+  ]
+  const withoutHand = rankMemes({ smile: 0.5, handPresent: 0, handNearFace: 0, fingertipNearMouth: 0 }, candidates)
+  const withHand = rankMemes({ smile: 0.5, handPresent: 1, handNearFace: 1, fingertipNearMouth: 1 }, candidates)
+
+  expect(withoutHand[0].meme.id).toBe('face-only')
+  expect(withHand[0].meme.id).toBe('hand-aware')
+  expect(withHand[0].comparison.percentage).toBe(100)
+  expect(withHand.find(({ meme }) => meme.id === 'face-only').comparison.percentage).toBe(100)
 })
 
 test('exact ties use stable IDs and uncomparable entries sort last', () => {
@@ -87,7 +101,7 @@ test('weight panel exposes the configured engine without choosing a winner', asy
   const panel = page.getByRole('region', { name: 'Weighted similarity' })
   await expect(panel).toContainText('0 / 10 features ready')
   await expect(panel.locator('.weight-grid > div')).toHaveCount(10)
-  await expect(panel.locator('.engine-note')).toContainText('10 profiles loaded')
+  await expect(panel.locator('.engine-note')).toContainText('11 profiles loaded')
   await expect(panel).toContainText('100 ms match interval')
   await expect(panel).not.toContainText('Best match')
 })

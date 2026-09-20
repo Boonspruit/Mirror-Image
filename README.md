@@ -1,7 +1,7 @@
 # Mirror Image — Version 1
 
 A React + Vite + JavaScript foundation for a webcam-to-meme application.
-This version implements webcam capture, MediaPipe Face Landmarker, an optional face mesh overlay, live raw blendshape values, a simplified expression vector with estimated head angles, twenty-six built-in meme profiles, weighted expression similarity, fast EMA smoothing, immediate matching, neutral-face calibration, face-trained profiles, and a persistent custom meme library.
+This version implements webcam capture, MediaPipe Face and Hand Landmarkers, optional tracking overlays, live facial and hand signals, a simplified expression vector with estimated head angles, eleven built-in meme profiles, weighted face-and-hand similarity, fast EMA smoothing, immediate matching, neutral-face calibration, face-trained profiles, and a persistent custom meme library.
 
 ## Using the interface
 
@@ -11,12 +11,12 @@ This version implements webcam capture, MediaPipe Face Landmarker, an optional f
   with your mirrored camera and the selected meme side by side. Start the camera
   there, hold your expression, then choose **Match this meme to my face** to save
   its target values. Close or press Escape to return to the collection.
-- **Settings** contains the face-mesh toggle, neutral calibration with a live
+- **Settings** contains the face-and-hand overlay toggle, neutral calibration with a live
   preview, tracking status, feature values, and the debugging panels.
 
 The same camera stream is reused across views and previews. Navigation does not
 restart inference, request permission again, or reset calibration. Use **Stop
-camera** to release it. The face mesh starts off for an uncluttered mirror.
+camera** to release it. Tracking overlays start off for an uncluttered mirror.
 
 ## Run locally
 
@@ -35,7 +35,7 @@ Chrome or Edge is a good first browser to test; other browsers still need manual
 
 On a fresh checkout, `npm install` also runs the setup script. Setup copies the
 installed MediaPipe WASM runtime into `public/mediapipe/wasm` and downloads
-Google's pretrained model into `public/models`. This initial setup needs internet.
+Google's pretrained face and hand models into `public/models`. This initial setup needs internet.
 After setup, the application serves everything locally: no CDN requests,
 uploaded frames, backend, API key, or model training.
 
@@ -45,8 +45,8 @@ If installation scripts were disabled or assets are missing:
 npm run setup
 ```
 
-If the model file is corrupted, remove only `public/models/face_landmarker.task`
-and rerun setup. Setup preserves an existing model instead of downloading it every time.
+If a model file is corrupted, remove only the affected file from `public/models/`
+and rerun setup. Setup preserves existing models instead of downloading them every time.
 
 For a production build:
 
@@ -70,9 +70,9 @@ directly or using an ordinary HTTP LAN address will not work for camera access.
 | `src/components/MemeGallery.jsx` | Displays the collection and lets the user add, inspect, remove, or restore meme profiles. |
 | `src/hooks/useMemeLibrary.js` | Combines built-in records with browser-stored custom profiles and applies face-trained vector overrides. |
 | `src/data/memeLibrary.js` | Stores custom images and vectors in IndexedDB, stores hidden built-ins and trained overrides in localStorage, and resizes uploads. |
-| `src/data/memes.json` | Twenty-six manually estimated profiles with the exact expression keys, local image paths, notes, and source metadata. |
+| `src/data/memes.json` | Eleven default profiles with exact face keys, optional hand requirements, local image paths, notes, and source metadata. |
 | `public/memes/*` | Locally bundled meme images plus CREDITS.md listing sources. |
-| `public/memes/alma-hamsters/*` | Sixteen locally bundled Almarts27 hamster images, all active in matching. |
+| `public/memes/alma-hamsters/*` | Four retained Almarts27 hamster images, all active in matching. |
 | `tests/memes.spec.js` | Checks schema, score ranges, image files/loading, gallery interaction, and operation without external requests or webcam access. |
 | `src/components/SimilarityPanel.jsx` | Explains the active weights, formula, feature readiness, and current engine scope. |
 | `src/components/MemeDisplay.jsx` | Shows the live winner, image, grouped scores, distance, coverage, and three alternatives. |
@@ -93,9 +93,12 @@ directly or using an ordinary HTTP LAN address will not work for camera access.
 | `src/components/DebugPanel.jsx` | Groups key raw blendshape scores, renders value meters, and provides an expandable list of all model categories. |
 | `src/components/FaceOverlay.jsx` | Draws the mesh, contours, and irises on a transparent canvas; exposes draw/clear methods to the tracking loop. |
 | `src/tracking/faceTracker.js` | Creates Face Landmarker, tries GPU then CPU, and runs/cancels the detection loop. It has no React dependency. |
+| `src/components/HandOverlay.jsx` | Draws the detected hand skeleton over the mirrored camera preview. |
+| `src/tracking/handTracker.js` | Creates Hand Landmarker and runs hand inference at up to 15 Hz after face matching starts. |
+| `src/tracking/handFeatureExtractor.js` | Converts hand landmarks into presence, near-face, and fingertip-near-mouth scores. |
 | `src/index.css` | Responsive styling, mirrored preview, layout, focus states, and error styling. |
-| `scripts/prepareAssets.js` | Copies matching package WASM assets and downloads the versioned pretrained model. Runs after npm install, or via npm run setup. |
-| `public/models/face_landmarker.task` | Generated/downloaded model bundle; used for inference, never trained here. |
+| `scripts/prepareAssets.js` | Copies matching package WASM assets and downloads the versioned pretrained models. Runs after npm install, or via npm run setup. |
+| `public/models/*.task` | Generated/downloaded face and hand model bundles; used for inference, never trained here. |
 | `public/mediapipe/wasm/*` | Generated local JS/WASM runtime files, including browser-compatible variants. |
 | `package.json` | Dependencies and commands: setup, dev, build, preview, lint, and test. |
 | `package-lock.json` | Locks the installed dependency tree for reproducible installs. |
@@ -182,7 +185,7 @@ The Camera component calls the overlay's `draw()` method through a React ref on
 each inference, before throttling the status text. This avoids rendering hundreds
 of coordinates through React state. Every draw clears the preceding frame, so
 no face means no stale mesh. Stop and error cleanup also clear the canvas.
-The **Show face mesh** checkbox hides and clears the overlay without restarting
+The **Show face mesh + hands** checkbox hides and clears both overlays without restarting
 the camera or model; enabling it draws the next detection result.
 
 ## How the debug panel works (Step 5)
@@ -262,11 +265,11 @@ The coordinate system is described in [MediaPipe Face Geometry](https://github.c
 
 ## The default meme dataset (Step 7)
 
-The gallery contains the user's ten retained profiles: five familiar meme
+The gallery contains the user's eleven profiles: five familiar meme
 templates, four Alma hamster faces, and the browser-saved **No Way** image now
-bundled as `/memes/shocked.jpeg`. Open **Library** in the navigation to browse
-them. Select a card to inspect its image and ten feature values or train that
-meme with your live expression.
+bundled as `/memes/shocked.jpeg`, plus the hand-aware **Thinking Monkey** image.
+Open **Library** in the navigation to browse them. Select a card to inspect its
+image and feature values or train that meme with your live expression.
 
 `src/data/memes.json` is imported directly by Vite. Each record has a stable
 `id`, a `name`, a local `image` path, accessible `alt` text, an expression label,
@@ -303,7 +306,8 @@ For source-controlled dataset changes:
 
 To replace an image, put it in `public/memes/` and update the `image`, `alt`, and
 `source` fields. To add a profile later, copy an entry, assign a unique id/path,
-and enter all ten features. The dataset test deliberately expects twenty-six
+and enter all ten features. Hand-aware profiles may also define `handFeatures`.
+The dataset test deliberately expects eleven
 built-in entries; update that expectation when expanding the bundled set.
 
 All images are checked into the project folder and served from the same origin;
@@ -334,6 +338,11 @@ The initial weights are `eyeWide: 2`, `jawOpen: 2`, `browInnerUp: 1.5`,
 influence. Multiplying every weight by the same amount leaves the normalized
 result unchanged.
 
+Hand-aware profiles add `handPresent: 1`, `handNearFace: 2`, and
+`fingertipNearMouth: 4`. Face-only profiles omit these values, so their scores
+remain based on the same ten facial features. A matching hand gesture supplies
+extra evidence when distances tie.
+
 Missing or invalid readings are omitted rather than interpreted as zero. The
 returned `coverage` reports the fraction of configured weight that was usable.
 No usable features return `null`; invalid weights throw an error. `rankMemes()`
@@ -346,7 +355,7 @@ winner until the live display has a usable expression vector.
 
 ## Closest meme display (Step 9)
 
-`Camera.jsx` ranks the twenty-six profiles whenever its displayed expression snapshot
+`Camera.jsx` ranks the eleven profiles whenever its displayed tracking snapshot
 updates. `MemeDisplay.jsx` renders the first ranked result with the local image,
 overall percentage, normalized distance, comparison coverage, and the next three
 profiles. Eye, brow, and mouth/cheek percentages reuse the same comparison
@@ -428,10 +437,10 @@ values, not a photo or biometric face template; camera frames are never stored.
 - Stop the camera: the card should ask you to start it again.
 - Change expressions quickly: the winner should respond within roughly 100–200 ms. Near a close boundary, the small distance margin may still prevent needless switching.
 - On desktop, confirm the meme stays beside the camera; in a phone-sized window, confirm it stacks below without horizontal scrolling.
-- In **Weighted similarity**, confirm all ten weights and twenty-six loaded profiles appear.
+- In **Weighted similarity**, confirm all ten face weights and eleven loaded profiles appear.
 - Start the camera and face it: feature readiness should change from 0/10 to 10/10.
 - Leave the frame or stop: readiness should return to 0/10.
-- Jump to the meme collection: all twenty-six profiled images should load with the camera off.
+- Jump to the meme collection: all eleven profiled images should load with the camera off.
 - Select several cards: the large preview, ten values, notes, and source link should update.
 - Confirm the image source opens in a new tab and the gallery works in a narrow window.
 - Compare **Expression vector** `smile` with the average of the two raw smile scores (allow rounding).
@@ -451,7 +460,8 @@ values, not a photo or biometric face template; camera frames are never stored.
 - Stop while the tracker loads: camera should turn off and stay off.
 - Deny permission: readable error and Start available for retry after restoring permission.
 - Disconnect a USB webcam during tracking: session stops with an error.
-- Toggle **Show face mesh** off/on: the camera keeps running and the mesh disappears/reappears.
+- Toggle **Show face mesh + hands** off/on: the camera keeps running and both overlays disappear/reappear.
+- Hold a fingertip near your mouth: Settings should show one hand and a rising proximity score, and Thinking Monkey should become competitive when the face also matches.
 - Move and tilt your head: the mesh should follow your eyes, brows, and mouth.
 - Resize the window: the mesh stays aligned and controls remain usable.
 - Leave the frame or stop the camera: the mesh clears immediately after detection/stop.
@@ -476,7 +486,7 @@ still require the manual checklist above.
 
 ## Scope and next step
 
-Implemented: React/Vite setup, webcam lifecycle, Face Landmarker, optional face mesh, live raw blendshape panel, simplified expression vector, estimated head orientation, ten retained local meme profiles with trained defaults, a persistent custom profile editor, face-trained profile vectors, weighted expression similarity, live closest-meme display, fast EMA smoothing, immediate match switching, neutral-face calibration, and aligned side-by-side media frames.
+Implemented: React/Vite setup, webcam lifecycle, Face and Hand Landmarkers, optional face-and-hand overlays, live raw blendshape and hand diagnostics, simplified expression and hand vectors, estimated head orientation, eleven local meme profiles including hand-aware Thinking Monkey, a persistent custom profile editor, face-trained profile vectors, weighted face-and-hand similarity, live closest-meme display, fast EMA smoothing, immediate match switching, neutral-face calibration, and aligned side-by-side media frames.
 
 Next: tune profiles with real usage and add more expression categories where the
 current ten-feature vector cannot separate similar faces.
@@ -485,6 +495,7 @@ current ten-feature vector cannot separate similar faces.
 
 - [MediaPipe Face Landmarker for Web](https://developers.google.com/edge/mediapipe/solutions/vision/face_landmarker/web_js)
 - [Version 1 float16 Face Landmarker model](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task)
+- [Version 1 float16 Hand Landmarker model](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task)
 - [Google MediaPipe public portrait test asset](https://storage.googleapis.com/mediapipe-assets/portrait.jpg)
 - [Browser getUserMedia documentation](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)
 - [Vite getting started](https://vite.dev/guide/)
