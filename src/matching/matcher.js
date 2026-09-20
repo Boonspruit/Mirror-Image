@@ -1,6 +1,6 @@
 import { compareExpressions, DEFAULT_MATCH_WEIGHTS } from './similarity.js'
 
-const HAND_SIGNAL_THRESHOLD = 0.45
+const HAND_SIGNAL_THRESHOLD = 0.5
 
 function matchesRequiredHandGesture(userFeatures, handFeatures) {
   if (!handFeatures) return false
@@ -16,11 +16,16 @@ export function rankMemes(userFeatures, memes, weights = DEFAULT_MATCH_WEIGHTS) 
     const memeFeatures = { ...meme.features, ...meme.handFeatures }
     const applicableWeights = Object.fromEntries(Object.entries(weights).filter(([feature]) => Number.isFinite(memeFeatures[feature])))
     const configuredWeight = Object.values(applicableWeights).reduce((sum, weight) => sum + weight, 0)
-    const comparison = compareExpressions(userFeatures, memeFeatures, applicableWeights)
+    const gestureMatched = matchesRequiredHandGesture(userFeatures, meme.handFeatures)
+    // A meme with an explicit hand requirement must not participate as a
+    // face-only fallback while that gesture is absent.
+    const comparison = meme.handFeatures && !gestureMatched
+      ? null
+      : compareExpressions(userFeatures, memeFeatures, applicableWeights)
     return {
       meme,
       comparison,
-      gestureMatched: matchesRequiredHandGesture(userFeatures, meme.handFeatures),
+      gestureMatched,
       evidenceWeight: (comparison?.coverage ?? 0) * configuredWeight,
     }
   }).sort((a, b) => {

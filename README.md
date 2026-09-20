@@ -344,7 +344,9 @@ values, so their scores remain based on the same ten facial features. Either of
 the two tracked hands can satisfy a proximity requirement. When every required
 hand signal reaches the live threshold, matching hand-aware profiles are ranked
 before face-only profiles; weighted distance still ranks profiles within that
-group and supplies the displayed percentage.
+group and supplies the displayed percentage. A hand-aware profile is excluded
+from live matching whenever its required gesture is absent, so it cannot appear
+from facial similarity alone.
 
 Missing or invalid readings are omitted rather than interpreted as zero. The
 returned `coverage` reports the fraction of configured weight that was usable.
@@ -466,6 +468,7 @@ values, not a photo or biometric face template; camera frames are never stored.
 - Toggle **Show face mesh + hands** off/on: the camera keeps running and both overlays disappear/reappear.
 - Show one or two hands: Settings should report both independently and draw both meshes.
 - Hold either fingertip near your mouth: the proximity score should rise and Thinking Monkey should become the active match once the gesture threshold is reached.
+- Move both hands out of frame: Thinking Monkey should become ineligible and a face-only meme should replace it on the next live update.
 - Move and tilt your head: the mesh should follow your eyes, brows, and mouth.
 - Resize the window: the mesh stays aligned and controls remain usable.
 - Leave the frame or stop the camera: the mesh clears immediately after detection/stop.

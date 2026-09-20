@@ -147,6 +147,9 @@ test('a newly shown hand gesture overrides an existing face-only match', async (
     window.handFixture.landmarks = [touching, touching]
   })
   await expect(display.getByRole('heading', { name: 'Thinking Monkey', exact: true })).toBeVisible({ timeout: 1000 })
+
+  await page.evaluate(() => { window.handFixture.landmarks = [] })
+  await expect(display.getByRole('heading', { name: 'Surprised Pikachu', exact: true })).toBeVisible({ timeout: 1000 })
 })
 
 test('neutral calibration counts down, saves a baseline, and subtracts it from live values', async ({ page }) => {
