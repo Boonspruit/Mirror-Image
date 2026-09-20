@@ -33,8 +33,8 @@ export function createMatchStabilizer({ holdMs = 900, switchMargin = 0.015 } = {
         return { selectedId, pendingId }
       }
 
-      // A satisfied gesture is an explicit ranking tier, so it can override a
-      // lower raw face-only distance without waiting for the distance margin.
+      // Hand mode and satisfied gestures are explicit ranking tiers, so they
+      // can override a lower raw face-only distance without waiting.
       if ((best.priority ?? 0) > (selected.priority ?? 0)) {
         selectedId = best.meme.id
         pendingId = null

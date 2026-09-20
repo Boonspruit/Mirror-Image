@@ -134,7 +134,7 @@ test('a hand-to-mouth gesture activates a hand-aware meme profile', async ({ pag
   await expect(metrics.getByText('Fingertip near mouth', { exact: true }).locator('..').locator('dd')).toContainText('100%')
 })
 
-test('a newly shown hand gesture overrides an existing face-only match', async ({ page }) => {
+test('a newly detected hand activates hand-aware matching and leaving restores face-only matching', async ({ page }) => {
   const pikachu = memes.find((meme) => meme.id === 'surprised-pikachu')
   await installControlledTracker(page, pikachu.features)
   await page.goto('/')
@@ -143,8 +143,8 @@ test('a newly shown hand gesture overrides an existing face-only match', async (
   const display = page.locator('#live-match')
   await expect(display.getByRole('heading', { name: 'Surprised Pikachu', exact: true })).toBeVisible()
   await page.evaluate(() => {
-    const touching = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 }))
-    window.handFixture.landmarks = [touching, touching]
+    const visibleAwayFromMouth = Array.from({ length: 21 }, () => ({ x: 0.9, y: 0.9, z: 0 }))
+    window.handFixture.landmarks = [visibleAwayFromMouth, visibleAwayFromMouth]
   })
   await expect(display.getByRole('heading', { name: 'Thinking Monkey', exact: true })).toBeVisible({ timeout: 1000 })
 

@@ -72,7 +72,7 @@ test('ranking finds an exact profile and does not mutate the dataset', () => {
   expect(memes).toEqual(before)
 })
 
-test('hand-aware profiles require their configured gesture while face-only profiles stay unchanged', () => {
+test('hand-aware profiles stay unavailable without a hand while face-only profiles stay unchanged', () => {
   const candidates = [
     { id: 'face-only', features: { smile: 0.5 } },
     { id: 'hand-aware', features: { smile: 0 }, handFeatures: { handPresent: 1, handNearFace: 1, fingertipNearMouth: 1 } },
@@ -83,18 +83,20 @@ test('hand-aware profiles require their configured gesture while face-only profi
   expect(withoutHand[0].meme.id).toBe('face-only')
   expect(withoutHand.find(({ meme }) => meme.id === 'hand-aware').comparison).toBeNull()
   expect(withHand[0].meme.id).toBe('hand-aware')
+  expect(withHand[0].priority).toBe(2)
   expect(withHand[0].comparison.percentage).toBeLessThan(100)
   expect(withHand.find(({ meme }) => meme.id === 'face-only').comparison.percentage).toBe(100)
 })
 
-test('a partial hand signal does not activate gesture priority', () => {
+test('any detected hand activates hand-aware matching while gesture fit refines its score', () => {
   const candidates = [
     { id: 'face-only', features: { smile: 0.5 } },
     { id: 'hand-aware', features: { smile: 0 }, handFeatures: { handPresent: 1, handNearFace: 1, fingertipNearMouth: 1 } },
   ]
   const ranked = rankMemes({ smile: 0.5, handPresent: 1, handNearFace: 0.8, fingertipNearMouth: 0.2 }, candidates)
-  expect(ranked[0].meme.id).toBe('face-only')
-  expect(ranked.find(({ meme }) => meme.id === 'hand-aware').comparison).toBeNull()
+  expect(ranked[0].meme.id).toBe('hand-aware')
+  expect(ranked[0].priority).toBe(1)
+  expect(ranked[0].comparison).not.toBeNull()
 })
 
 test('exact ties use stable IDs and uncomparable entries sort last', () => {
