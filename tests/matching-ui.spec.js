@@ -166,12 +166,12 @@ test('a selected meme can learn the current face and keeps that profile after re
 })
 
 test('a tall meme stays inside its frame and cannot overlap match text', async ({ page }) => {
-  const skeptical = memes.find((meme) => meme.id === 'skeptical-kid')
-  await installControlledTracker(page, skeptical.features)
+  const shocked = memes.find((meme) => meme.id === 'shocked')
+  await installControlledTracker(page, shocked.features)
   await page.goto('/')
   await page.getByRole('button', { name: 'Start camera' }).click()
   const display = page.locator('#live-match')
-  await expect(display.getByRole('heading', { name: 'Skeptical Kid', exact: true })).toBeVisible()
+  await expect(display.getByRole('heading', { name: 'No Way', exact: true })).toBeVisible()
   await expect.poll(() => display.locator('.match-image img').evaluate((image) => image.complete && image.naturalWidth > 0)).toBe(true)
 
   await display.getByText('Match details', { exact: true }).click()

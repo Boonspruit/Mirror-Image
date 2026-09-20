@@ -260,28 +260,26 @@ The matrix layout is verified against the [MediaPipe matrix format](https://gith
 and [JavaScript face result conversion](https://github.com/google-ai-edge/mediapipe/blob/master/mediapipe/tasks/web/vision/face_landmarker/face_landmarker.ts).
 The coordinate system is described in [MediaPipe Face Geometry](https://github.com/google-ai-edge/mediapipe/blob/master/docs/solutions/face_mesh.md#metric-3d-space).
 
-## The starter meme dataset (Step 7)
+## The default meme dataset (Step 7)
 
-The gallery contains ten familiar meme templates plus all sixteen locally bundled
-Almarts27 hamster faces. The hamster set now covers delight, grinning, skepticism,
-shock, blank staring, chomping, worry, sleepiness, crying, wizard squinting, pepper
-panic, glamour, cowboy laughter, a saucy grin, and joyful tears. Open **Library** in the navigation to browse it. Select a card to inspect its
-image and ten feature values or train that meme with your live expression.
+The gallery contains the user's ten retained profiles: five familiar meme
+templates, four Alma hamster faces, and the browser-saved **No Way** image now
+bundled as `/memes/shocked.jpeg`. Open **Library** in the navigation to browse
+them. Select a card to inspect its image and ten feature values or train that
+meme with your live expression.
 
 `src/data/memes.json` is imported directly by Vite. Each record has a stable
 `id`, a `name`, a local `image` path, accessible `alt` text, an expression label,
-`features`, `headPose: null`, `profileSource: "manual"`, notes, and source metadata.
+`features`, `headPose: null`, `profileSource: "trained"`, notes, and optional source metadata.
 Every `features` object uses the same ten keys as `EXPRESSION_FEATURES` in
 `featureExtractor.js`, with a numeric score from 0 to 1. These named values will
 let the matcher compare corresponding features without relying on array order.
 
-These numbers are hand-entered initial estimates of how a person could imitate
-the visible face. They are not model measurements, calibrated labels, or
-validated matching targets. Cartoon/animal scores are analogies. Averaging
-loses one-sided expressions, and the current vector does not capture eye gaze,
-tears, or the semantic context that makes a meme recognizable. The Math Lady
-collage has one representative profile; Skeptical Kid profiles the boy, not the
-other person. Head poses are left unknown instead of inventing angles for photos.
+These default numbers were captured by training each retained profile with the
+user's face in the browser. They remain personal matching targets rather than
+confidence scores. Averaging loses one-sided expressions, and the current vector
+does not capture eye gaze, tears, or the semantic context that makes a meme
+recognizable. Head poses are left unknown instead of inventing angles for photos.
 
 ### Add or tune a profile
 
@@ -478,7 +476,7 @@ still require the manual checklist above.
 
 ## Scope and next step
 
-Implemented: React/Vite setup, webcam lifecycle, Face Landmarker, optional face mesh, live raw blendshape panel, simplified expression vector, estimated head orientation, twenty-six local meme profiles including sixteen Alma hamster faces, a persistent custom profile editor, face-trained profile vectors, weighted expression similarity, live closest-meme display, fast EMA smoothing, immediate match switching, neutral-face calibration, and aligned side-by-side media frames.
+Implemented: React/Vite setup, webcam lifecycle, Face Landmarker, optional face mesh, live raw blendshape panel, simplified expression vector, estimated head orientation, ten retained local meme profiles with trained defaults, a persistent custom profile editor, face-trained profile vectors, weighted expression similarity, live closest-meme display, fast EMA smoothing, immediate match switching, neutral-face calibration, and aligned side-by-side media frames.
 
 Next: tune profiles with real usage and add more expression categories where the
 current ten-feature vector cannot separate similar faces.
