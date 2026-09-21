@@ -1,4 +1,4 @@
-# Mirror Image — Version 1
+# Mirror Image
 
 A React + Vite + JavaScript foundation for a webcam-to-meme application.
 This version implements webcam capture, MediaPipe Face and Hand Landmarkers, optional tracking overlays, live facial and hand signals, a simplified expression vector with estimated head angles, eleven built-in meme profiles, weighted face-and-hand similarity, fast EMA smoothing, immediate matching, neutral-face calibration, face-trained profiles, and a persistent custom meme library.
