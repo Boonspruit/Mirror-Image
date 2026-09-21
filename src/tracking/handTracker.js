@@ -6,9 +6,9 @@ export async function createHandTracker() {
   const options = {
     runningMode: 'VIDEO',
     numHands: 2,
-    minHandDetectionConfidence: 0.5,
-    minHandPresenceConfidence: 0.5,
-    minTrackingConfidence: 0.5,
+    minHandDetectionConfidence: 0.35,
+    minHandPresenceConfidence: 0.35,
+    minTrackingConfidence: 0.4,
   }
 
   try {
@@ -36,10 +36,9 @@ export function startHandTracking(video, tracker, onResult, onError) {
   function tick(now) {
     if (stopped) return
     try {
-      // Hand proximity changes more slowly than facial blendshapes. A 15 Hz
-      // ceiling keeps this second model responsive without doubling frame cost.
+      // Keep gestures responsive while limiting the cost of the second model.
       if (video.readyState >= 2 && video.videoWidth > 0 &&
-          video.currentTime !== lastVideoTime && now - lastInferenceTime >= 1000 / 15) {
+          video.currentTime !== lastVideoTime && now - lastInferenceTime >= 1000 / 20) {
         lastVideoTime = video.currentTime
         lastInferenceTime = now
         onResult(tracker.detectForVideo(video, now))

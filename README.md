@@ -68,7 +68,7 @@ directly or using an ordinary HTTP LAN address will not work for camera access.
 | `src/App.jsx` | Page shell, persistent meme-library state, introduction, camera, and collection. |
 | `src/components/Camera.jsx` | Owns the webcam, session state, tracking and matching pipeline, controls, errors, and cleanup. |
 | `src/components/MemeGallery.jsx` | Displays the collection and lets the user add, inspect, remove, or restore meme profiles. |
-| `src/hooks/useMemeLibrary.js` | Combines built-in records with browser-stored custom profiles and applies face-trained vector overrides. |
+| `src/hooks/useMemeLibrary.js` | Combines built-in records with browser-stored custom profiles and applies trained face-and-hand vector overrides. |
 | `src/data/memeLibrary.js` | Stores custom images and vectors in IndexedDB, stores hidden built-ins and trained overrides in localStorage, and resizes uploads. |
 | `src/data/memes.json` | Eleven default profiles with exact face keys, optional hand requirements, local image paths, notes, and source metadata. |
 | `public/memes/*` | Locally bundled meme images plus CREDITS.md listing sources. |
@@ -94,7 +94,7 @@ directly or using an ordinary HTTP LAN address will not work for camera access.
 | `src/components/FaceOverlay.jsx` | Draws the mesh, contours, and irises on a transparent canvas; exposes draw/clear methods to the tracking loop. |
 | `src/tracking/faceTracker.js` | Creates Face Landmarker, tries GPU then CPU, and runs/cancels the detection loop. It has no React dependency. |
 | `src/components/HandOverlay.jsx` | Draws the detected hand skeleton over the mirrored camera preview. |
-| `src/tracking/handTracker.js` | Creates Hand Landmarker and runs hand inference at up to 15 Hz after face matching starts. |
+| `src/tracking/handTracker.js` | Creates Hand Landmarker and runs two-hand inference at up to 20 Hz after face matching starts. |
 | `src/tracking/handFeatureExtractor.js` | Combines up to two hands into presence, two-hand, near-face, and fingertip-near-mouth scores. |
 | `src/index.css` | Responsive styling, mirrored preview, layout, focus states, and error styling. |
 | `scripts/prepareAssets.js` | Copies matching package WASM assets and downloads the versioned pretrained models. Runs after npm install, or via npm run setup. |
@@ -269,7 +269,7 @@ The gallery contains the user's eleven profiles: five familiar meme
 templates, four Alma hamster faces, and the browser-saved **No Way** image now
 bundled as `/memes/shocked.jpeg`, plus the hand-aware **Thinking Monkey** image.
 Open **Library** in the navigation to browse them. Select a card to inspect its
-image and feature values or train that meme with your live expression.
+image and feature values or train that meme with your live expression and hand pose.
 
 `src/data/memes.json` is imported directly by Vite. Each record has a stable
 `id`, a `name`, a local `image` path, accessible `alt` text, an expression label,
@@ -341,12 +341,10 @@ result unchanged.
 Hand-aware profiles can use `handPresent: 4`, `twoHandsPresent: 4`,
 `handNearFace: 8`, and `fingertipNearMouth: 32`. Face-only profiles omit these
 values, so their scores remain based on the same ten facial features. Either of
-the two tracked hands can satisfy a proximity requirement. Detecting either hand
-activates hand mode: hand-aware profiles are ranked before face-only profiles,
-and an exact required gesture receives the highest priority. Weighted distance
-still ranks profiles within each group and supplies the displayed percentage.
-A hand-aware profile is excluded whenever no hand is present, so it cannot
-appear from facial similarity alone.
+the two tracked hands can satisfy a proximity requirement. Face-only and
+hand-aware profiles always stay in the same candidate list. Weighted distance
+uses every available signal, so a detected gesture improves a hand-aware meme's
+score without excluding either profile type.
 
 Missing or invalid readings are omitted rather than interpreted as zero. The
 returned `coverage` reports the fraction of configured weight that was usable.
@@ -415,16 +413,19 @@ than simple preferences. The short list of hidden built-in IDs and compact
 built-in feature overrides use localStorage.
 
 To teach a particular meme, select its card in the collection, start the camera,
-hold the expression you want, and choose **Match this meme to my face**. The app
-copies the current smoothed ten-feature expression into that selected profile.
-The matcher receives the updated collection immediately, so making the same face
-can select that meme. Built-in overrides persist in localStorage and can be
-returned to their bundled values with **Reset original values**. Training a
-custom meme updates its IndexedDB record.
+hold the expression you want, and choose **Match this meme to my face**. For a
+hand-aware profile, show the pose too and use **Match this meme to my face +
+hands**. The app copies the current smoothed ten-feature expression and, when
+applicable, the live hand vector into the selected profile. The matcher receives
+the updated collection immediately. Built-in overrides persist in localStorage
+and can be returned to their bundled values with **Reset original values**.
+Training a custom meme updates its IndexedDB record. Older face-only browser
+overrides remain compatible with this expanded format.
 
 For repeatable results, calibrate a relaxed face before training and calibrate
-again in later sessions before matching. A trained profile stores expression
-values, not a photo or biometric face template; camera frames are never stored.
+again in later sessions before matching. A trained profile stores numeric
+expression and optional hand-landmark relationships, not a photo; camera frames
+are never stored.
 
 ## Test before continuing
 
@@ -433,6 +434,7 @@ values, not a photo or biometric face template; camera frames are never stored.
 - Reload the page: the custom meme should still be present. Remove it and confirm it disappears.
 - Remove one built-in profile, then use **Restore built-ins** to bring it back.
 - Select a meme, make a distinct face, and choose **Match this meme to my face**. Confirm its ten displayed values change and the trained badge appears.
+- Select Thinking Monkey, show a hand, and choose **Match this meme to my face + hands**. Confirm both the expression and hand values change and persist after reload.
 - Reload, start the camera, and repeat the trained expression. Confirm the saved meme can win, then use **Reset original values** if it is a built-in.
 - Relax your face, select **Calibrate face**, and keep looking forward through the 3–2–1 countdown; the UI should report that the baseline was saved.
 - After calibration, neutral expression values should sit near zero and the match badge should say **Calibrated match**.
@@ -467,9 +469,9 @@ values, not a photo or biometric face template; camera frames are never stored.
 - Disconnect a USB webcam during tracking: session stops with an error.
 - Toggle **Show face mesh + hands** off/on: the camera keeps running and both overlays disappear/reappear.
 - Show one or two hands: Settings should report both independently and draw both meshes.
-- Show either hand: Thinking Monkey should enter the active hand-aware group immediately.
+- Show either hand: Settings should report it and draw its landmarks promptly.
 - Hold a fingertip near your mouth: the proximity score should rise and improve Thinking Monkey's gesture score.
-- Move both hands out of frame: Thinking Monkey should become ineligible and a face-only meme should replace it on the next live update.
+- Train Thinking Monkey from the Library while a hand is visible: both the facial vector and live hand vector should save, persist after reload, and produce a high score when you repeat the pose.
 - Move and tilt your head: the mesh should follow your eyes, brows, and mouth.
 - Resize the window: the mesh stays aligned and controls remain usable.
 - Leave the frame or stop the camera: the mesh clears immediately after detection/stop.
@@ -494,7 +496,7 @@ still require the manual checklist above.
 
 ## Scope and next step
 
-Implemented: React/Vite setup, webcam lifecycle, Face and Hand Landmarkers, optional face-and-hand overlays, live raw blendshape and hand diagnostics, simplified expression and hand vectors, estimated head orientation, eleven local meme profiles including hand-aware Thinking Monkey, a persistent custom profile editor, face-trained profile vectors, weighted face-and-hand similarity, live closest-meme display, fast EMA smoothing, immediate match switching, neutral-face calibration, and aligned side-by-side media frames.
+Implemented: React/Vite setup, webcam lifecycle, Face and Hand Landmarkers, optional face-and-hand overlays, live raw blendshape and hand diagnostics, simplified expression and hand vectors, estimated head orientation, eleven local meme profiles including hand-aware Thinking Monkey, a persistent custom profile editor, trained face-and-hand profile vectors, weighted face-and-hand similarity, live closest-meme display, fast EMA smoothing, immediate match switching, neutral-face calibration, and aligned side-by-side media frames.
 
 Next: tune profiles with real usage and add more expression categories where the
 current ten-feature vector cannot separate similar faces.

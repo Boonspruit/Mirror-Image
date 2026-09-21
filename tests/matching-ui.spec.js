@@ -28,10 +28,11 @@ async function installControlledTracker(page, initialFeatures, { handToMouth = f
       facialTransformationMatrixes: [{ rows: 4, columns: 4, data: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, -50, 1] }],
     }
   }, categoriesFor(initialFeatures))
-  await page.addInitScript((count) => {
-    const landmarks = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 }))
+  await page.addInitScript(({ count, nearMouth }) => {
+    const coordinate = nearMouth ? 0.5 : 0.9
+    const landmarks = Array.from({ length: 21 }, () => ({ x: coordinate, y: coordinate, z: 0 }))
     window.handFixture = { landmarks: Array.from({ length: count }, () => landmarks), worldLandmarks: [], handedness: [] }
-  }, handCount)
+  }, { count: handCount, nearMouth: handToMouth })
   await page.route('**/src/tracking/faceTracker.js*', (route) => route.fulfill({
     contentType: 'application/javascript',
     body: `
@@ -134,7 +135,7 @@ test('a hand-to-mouth gesture activates a hand-aware meme profile', async ({ pag
   await expect(metrics.getByText('Fingertip near mouth', { exact: true }).locator('..').locator('dd')).toContainText('100%')
 })
 
-test('a newly detected hand activates hand-aware matching and leaving restores face-only matching', async ({ page }) => {
+test('showing or hiding hands does not exclude an exact face-only match', async ({ page }) => {
   const pikachu = memes.find((meme) => meme.id === 'surprised-pikachu')
   await installControlledTracker(page, pikachu.features)
   await page.goto('/')
@@ -146,7 +147,7 @@ test('a newly detected hand activates hand-aware matching and leaving restores f
     const visibleAwayFromMouth = Array.from({ length: 21 }, () => ({ x: 0.9, y: 0.9, z: 0 }))
     window.handFixture.landmarks = [visibleAwayFromMouth, visibleAwayFromMouth]
   })
-  await expect(display.getByRole('heading', { name: 'Thinking Monkey', exact: true })).toBeVisible({ timeout: 1000 })
+  await expect(display.getByRole('heading', { name: 'Surprised Pikachu', exact: true })).toBeVisible({ timeout: 1000 })
 
   await page.evaluate(() => { window.handFixture.landmarks = [] })
   await expect(display.getByRole('heading', { name: 'Surprised Pikachu', exact: true })).toBeVisible({ timeout: 1000 })
@@ -216,6 +217,32 @@ test('a selected meme can learn the current face and keeps that profile after re
   await gallery.getByRole('button', { name: 'Reset original values' }).click()
   await expect(gallery.getByText('TRAINED WITH YOUR FACE')).toHaveCount(0)
   await expect(gallery.getByText('Surprised Pikachu restored to its original profile.')).toBeVisible()
+})
+
+test('a hand-aware meme saves and restores the live hand profile with the face', async ({ page }) => {
+  const monkey = memes.find((meme) => meme.id === 'thinking-monkey')
+  await installControlledTracker(page, monkey.features, { handCount: 1 })
+  await page.goto('/#meme-collection')
+  const gallery = page.getByRole('region', { name: 'Meet your meme counterparts' })
+  await gallery.getByRole('button', { name: 'Inspect Thinking Monkey', exact: true }).click()
+  const trainButton = gallery.getByRole('button', { name: 'Match this meme to my face + hands' })
+  await expect(trainButton).toBeDisabled()
+
+  await page.getByRole('button', { name: 'Start camera' }).click()
+  await expect(trainButton).toBeEnabled()
+  await trainButton.click()
+  await expect(gallery.getByText('Thinking Monkey now matches this expression and hand pose.')).toBeVisible()
+  await expect(gallery.getByText('TRAINED WITH YOUR FACE + HANDS')).toBeVisible()
+  await gallery.getByText('Expression values & notes', { exact: true }).click()
+  const savedHandValues = await gallery.locator('.hand-features dd').allTextContents()
+  expect(Number(savedHandValues[0])).toBeGreaterThanOrEqual(0.5)
+  expect(savedHandValues.slice(1)).toEqual(['0.00', '0.00'])
+
+  await page.reload()
+  await gallery.getByRole('button', { name: 'Inspect Thinking Monkey', exact: true }).click()
+  await expect(gallery.getByText('TRAINED WITH YOUR FACE + HANDS')).toBeVisible()
+  await gallery.getByText('Expression values & notes', { exact: true }).click()
+  await expect(gallery.locator('.hand-features dd')).toHaveText(savedHandValues)
 })
 
 test('a tall meme stays inside its frame and cannot overlap match text', async ({ page }) => {

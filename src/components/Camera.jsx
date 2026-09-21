@@ -356,7 +356,7 @@ export default function Camera({ library, view }) {
     <DebugPanel categories={result.categories} phase={phase} hasFace={result.faces > 0} />
     </section>
     <div hidden={view !== 'library'}>
-      <MemeGallery {...library} liveExpression={result.vector?.expression} stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError={error} />
+      <MemeGallery {...library} liveExpression={result.vector?.expression} liveHandFeatures={result.handFeatures} stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError={error} />
     </div>
     </>
   )

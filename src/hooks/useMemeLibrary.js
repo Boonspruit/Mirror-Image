@@ -10,14 +10,24 @@ function hasSameFeatures(left, right) {
   return [...keys].every((key) => left?.[key] === right?.[key])
 }
 
+function normalizeOverride(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+  if (value.features && typeof value.features === 'object' && !Array.isArray(value.features)) return value
+  return { features: value }
+}
+
 export default function useMemeLibrary() {
   const [customMemes, setCustomMemes] = useState([])
   const [hiddenIds, setHiddenIds] = useState(() => loadHiddenBuiltIns().filter((id) => BUILT_IN_BY_ID.has(id)))
   const [profileOverrides, setProfileOverrides] = useState(() => Object.fromEntries(
-    Object.entries(loadProfileOverrides()).filter(([id, features]) => {
+    Object.entries(loadProfileOverrides()).filter(([id, value]) => {
       const builtIn = BUILT_IN_BY_ID.get(id)
-      return builtIn && !hasSameFeatures(features, builtIn.features)
-    }),
+      if (!builtIn) return false
+      const override = normalizeOverride(value)
+      if (!override) return false
+      return !hasSameFeatures(override.features, builtIn.features) ||
+        (override.handFeatures && !hasSameFeatures(override.handFeatures, builtIn.handFeatures))
+    }).map(([id, value]) => [id, normalizeOverride(value)]),
   ))
   const [error, setError] = useState('')
 
@@ -42,9 +52,16 @@ export default function useMemeLibrary() {
   const memes = useMemo(() => [
     ...builtInMemes
       .filter(({ id }) => !hiddenIds.includes(id))
-      .map((meme) => profileOverrides[meme.id]
-        ? { ...meme, features: profileOverrides[meme.id], browserTrained: true }
-        : meme),
+      .map((meme) => {
+        const override = profileOverrides[meme.id]
+        return override ? {
+          ...meme,
+          features: override.features,
+          handFeatures: override.handFeatures ?? meme.handFeatures,
+          browserTrained: true,
+          handsTrained: Boolean(override.handFeatures),
+        } : meme
+      }),
     ...customMemes,
   ], [customMemes, hiddenIds, profileOverrides])
 
@@ -73,16 +90,25 @@ export default function useMemeLibrary() {
     setHiddenIds([])
   }
 
-  async function updateMemeFeatures(id, features) {
+  async function updateMemeFeatures(id, features, handFeatures) {
     if (id.startsWith('custom-')) {
       const meme = customMemes.find((entry) => entry.id === id)
       if (!meme) throw new Error('That custom meme is no longer available.')
-      const updated = { ...meme, features, browserTrained: true }
+      const updated = {
+        ...meme,
+        features,
+        ...(handFeatures ? { handFeatures } : {}),
+        browserTrained: true,
+        handsTrained: Boolean(handFeatures),
+      }
       await saveCustomMeme(updated)
       setCustomMemes((current) => current.map((entry) => entry.id === id ? updated : entry))
     } else {
       setProfileOverrides((current) => {
-        const next = { ...current, [id]: features }
+        const next = {
+          ...current,
+          [id]: { features, ...(handFeatures ? { handFeatures } : {}) },
+        }
         saveProfileOverrides(next)
         return next
       })

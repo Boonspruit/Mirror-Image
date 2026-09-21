@@ -167,6 +167,7 @@ export default function MemeGallery({
   updateMemeFeatures,
   resetMemeFeatures,
   liveExpression,
+  liveHandFeatures,
   stream, phase, onStart, onStop, cameraError,
   hiddenCount,
   error,
@@ -176,8 +177,11 @@ export default function MemeGallery({
   const dialogRef = useRef(null)
   const selectedMeme = memes.find((meme) => meme.id === selectedId) ?? memes[0]
   const featureNames = Object.keys(EXPRESSION_FEATURES)
+  const handFeatureNames = Object.keys(selectedMeme?.handFeatures ?? {})
   const liveFeatureCount = featureNames.filter((name) => Number.isFinite(liveExpression?.[name])).length
-  const canTrain = Boolean(selectedMeme) && liveFeatureCount === featureNames.length
+  const hasLiveHand = !selectedMeme?.handFeatures ||
+    (liveHandFeatures?.handPresent >= 0.5 && handFeatureNames.every((name) => Number.isFinite(liveHandFeatures?.[name])))
+  const canTrain = Boolean(selectedMeme) && liveFeatureCount === featureNames.length && hasLiveHand
 
   async function handleAdd(meme) {
     await addMeme(meme)
@@ -195,8 +199,11 @@ export default function MemeGallery({
     if (!selectedMeme || !canTrain) return
     try {
       const capturedFeatures = Object.fromEntries(featureNames.map((name) => [name, liveExpression[name]]))
-      await updateMemeFeatures(selectedMeme.id, capturedFeatures)
-      setTrainingStatus(`${selectedMeme.name} now matches this expression.`)
+      const capturedHandFeatures = selectedMeme.handFeatures
+        ? Object.fromEntries(handFeatureNames.map((name) => [name, liveHandFeatures[name]]))
+        : undefined
+      await updateMemeFeatures(selectedMeme.id, capturedFeatures, capturedHandFeatures)
+      setTrainingStatus(`${selectedMeme.name} now matches this ${capturedHandFeatures ? 'expression and hand pose' : 'expression'}.`)
     } catch (cause) {
       setTrainingStatus(cause instanceof Error ? cause.message : 'The expression could not be saved.')
     }
@@ -267,21 +274,21 @@ export default function MemeGallery({
               </div></div>
               <div className="inspector-copy meme-profile">
 
-                {selectedMeme.browserTrained ? <span className="trained-badge">TRAINED WITH YOUR FACE</span> : null}
+                {selectedMeme.browserTrained ? <span className="trained-badge">TRAINED WITH YOUR FACE{selectedMeme.handsTrained ? ' + HANDS' : ''}</span> : null}
                 <div className="profile-training">
                   <div>
                     <strong>Teach this meme your expression</strong>
                     <p>{canTrain
                       ? (selectedMeme.handFeatures
-                        ? 'Match the face and hand pose shown, then save your facial expression. The required hand gesture stays attached to this meme.'
+                        ? 'Hold the face and hand pose you want, then save both live profiles together.'
                         : 'Hold the face you want to associate with this meme, then save it.')
                       : (selectedMeme.handFeatures
-                        ? 'Start the camera, keep your face visible, and copy the hand-to-face gesture shown.'
+                        ? 'Start the camera, keep your face visible, and show at least one hand before saving.'
                         : 'Start the camera and keep your face visible to capture all ten values.')}</p>
                   </div>
                   <div className="profile-training-actions">
                     <button className="train-meme-button" type="button" onClick={handleTrain} disabled={!canTrain}>
-                      Match this meme to my face
+                      {selectedMeme.handFeatures ? 'Match this meme to my face + hands' : 'Match this meme to my face'}
                     </button>
                     {selectedMeme.browserTrained && !selectedMeme.id.startsWith('custom-') ? (
                       <button className="reset-profile-button" type="button" onClick={handleResetProfile}>

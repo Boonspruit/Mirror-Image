@@ -13,7 +13,7 @@ export const EMPTY_HAND_FEATURES = Object.freeze({
 })
 
 const FINGERTIP_INDICES = [4, 8, 12, 16, 20]
-const PALM_INDICES = [0, 5, 9, 13, 17]
+const HAND_LANDMARK_INDICES = Array.from({ length: 21 }, (_, index) => index)
 
 const clamp01 = (value) => Math.max(0, Math.min(1, value))
 const point = (landmarks, index) => {
@@ -56,7 +56,7 @@ export function extractHandFeatures(handResult, faceLandmarks) {
   )
   return {
     ...presence,
-    handNearFace: strongestProximity(PALM_INDICES),
+    handNearFace: strongestProximity(HAND_LANDMARK_INDICES),
     fingertipNearMouth: strongestProximity(FINGERTIP_INDICES),
   }
 }

@@ -28,20 +28,7 @@ export function createMatchStabilizer({ holdMs = 900, switchMargin = 0.015 } = {
         return { selectedId, pendingId }
       }
 
-      if (best.meme.id === selectedId) {
-        pendingId = null
-        return { selectedId, pendingId }
-      }
-
-      // Hand mode and satisfied gestures are explicit ranking tiers, so they
-      // can override a lower raw face-only distance without waiting.
-      if ((best.priority ?? 0) > (selected.priority ?? 0)) {
-        selectedId = best.meme.id
-        pendingId = null
-        return { selectedId, pendingId }
-      }
-
-      if (selected.comparison.distance - best.comparison.distance <= switchMargin) {
+      if (best.meme.id === selectedId || selected.comparison.distance - best.comparison.distance <= switchMargin) {
         pendingId = null
         return { selectedId, pendingId }
       }

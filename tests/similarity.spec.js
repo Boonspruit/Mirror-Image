@@ -67,12 +67,12 @@ test('ranking finds an exact profile and does not mutate the dataset', () => {
   expect(ranked[0].comparison.percentage).toBe(100)
   const comparable = ranked.filter(({ comparison }) => comparison)
   expect(comparable.every((entry, index) => index === 0 || entry.comparison.distance >= comparable[index - 1].comparison.distance)).toBe(true)
-  expect(ranked.find(({ meme }) => meme.id === 'thinking-monkey').comparison).toBeNull()
+  expect(ranked.find(({ meme }) => meme.id === 'thinking-monkey').comparison).not.toBeNull()
   expect(findBestMatch(pikachu.features, memes).meme.id).toBe('surprised-pikachu')
   expect(memes).toEqual(before)
 })
 
-test('hand-aware profiles stay unavailable without a hand while face-only profiles stay unchanged', () => {
+test('hand readings improve hand-aware scores while face-only scores stay unchanged', () => {
   const candidates = [
     { id: 'face-only', features: { smile: 0.5 } },
     { id: 'hand-aware', features: { smile: 0 }, handFeatures: { handPresent: 1, handNearFace: 1, fingertipNearMouth: 1 } },
@@ -81,22 +81,21 @@ test('hand-aware profiles stay unavailable without a hand while face-only profil
   const withHand = rankMemes({ smile: 0.5, handPresent: 1, handNearFace: 1, fingertipNearMouth: 1 }, candidates)
 
   expect(withoutHand[0].meme.id).toBe('face-only')
-  expect(withoutHand.find(({ meme }) => meme.id === 'hand-aware').comparison).toBeNull()
-  expect(withHand[0].meme.id).toBe('hand-aware')
-  expect(withHand[0].priority).toBe(2)
-  expect(withHand[0].comparison.percentage).toBeLessThan(100)
+  const handAwareWithoutHand = withoutHand.find(({ meme }) => meme.id === 'hand-aware')
+  const handAwareWithHand = withHand.find(({ meme }) => meme.id === 'hand-aware')
+  expect(handAwareWithoutHand.comparison).not.toBeNull()
+  expect(handAwareWithHand.comparison.percentage).toBeGreaterThan(handAwareWithoutHand.comparison.percentage)
   expect(withHand.find(({ meme }) => meme.id === 'face-only').comparison.percentage).toBe(100)
 })
 
-test('any detected hand activates hand-aware matching while gesture fit refines its score', () => {
+test('partial hand gestures remain comparable instead of filtering either profile type', () => {
   const candidates = [
     { id: 'face-only', features: { smile: 0.5 } },
     { id: 'hand-aware', features: { smile: 0 }, handFeatures: { handPresent: 1, handNearFace: 1, fingertipNearMouth: 1 } },
   ]
   const ranked = rankMemes({ smile: 0.5, handPresent: 1, handNearFace: 0.8, fingertipNearMouth: 0.2 }, candidates)
-  expect(ranked[0].meme.id).toBe('hand-aware')
-  expect(ranked[0].priority).toBe(1)
-  expect(ranked[0].comparison).not.toBeNull()
+  expect(ranked.map(({ meme }) => meme.id)).toEqual(['face-only', 'hand-aware'])
+  expect(ranked.every(({ comparison }) => comparison)).toBe(true)
 })
 
 test('exact ties use stable IDs and uncomparable entries sort last', () => {
