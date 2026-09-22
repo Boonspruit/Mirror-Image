@@ -497,6 +497,26 @@ still require the manual checklist above.
 
 ## Scope and next step
 
+### Photobooth
+
+Open **Photobooth**, choose a meme, start the camera, and press **Start posing**.
+An 85% match held for one second starts a three-second countdown. The selected
+meme stays fixed. Automatic capture resets if the score falls below 75%, the
+face disappears, or a hand-aware pose loses its hand. The manual timer works
+without a matching expression. Cancel, stop-camera, and leaving the tab cancel
+pending shots.
+
+Review the result, retake it, or download a 1600 × 760 PNG with the mirrored
+camera photo beside the meme. The export preserves both full images and omits
+tracking overlays. Photos remain in memory until downloaded; leaving Photobooth
+discards the preview. No image is uploaded or added to the meme library.
+
+`Photobooth` reuses Camera's existing media stream and tracking results rather
+than opening a second webcam or model session. Capture composition lives in
+`src/photobooth/capture.js`; it freezes the video frame before asynchronously
+decoding the meme. Timer cleanup and an attempt token prevent cancelled shots
+from appearing later.
+
 Implemented: React/Vite setup, webcam lifecycle, Face and Hand Landmarkers, optional face-and-hand overlays, live raw blendshape and hand diagnostics, simplified expression and hand vectors, estimated head orientation, fourteen local meme profiles including four hand-aware memes, a persistent custom profile editor, trained face-and-hand profile vectors, weighted face-and-hand similarity, live closest-meme display, fast EMA smoothing, immediate match switching, neutral-face calibration, and aligned side-by-side media frames.
 
 Next: tune profiles with real usage and add more expression categories where the

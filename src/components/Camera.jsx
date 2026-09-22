@@ -9,6 +9,7 @@ import SimilarityPanel from './SimilarityPanel.jsx'
 import MemeDisplay from './MemeDisplay.jsx'
 import MemeGallery from './MemeGallery.jsx'
 import TrainingPreview from './TrainingPreview.jsx'
+import Photobooth from './Photobooth.jsx'
 import { extractFeatureVector } from '../tracking/featureExtractor.js'
 import { EMPTY_HAND_FEATURES, extractHandFeatures } from '../tracking/handFeatureExtractor.js'
 import { rankMemes } from '../matching/matcher.js'
@@ -328,6 +329,7 @@ export default function Camera({ library, view }) {
       </div>
       <MemeDisplay matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} handFeatures={result.handFeatures} phase={phase} calibrated={Boolean(calibration.baseline)} />
     </section>
+    {view === 'photobooth' && <Photobooth memes={memes} stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError={error} result={result} />}
     <section hidden={view !== 'settings'} className="settings-view" aria-label="Settings">
       <div className="view-heading"><div><p className="eyebrow">PREFERENCES</p><h1>Make it yours.</h1></div><p>Camera controls and tracking diagnostics.</p></div>
       <section className="settings-controls" aria-label="Camera preferences"><h2>Camera & calibration</h2>
