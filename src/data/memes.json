@@ -115,16 +115,16 @@
     "expressionLabel": "Knowing smile",
     "profileSource": "trained",
     "features": {
-      "eyeWide": 0.0025115846440722,
-      "eyeSquint": 0.28383081505954455,
-      "browInnerUp": 0.2507969242845143,
-      "browDown": 0.009272431358465814,
-      "jawOpen": 0.005887100767891486,
-      "smile": 0.06426783374477273,
-      "frown": 0.00023523585881916445,
-      "mouthPucker": 0.0007418741918423006,
-      "cheekSquint": 2.655297271846369e-7,
-      "noseSneer": 7.479959021155669e-7
+      "eyeWide": 0.00654877707938149,
+      "eyeSquint": 0.14487989507566518,
+      "browInnerUp": 0.6645707149196254,
+      "browDown": 0.00024793868045269675,
+      "jawOpen": 0.004475311985352128,
+      "smile": 0.005787355849545022,
+      "frown": 0.0011118837575560805,
+      "mouthPucker": 0.0026732156109951256,
+      "cheekSquint": 2.8934912848431713e-7,
+      "noseSneer": 0.0000011547448184009364
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
@@ -271,26 +271,110 @@
     "image": "/memes/monkey-thinking.png",
     "alt": "A monkey looking upward with one fingertip touching its mouth.",
     "expressionLabel": "Thinking with hand to mouth",
-    "profileSource": "manual",
+    "profileSource": "trained",
     "features": {
-      "eyeWide": 0.12,
-      "eyeSquint": 0.32,
-      "browInnerUp": 0.12,
-      "browDown": 0.1,
-      "jawOpen": 0.06,
-      "smile": 0,
-      "frown": 0.05,
-      "mouthPucker": 0.28,
-      "cheekSquint": 0.08,
-      "noseSneer": 0.05
+      "eyeWide": 0.0023352832393224326,
+      "eyeSquint": 0.25351524452359,
+      "browInnerUp": 0.302079453702332,
+      "browDown": 0.0037919736304495143,
+      "jawOpen": 0.012051308095659732,
+      "smile": 0.0040145664109541975,
+      "frown": 0.005284832623487338,
+      "mouthPucker": 0.00027850101939025796,
+      "cheekSquint": 4.2621188223598883e-7,
+      "noseSneer": 8.162090175829909e-7
     },
     "handFeatures": {
       "handPresent": 1,
-      "handNearFace": 0.95,
-      "fingertipNearMouth": 0.95
+      "handNearFace": 0.8972331673074677,
+      "fingertipNearMouth": 0.8972331673074677
     },
     "headPose": null,
-    "notes": "Hand-aware profile: hold one hand near your face with a fingertip close to your mouth. The face values are a manual human imitation of the source image.",
+    "notes": "Face and hand profile trained in the saved browser library and promoted to the project default.",
+    "source": null
+  },
+  {
+    "id": "call-me-cat",
+    "name": "Call Me Cat",
+    "image": "/memes/call.png",
+    "alt": "A cat with its tongue out beside a call-me hand sign.",
+    "expressionLabel": "Playful tongue-out call",
+    "profileSource": "manual",
+    "features": {
+      "eyeWide": 0.15,
+      "eyeSquint": 0.12,
+      "browInnerUp": 0.14,
+      "browDown": 0.02,
+      "jawOpen": 0.38,
+      "smile": 0.22,
+      "frown": 0.01,
+      "mouthPucker": 0.08,
+      "cheekSquint": 0.05,
+      "noseSneer": 0.02
+    },
+    "handFeatures": {
+      "handPresent": 1,
+      "handNearFace": 0.65,
+      "fingertipNearMouth": 0.35
+    },
+    "headPose": null,
+    "notes": "Starter profile for a playful open mouth with one hand beside the face. Train it with your own expression and hand pose for a closer match.",
+    "source": null
+  },
+  {
+    "id": "actually-cat",
+    "name": "Actually Cat",
+    "image": "/memes/actually.png",
+    "alt": "A cat wearing glasses beside an upright pointing finger.",
+    "expressionLabel": "Matter-of-fact raised finger",
+    "profileSource": "trained",
+    "features": {
+      "eyeWide": 0.0023788622202037027,
+      "eyeSquint": 0.17501653034565579,
+      "browInnerUp": 0.24761720087824163,
+      "browDown": 0.0014358926931165425,
+      "jawOpen": 0.01717847076107165,
+      "smile": 0.00008090019913934315,
+      "frown": 0.0011353651922631715,
+      "mouthPucker": 0.029708866164836926,
+      "cheekSquint": 2.913061681160347e-7,
+      "noseSneer": 6.649880203398597e-7
+    },
+    "handFeatures": {
+      "handPresent": 1,
+      "handNearFace": 5.55537639805385e-22,
+      "fingertipNearMouth": 4.837551623395018e-23
+    },
+    "headPose": null,
+    "notes": "Face and hand profile trained in the saved browser library and promoted to the project default.",
+    "source": null
+  },
+  {
+    "id": "nose-picking",
+    "name": "Nose Picking",
+    "image": "/memes/nose-picking.jpg",
+    "alt": "A simple white cartoon face with a finger touching its nose.",
+    "expressionLabel": "Finger to nose",
+    "profileSource": "trained",
+    "features": {
+      "eyeWide": 0.011868696365596319,
+      "eyeSquint": 0.16435966263327442,
+      "browInnerUp": 0.1754256481951228,
+      "browDown": 0.0026587840794037735,
+      "jawOpen": 0.019502722662080106,
+      "smile": 0.000019403022444566574,
+      "frown": 0.0036347600869082826,
+      "mouthPucker": 0.06559888382167281,
+      "cheekSquint": 3.026658897117963e-7,
+      "noseSneer": 8.693306752844046e-7
+    },
+    "handFeatures": {
+      "handPresent": 1,
+      "handNearFace": 0.8770988647793163,
+      "fingertipNearMouth": 0.7451669314820295
+    },
+    "headPose": null,
+    "notes": "Face and hand profile trained in the saved browser library and promoted to the project default.",
     "source": null
   }
 ]

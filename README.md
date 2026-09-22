@@ -265,15 +265,16 @@ The coordinate system is described in [MediaPipe Face Geometry](https://github.c
 
 ## The default meme dataset (Step 7)
 
-The gallery contains the user's eleven profiles: five familiar meme
+The gallery contains fourteen profiles: five familiar meme
 templates, four Alma hamster faces, and the browser-saved **No Way** image now
-bundled as `/memes/shocked.jpeg`, plus the hand-aware **Thinking Monkey** image.
+bundled as `/memes/shocked.jpeg`, plus the hand-aware **Thinking Monkey**,
+**Call Me Cat**, **Actually Cat**, and **Nose Picking** images.
 Open **Library** in the navigation to browse them. Select a card to inspect its
 image and feature values or train that meme with your live expression and hand pose.
 
 `src/data/memes.json` is imported directly by Vite. Each record has a stable
 `id`, a `name`, a local `image` path, accessible `alt` text, an expression label,
-`features`, `headPose: null`, `profileSource: "trained"`, notes, and optional source metadata.
+`features`, `headPose: null`, a `profileSource` of `"trained"` or `"manual"`, notes, and optional source metadata.
 Every `features` object uses the same ten keys as `EXPRESSION_FEATURES` in
 `featureExtractor.js`, with a numeric score from 0 to 1. These named values will
 let the matcher compare corresponding features without relying on array order.
@@ -496,7 +497,7 @@ still require the manual checklist above.
 
 ## Scope and next step
 
-Implemented: React/Vite setup, webcam lifecycle, Face and Hand Landmarkers, optional face-and-hand overlays, live raw blendshape and hand diagnostics, simplified expression and hand vectors, estimated head orientation, eleven local meme profiles including hand-aware Thinking Monkey, a persistent custom profile editor, trained face-and-hand profile vectors, weighted face-and-hand similarity, live closest-meme display, fast EMA smoothing, immediate match switching, neutral-face calibration, and aligned side-by-side media frames.
+Implemented: React/Vite setup, webcam lifecycle, Face and Hand Landmarkers, optional face-and-hand overlays, live raw blendshape and hand diagnostics, simplified expression and hand vectors, estimated head orientation, fourteen local meme profiles including four hand-aware memes, a persistent custom profile editor, trained face-and-hand profile vectors, weighted face-and-hand similarity, live closest-meme display, fast EMA smoothing, immediate match switching, neutral-face calibration, and aligned side-by-side media frames.
 
 Next: tune profiles with real usage and add more expression categories where the
 current ten-feature vector cannot separate similar faces.

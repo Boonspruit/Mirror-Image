@@ -16,9 +16,9 @@ test('retained Almarts27 hamster references are stored locally with valid image 
 })
 
 test('all default meme profiles share the exact expression schema and have local image files', () => {
-  expect(memes).toHaveLength(11)
-  expect(new Set(memes.map((m) => m.id)).size).toBe(11)
-  expect(new Set(memes.map((m) => m.image)).size).toBe(11)
+  expect(memes).toHaveLength(14)
+  expect(new Set(memes.map((m) => m.id)).size).toBe(14)
+  expect(new Set(memes.map((m) => m.image)).size).toBe(14)
   for (const meme of memes) {
     expect(meme.id).toMatch(/^[a-z0-9-]+$/)
     expect(meme.name.length).toBeGreaterThan(0)
@@ -62,7 +62,7 @@ test('gallery loads local images, switches profiles, and works without webcam or
   await page.getByRole('link', { name: 'Library', exact: true }).click()
   const gallery = page.getByRole('region', { name: 'Meet your meme counterparts' })
   const inspector = gallery.getByRole('region', { name: 'Selected meme profile' })
-  await expect(gallery.locator('.meme-card')).toHaveCount(11)
+  await expect(gallery.locator('.meme-card')).toHaveCount(14)
   await expect.poll(() => gallery.locator('.meme-thumbnail img').evaluateAll((images) => images.every((i) => i.complete && i.naturalWidth > 0))).toBe(true)
   const imagesClearLabels = await gallery.locator('.meme-card').evaluateAll((cards) => cards.every((card) => {
     const image = card.querySelector('img').getBoundingClientRect()
