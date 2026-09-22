@@ -341,6 +341,22 @@ footer { padding-top: 38px; }
 @media (prefers-reduced-motion: reduce) { button { transition: none; } .meme-card:hover { transform: none; } }
 .settings-preview { max-width: 400px; margin-bottom: 22px; }
 .settings-preview .training-camera > button { display: none; }
+.booth-format { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 20px; }
+.booth-format button { padding: 9px 14px; background: transparent; border: 1px solid #ced6c6; color: #33432e; }
+.booth-format button[aria-pressed="true"] { background: #33432e; color: #fffefa; }
+.booth-format .strip-new { margin-left: auto; }
+.strip-choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0 0 24px; }
+.strip-choice { display: grid; gap: 8px; min-width: 0; }
+.strip-choice img { width: 100%; height: 150px; object-fit: contain; background: #e8ecdf; border-radius: 10px; }
+.strip-choice label { font-size: 12px; color: #56614f; }
+.strip-choice select { min-width: 0; width: 100%; padding: 10px; font: inherit; border: 1px solid #ced6c6; border-radius: 8px; background: #fffefa; }
+.strip-progress { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; list-style: none; padding: 0; margin: 0 0 20px; font-size: 12px; }
+.strip-progress li { border-top: 2px solid #dce1d4; padding-top: 8px; }
+.strip-progress li[aria-current] { border-color: #3b5437; font-weight: 650; }
+.strip-progress span { display: block; color: #66715e; font-size: 11px; margin-top: 4px; }
+.strip-review { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-bottom: 24px; }
+.strip-review img { display: block; width: 100%; border: 1px solid #dce1d4; border-radius: 8px; margin-bottom: 10px; }
+@media (max-width: 600px) { .strip-choices, .strip-progress { grid-template-columns: repeat(2, minmax(0, 1fr)); } .strip-review { grid-template-columns: 1fr; } .booth-format button { font-size: 12px; } }
 .photobooth .view-heading { padding: 24px 0 18px; }
 .booth-picker { display: grid; gap: 8px; max-width: 360px; margin-bottom: 16px; font-size: 12px; color: #56614f; }
 .booth-picker select { width: 100%; padding: 12px; border: 1px solid #ced6c6; border-radius: 8px; background: #fffefa; color: #222a25; font: inherit; font-size: 15px; }

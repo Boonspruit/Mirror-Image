@@ -499,6 +499,15 @@ still require the manual checklist above.
 
 ### Photobooth
 
+Choose **Single photo** or **Four-pose strip**. Strip mode lets you choose four
+memes or shuffle the library, then captures each pose when you start its automatic
+or manual timer. Targets stay fixed for the session. Shuffle avoids duplicates
+when at least four memes are available; smaller libraries repeat as needed.
+After four shots, review and retake any individual pose while preserving the
+other photos. **Back to strip** cancels a retake and keeps the previous photo.
+Download an 800 × 1520 PNG containing all four comparisons, or use **New strip**
+to start over. Changing format or leaving Photobooth discards the session.
+
 Open **Photobooth**, choose a meme, start the camera, and press **Start posing**.
 An 85% match held for one second starts a three-second countdown. The selected
 meme stays fixed. Automatic capture resets if the score falls below 75%, the

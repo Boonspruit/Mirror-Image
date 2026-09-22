@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { rankMemes } from '../matching/matcher.js'
 import { captureComparison, memeImageUrl } from '../photobooth/capture.js'
 
-export default function Photobooth({ memes, stream, phase, onStart, onStop, cameraError, result }) {
+export default function Photobooth({ memes, stream, phase, onStart, onStop, cameraError, result, target, onCaptured }) {
   const [selectedId, setSelectedId] = useState(memes[0]?.id ?? '')
-  const meme = memes.find((entry) => entry.id === selectedId) ?? memes[0]
+  const meme = target ?? memes.find((entry) => entry.id === selectedId) ?? memes[0]
   const [stage, setStage] = useState('ready')
   const [count, setCount] = useState(3)
   const [progress, setProgress] = useState(0)
@@ -94,6 +94,10 @@ export default function Photobooth({ memes, stream, phase, onStart, onStop, came
       const token = ++attempt.current
       captureComparison(videoRef.current, sequenceState.meme).then((blob) => {
         if (attempt.current !== token) return
+        if (onCaptured) {
+          onCaptured({ blob, name: sequenceState.meme.name })
+          return
+        }
         const url = URL.createObjectURL(blob)
         photoUrl.current = url
         setPhoto({ url, name: sequenceState.meme.name, filename: `mirror-image-${sequenceState.meme.id}.png` })
@@ -105,19 +109,19 @@ export default function Photobooth({ memes, stream, phase, onStart, onStop, came
       })
     }, 100)
     return () => clearInterval(timer)
-  }, [])
+  }, [onCaptured])
 
   const message = stage === 'posing'
     ? (!hasPose ? (meme?.handFeatures ? 'Keep your face and hand visible.' : 'Look toward the camera.') : score < 85 ? 'Copy the expression. Reach 85% to start the timer.' : 'Good match. Hold that pose…')
     : stage === 'countdown' ? 'Hold your pose…' : stage === 'capturing' ? 'Preparing your photo…' : 'Choose a meme, then make it your own.'
 
   return <section className="photobooth" aria-label="Photobooth">
-    <div className="view-heading"><div><p className="eyebrow">PHOTOBOOTH</p><h1>Strike the same pose.</h1></div><p>A little imitation. A photo to keep.</p></div>
+    {!target && <div className="view-heading"><div><p className="eyebrow">PHOTOBOOTH</p><h1>Strike the same pose.</h1></div><p>A little imitation. A photo to keep.</p></div>}
     {!memes.length ? <p>Your library is empty. <a href="#meme-collection">Add a meme to get started.</a></p> : <>
       <div hidden={stage === 'review'}>
-        <div className="booth-picker"><label htmlFor="booth-meme">Your pose</label><select id="booth-meme" value={meme.id} disabled={busy} onChange={(event) => { reset(); setSelectedId(event.target.value) }}>
+        {!target && <div className="booth-picker"><label htmlFor="booth-meme">Your pose</label><select id="booth-meme" value={meme.id} disabled={busy} onChange={(event) => { reset(); setSelectedId(event.target.value) }}>
           {memes.map((entry) => <option key={entry.id} value={entry.id}>{entry.name}</option>)}
-        </select></div>
+        </select></div>}
         <div className="booth-pair">
           <div><p className="eyebrow">YOU</p><div className="booth-frame">
             <video ref={videoRef} autoPlay muted playsInline aria-label="Photobooth camera preview" />

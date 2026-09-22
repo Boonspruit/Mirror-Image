@@ -2,6 +2,20 @@ export function memeImageUrl(path) {
   return /^(data:|blob:)/.test(path) ? path : import.meta.env.BASE_URL + path.replace(/^\//, '')
 }
 
+export async function composeStrip(shots) {
+  if (shots.length !== 4 || shots.some((shot) => !shot?.blob)) throw new Error('Capture all four poses first.')
+  const canvas = document.createElement('canvas')
+  canvas.width = 800
+  canvas.height = 1520
+  const context = canvas.getContext('2d')
+  for (const [index, shot] of shots.entries()) {
+    const bitmap = await createImageBitmap(shot.blob)
+    context.drawImage(bitmap, 0, index * 380, 800, 380)
+    bitmap.close()
+  }
+  return new Promise((resolve, reject) => canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Could not prepare the strip. Please try again.')), 'image/png'))
+}
+
 function contain(context, source, width, height, x, y, boxWidth, boxHeight) {
   const scale = Math.min(boxWidth / width, boxHeight / height)
   context.drawImage(source, x + (boxWidth - width * scale) / 2, y + (boxHeight - height * scale) / 2, width * scale, height * scale)
