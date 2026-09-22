@@ -299,26 +299,26 @@
     "image": "/memes/call.png",
     "alt": "A cat with its tongue out beside a call-me hand sign.",
     "expressionLabel": "Playful tongue-out call",
-    "profileSource": "manual",
+    "profileSource": "trained",
     "features": {
-      "eyeWide": 0.15,
-      "eyeSquint": 0.12,
-      "browInnerUp": 0.14,
-      "browDown": 0.02,
-      "jawOpen": 0.38,
-      "smile": 0.22,
-      "frown": 0.01,
-      "mouthPucker": 0.08,
-      "cheekSquint": 0.05,
-      "noseSneer": 0.02
+      "eyeWide": 0.003789722097444091,
+      "eyeSquint": 0.2885114308378934,
+      "browInnerUp": 0.12033167928405955,
+      "browDown": 0.009067288550870533,
+      "jawOpen": 0.645993295828684,
+      "smile": 0.12013020242973203,
+      "frown": 0.00020825556262310229,
+      "mouthPucker": 0.007733485041054918,
+      "cheekSquint": 9.192963010545869e-7,
+      "noseSneer": 0.000003697886885624771
     },
     "handFeatures": {
       "handPresent": 1,
-      "handNearFace": 0.65,
-      "fingertipNearMouth": 0.35
+      "handNearFace": 0.23337646977613083,
+      "fingertipNearMouth": 0.23337646977613083
     },
     "headPose": null,
-    "notes": "Starter profile for a playful open mouth with one hand beside the face. Train it with your own expression and hand pose for a closer match.",
+    "notes": "Face and hand profile trained in the saved browser library and promoted to the project default.",
     "source": null
   },
   {
