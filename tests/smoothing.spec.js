@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { createVectorSmoother, smoothValues } from '../src/matching/smoothing.js'
+import { createVectorSmoother, smoothValues } from '../src/matching/smoothing.ts'
 
 test('EMA keeps 80% of the previous value and uses 20% of the new value', () => {
   expect(smoothValues({ smile: 0.2 }, { smile: 0.7 }).smile).toBeCloseTo(0.3)

@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import builtInMemes from '../data/memes.json'
-import { deleteCustomMeme, loadCustomMemes, loadHiddenBuiltIns, loadProfileOverrides, saveCustomMeme, saveHiddenBuiltIns, saveProfileOverrides } from '../data/memeLibrary.js'
+import { deleteCustomMeme, loadCustomMemes, loadHiddenBuiltIns, loadProfileOverrides, saveCustomMeme, saveCustomMemeBatch, saveHiddenBuiltIns, saveProfileOverrides } from '../data/memeLibrary.ts'
+
+import { createProfileBackup, validateProfileBackup } from '../data/profileTransfer.ts'
 
 const MIGRATED_CUSTOM_IDS = new Set(['custom-01ba68e3-a370-40be-9e07-e26c6c70fe20'])
 const BUILT_IN_BY_ID = new Map(builtInMemes.map((meme) => [meme.id, meme]))
@@ -30,6 +32,7 @@ export default function useMemeLibrary() {
     }).map(([id, value]) => [id, normalizeOverride(value)]),
   ))
   const [error, setError] = useState('')
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     let current = true
@@ -37,7 +40,7 @@ export default function useMemeLibrary() {
       .then(async (records) => {
         const migrated = records.filter(({ id }) => MIGRATED_CUSTOM_IDS.has(id))
         await Promise.all(migrated.map(({ id }) => deleteCustomMeme(id)))
-        if (current) setCustomMemes(records.filter(({ id }) => !MIGRATED_CUSTOM_IDS.has(id)))
+        if (current) { setCustomMemes(records.filter(({ id }) => !MIGRATED_CUSTOM_IDS.has(id))); setReady(true) }
       })
       .catch(() => { if (current) setError('Saved custom memes could not be loaded in this browser.') })
 
@@ -125,5 +128,36 @@ export default function useMemeLibrary() {
     })
   }
 
-  return { memes, addMeme, removeMeme, restoreBuiltIns, updateMemeFeatures, resetMemeFeatures, hiddenCount: hiddenIds.length, error }
+  function exportProfiles() {
+    // Include hidden profiles too, so hiding one never loses its trained vector.
+    return createProfileBackup([
+      ...builtInMemes.map((meme) => ({ ...meme, ...profileOverrides[meme.id] })), ...customMemes,
+    ], hiddenIds)
+  }
+
+  async function importProfiles(input) {
+    if (!ready) throw new Error('Wait for your library to finish loading before importing.')
+    const backup = validateProfileBackup(input, builtInMemes)
+    const nextOverrides = { ...profileOverrides }
+    for (const meme of backup.profiles.filter((m) => BUILT_IN_BY_ID.has(m.id))) {
+      nextOverrides[meme.id] = { features: meme.features, ...(meme.handFeatures ? { handFeatures: meme.handFeatures } : {}) }
+    }
+    const incoming = backup.profiles.filter((m) => !BUILT_IN_BY_ID.has(m.id))
+    const nextHidden = [...new Set([...hiddenIds, ...backup.hiddenBuiltInIds])]
+    try {
+      saveHiddenBuiltIns(nextHidden)
+      saveProfileOverrides(nextOverrides)
+      await saveCustomMemeBatch(incoming)
+    } catch (cause) {
+      saveHiddenBuiltIns(hiddenIds)
+      saveProfileOverrides(profileOverrides)
+      throw cause
+    }
+    setHiddenIds(nextHidden); setProfileOverrides(nextOverrides)
+    setCustomMemes((current) => [...current.filter((m) => !incoming.some((n) => n.id === m.id)), ...incoming])
+    setError('')
+    return backup.profiles.length
+  }
+
+  return { ready, exportProfiles, importProfiles, memes, addMeme, removeMeme, restoreBuiltIns, updateMemeFeatures, resetMemeFeatures, hiddenCount: hiddenIds.length, error }
 }

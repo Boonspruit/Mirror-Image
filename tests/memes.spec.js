@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { readFileSync, readdirSync } from 'node:fs'
-import { EXPRESSION_FEATURES } from '../src/tracking/featureExtractor.js'
+import { EXPRESSION_FEATURES } from '../src/tracking/featureExtractor.ts'
 
 const memes = JSON.parse(readFileSync(new URL('../src/data/memes.json', import.meta.url), 'utf8'))
 

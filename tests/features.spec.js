@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
-import { extractExpression, extractFeatureVector } from '../src/tracking/featureExtractor.js'
-import { extractHeadPose } from '../src/tracking/headPose.js'
+import { extractExpression, extractFeatureVector } from '../src/tracking/featureExtractor.ts'
+import { extractHeadPose } from '../src/tracking/headPose.ts'
 
 const categories = (scores) => Object.entries(scores).map(([categoryName, score]) => ({ categoryName, score }))
 const identity = () => ({ rows: 4, columns: 4, data: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1] })

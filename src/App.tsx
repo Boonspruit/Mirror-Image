@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import Camera from './components/Camera.jsx'
-import useMemeLibrary from './hooks/useMemeLibrary.js'
+import Camera from './components/Camera.tsx'
+import useMemeLibrary from './hooks/useMemeLibrary.ts'
 
 function currentView() {
-  if (location.hash === '#photobooth') return 'photobooth'
   return location.hash === '#meme-collection' ? 'library' : location.hash === '#settings' ? 'settings' : 'mirror'
 }
 
@@ -20,7 +19,7 @@ export default function App() {
       <header className="page-header">
         <a className="wordmark" href="#mirror" aria-label="Mirror Image home">mirror image<span className="brand-period">.</span></a>
         <nav className="app-nav" aria-label="Main navigation">
-          {[['mirror', 'Mirror', '#mirror'], ['photobooth', 'Photobooth', '#photobooth'], ['library', 'Library', '#meme-collection'], ['settings', 'Settings', '#settings']].map(([id, label, href]) => (
+          {[['mirror', 'Mirror', '#mirror'], ['library', 'Library', '#meme-collection'], ['settings', 'Settings', '#settings']].map(([id, label, href]) => (
             <a key={id} href={href} onClick={() => setView(id)} aria-current={view === id ? 'page' : undefined}>{label}</a>
           ))}
         </nav>

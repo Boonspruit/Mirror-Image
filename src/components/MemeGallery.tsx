@@ -1,4 +1,4 @@
-import TrainingPreview from './TrainingPreview.jsx'
+import TrainingPreview from './TrainingPreview.tsx'
 import { useRef, useState } from 'react'
 import { EXPRESSION_FEATURES } from '../tracking/featureExtractor'
 import { prepareMemeImage } from '../data/memeLibrary'
@@ -102,7 +102,7 @@ function AddMemeForm({ onAdd }) {
               <input
                 name="name"
                 required
-                maxLength="60"
+                maxLength={60}
                 placeholder="Suspicious hamster"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
@@ -112,7 +112,7 @@ function AddMemeForm({ onAdd }) {
               <span>Expression label</span>
               <input
                 name="expression"
-                maxLength="80"
+                maxLength={80}
                 placeholder="Raised brow, slight squint"
                 value={expression}
                 onChange={(event) => setExpression(event.target.value)}

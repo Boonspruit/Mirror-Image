@@ -4,7 +4,7 @@ export async function createHandTracker() {
   const base = import.meta.env.BASE_URL
   const vision = await FilesetResolver.forVisionTasks(base + 'mediapipe/wasm')
   const options = {
-    runningMode: 'VIDEO',
+    runningMode: 'VIDEO' as const,
     numHands: 2,
     minHandDetectionConfidence: 0.35,
     minHandPresenceConfidence: 0.35,

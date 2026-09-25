@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { createMatchStabilizer } from '../src/matching/matchStabilizer.js'
+import { createMatchStabilizer } from '../src/matching/matchStabilizer.ts'
 
 const result = (id, distance) => ({ meme: { id }, comparison: { distance } })
 

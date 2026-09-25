@@ -3,8 +3,8 @@ const STORE_NAME = 'custom-memes'
 const HIDDEN_KEY = 'mirror-image-hidden-builtins'
 const OVERRIDES_KEY = 'mirror-image-profile-overrides'
 
-function openDatabase() {
-  return new Promise((resolve, reject) => {
+function openDatabase(): Promise<IDBDatabase> {
+  return new Promise<IDBDatabase>((resolve, reject) => {
     const request = indexedDB.open(DATABASE_NAME, 1)
     request.onupgradeneeded = () => request.result.createObjectStore(STORE_NAME, { keyPath: 'id' })
     request.onsuccess = () => resolve(request.result)
@@ -12,7 +12,7 @@ function openDatabase() {
   })
 }
 
-async function runTransaction(mode, operation) {
+async function runTransaction<T>(mode: IDBTransactionMode, operation: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
   const database = await openDatabase()
   return new Promise((resolve, reject) => {
     const transaction = database.transaction(STORE_NAME, mode)
@@ -29,7 +29,7 @@ async function runTransaction(mode, operation) {
   })
 }
 
-export const loadCustomMemes = () => runTransaction('readonly', (store) => store.getAll())
+export const loadCustomMemes = () => runTransaction<import('@mimic/core').MemeProfile[]>('readonly', (store) => store.getAll())
 export const saveCustomMeme = (meme) => runTransaction('readwrite', (store) => store.put(meme))
 export const deleteCustomMeme = (id) => runTransaction('readwrite', (store) => store.delete(id))
 
@@ -72,4 +72,15 @@ export async function prepareMemeImage(file, maxDimension = 1000) {
   context.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
   bitmap.close()
   return canvas.toDataURL('image/jpeg', 0.86)
+}
+
+export async function saveCustomMemeBatch(memes) {
+  const database = await openDatabase()
+  return new Promise<void>((resolve, reject) => {
+    const transaction = database.transaction(STORE_NAME, 'readwrite')
+    for (const meme of memes) transaction.objectStore(STORE_NAME).put(meme)
+    transaction.oncomplete = () => { database.close(); resolve() }
+    transaction.onabort = () => { database.close(); reject(transaction.error ?? new Error('The profile import was cancelled.')) }
+    transaction.onerror = () => { /* onabort reports failures after rollback. */ }
+  })
 }

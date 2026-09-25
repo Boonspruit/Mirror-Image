@@ -1,23 +1,26 @@
+import type { FaceLandmarker, HandLandmarker } from '@mediapipe/tasks-vision'
+import type { FeatureValues } from '@mimic/core'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { createFaceTracker, startFaceTracking } from '../tracking/faceTracker.js'
-import { createHandTracker, startHandTracking } from '../tracking/handTracker.js'
-import FaceOverlay from './FaceOverlay.jsx'
-import HandOverlay from './HandOverlay.jsx'
-import DebugPanel from './DebugPanel.jsx'
-import ExpressionPanel from './ExpressionPanel.jsx'
-import SimilarityPanel from './SimilarityPanel.jsx'
-import MemeDisplay from './MemeDisplay.jsx'
-import MemeGallery from './MemeGallery.jsx'
-import TrainingPreview from './TrainingPreview.jsx'
-import PhotoboothMode from './PhotoboothMode.jsx'
-import { extractFeatureVector } from '../tracking/featureExtractor.js'
-import { EMPTY_HAND_FEATURES, extractHandFeatures } from '../tracking/handFeatureExtractor.js'
-import { rankMemes } from '../matching/matcher.js'
-import { createVectorSmoother, smoothValues } from '../matching/smoothing.js'
-import { createMatchStabilizer } from '../matching/matchStabilizer.js'
-import { applyNeutralBaseline, averageFeatureVectors } from '../tracking/faceCalibration.js'
+import { createFaceTracker, startFaceTracking } from '../tracking/faceTracker.ts'
+import { createHandTracker, startHandTracking } from '../tracking/handTracker.ts'
+import FaceOverlay from './FaceOverlay.tsx'
+import HandOverlay from './HandOverlay.tsx'
+import DebugPanel from './DebugPanel.tsx'
+import ExpressionPanel from './ExpressionPanel.tsx'
+import SimilarityPanel from './SimilarityPanel.tsx'
+import MemeDisplay from './MemeDisplay.tsx'
+import MemeGallery from './MemeGallery.tsx'
+import TrainingPreview from './TrainingPreview.tsx'
+import ProfileTransfer from './ProfileTransfer.tsx'
+import { extractFeatureVector } from '../tracking/featureExtractor.ts'
+import { EMPTY_HAND_FEATURES, extractHandFeatures } from '../tracking/handFeatureExtractor.ts'
+import { rankMemes } from '../matching/matcher.ts'
+import { createVectorSmoother, smoothValues } from '../matching/smoothing.ts'
+import { createMatchStabilizer } from '../matching/matchStabilizer.ts'
+import { applyNeutralBaseline, averageFeatureVectors } from '../tracking/faceCalibration.ts'
 
-const EMPTY_RESULT = { faces: 0, landmarks: 0, blendshapes: 0, pose: false, hands: 0, handLandmarks: 0, handFeatures: EMPTY_HAND_FEATURES, categories: [], vector: null, rawVector: null }
+interface CameraResources { cancelCalibration?: () => void; startHandTimer?: number; cancelLoop?: () => void; cancelHandLoop?: () => void; removeListeners?: () => void; stream?: MediaStream; tracker?: FaceLandmarker; handTracker?: HandLandmarker }
+const EMPTY_RESULT = { faces: 0, landmarks: 0, blendshapes: 0, pose: false, hands: 0, handLandmarks: 0, handFeatures: EMPTY_HAND_FEATURES as FeatureValues, categories: [], vector: null, rawVector: null }
 const EMPTY_MATCH = { matches: [], pendingId: null }
 const LABELS = {
   idle: 'Camera is off', requesting: 'Waiting for permission',
@@ -42,8 +45,8 @@ export default function Camera({ library, view }) {
   const overlayRef = useRef(null)
   const handOverlayRef = useRef(null)
   const latestFaceLandmarks = useRef(null)
-  const latestHandResult = useRef({ hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES })
-  const resources = useRef({})
+  const latestHandResult = useRef<{ hands: number; landmarks: number; features: FeatureValues; observedAt?: number }>({ hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES })
+  const resources = useRef<CameraResources>({})
   const session = useRef(0)
   const pipeline = useRef(null)
   const baselineRef = useRef(null)
@@ -116,7 +119,7 @@ export default function Camera({ library, view }) {
     setPhase('requesting')
     let stage = 'camera'
 
-    function fail(message, cause) {
+    function fail(message: string, cause?: unknown) {
       if (!isCurrent()) return
       if (cause) console.error(cause)
       release()
@@ -187,6 +190,7 @@ export default function Camera({ library, view }) {
             const currentFeatures = extractHandFeatures(handResult, latestFaceLandmarks.current)
             const previousFeatures = latestHandResult.current.features
             latestHandResult.current = {
+              observedAt: performance.now(),
               hands: handResult.landmarks.length,
               landmarks: handResult.landmarks.reduce((total, landmarks) => total + landmarks.length, 0),
               features: smoothValues(previousFeatures, currentFeatures, 0.55),
@@ -329,9 +333,9 @@ export default function Camera({ library, view }) {
       </div>
       <MemeDisplay matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} handFeatures={result.handFeatures} phase={phase} calibrated={Boolean(calibration.baseline)} />
     </section>
-    {view === 'photobooth' && <PhotoboothMode memes={memes} stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError={error} result={result} />}
     <section hidden={view !== 'settings'} className="settings-view" aria-label="Settings">
       <div className="view-heading"><div><p className="eyebrow">PREFERENCES</p><h1>Make it yours.</h1></div><p>Camera controls and tracking diagnostics.</p></div>
+      <ProfileTransfer library={library} />
       <section className="settings-controls" aria-label="Camera preferences"><h2>Camera & calibration</h2>
         <div className="settings-preview"><TrainingPreview stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError="" /></div>
         <label className="overlay-toggle"><input type="checkbox" checked={showOverlay} onChange={(event) => setShowOverlay(event.target.checked)} />Show face mesh + hands<span>Follows your face and hand landmarks</span></label>

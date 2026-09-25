@@ -10,12 +10,14 @@
     "preview": "vite preview",
     "setup": "node scripts/prepareAssets.js",
     "postinstall": "npm run setup",
-    "test": "playwright test"
+    "test": "playwright test",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "1.0.1",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "@mimic/core": "file:vendor/mimic-core-0.1.0.tgz"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
@@ -23,7 +25,8 @@
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "oxlint": "^1.81.0",
-    "vite": "^8.3.0"
+    "vite": "^8.3.0",
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=22.12.0"

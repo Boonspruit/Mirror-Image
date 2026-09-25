@@ -1,4 +1,4 @@
-import { EXPRESSION_FEATURES } from '../tracking/featureExtractor.js'
+import { EXPRESSION_FEATURES } from '../tracking/featureExtractor.ts'
 
 export default function ExpressionPanel({ vector }) {
   return (

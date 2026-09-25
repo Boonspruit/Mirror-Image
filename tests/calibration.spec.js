@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { applyNeutralBaseline, averageFeatureVectors } from '../src/tracking/faceCalibration.js'
+import { applyNeutralBaseline, averageFeatureVectors } from '../src/tracking/faceCalibration.ts'
 
 test('averages expression and head-pose samples without mixing their units', () => {
   const baseline = averageFeatureVectors([

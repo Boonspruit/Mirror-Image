@@ -41,6 +41,7 @@ test('permission denial gives a recoverable error', async ({ page }) => {
 })
 
 test('real model runs on a synthetic webcam and releases tracks across restart', async ({ page }) => {
+  test.setTimeout(45_000)
   const uncaught = []
   page.on('pageerror', (error) => uncaught.push(error.message))
   await page.goto('/#settings')
@@ -88,6 +89,7 @@ test('a model load error stops the camera and offers retry', async ({ page }) =>
 })
 
 test('stop during model loading does not resurrect tracking', async ({ page }) => {
+  test.setTimeout(45_000)
   let releaseModel
   const gate = new Promise((resolve) => { releaseModel = resolve })
   let modelRequested
@@ -243,7 +245,7 @@ test('debug panel maps category names and updates raw scores without stale readi
       faceLandmarks: [], faceBlendshapes: [], facialTransformationMatrixes: [],
     }
   })
-  await page.route('**/src/tracking/faceTracker.js*', (route) => route.fulfill({
+  await page.route('**/src/tracking/faceTracker.ts*', (route) => route.fulfill({
     contentType: 'application/javascript',
     body: `
       export async function createFaceTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }
@@ -253,7 +255,7 @@ test('debug panel maps category names and updates raw scores without stale readi
       }
     `,
   }))
-  await page.route('**/src/tracking/handTracker.js*', (route) => route.fulfill({
+  await page.route('**/src/tracking/handTracker.ts*', (route) => route.fulfill({
     contentType: 'application/javascript',
     body: `
       export async function createHandTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }

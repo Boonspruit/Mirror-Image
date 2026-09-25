@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { compareExpressions, DEFAULT_FEATURE_WEIGHTS, HAND_FEATURE_WEIGHTS } from '../matching/similarity.js'
-import MatchMeter from './MatchMeter.jsx'
+import { compareExpressions, DEFAULT_FEATURE_WEIGHTS, HAND_FEATURE_WEIGHTS } from '../matching/similarity.ts'
+import MatchMeter from './MatchMeter.tsx'
 
 const GROUPS = {
   Eyes: ['eyeWide', 'eyeSquint'],
@@ -34,9 +34,9 @@ export default function MemeDisplay({ matches, expression, handFeatures, phase, 
     )
   }
 
-  const groupScores = Object.entries(GROUPS).map(([name, features]) => {
+  const groupScores: [string, number | undefined][] = Object.entries(GROUPS).map(([name, features]) => {
     const weights = Object.fromEntries(features.map((feature) => [feature, DEFAULT_FEATURE_WEIGHTS[feature]]))
-    return [name, compareExpressions(expression, best.meme.features, weights)?.percentage]
+    return [name, compareExpressions(expression, best.meme.features, weights)?.percentage] as [string, number | undefined]
   })
   if (best.meme.handFeatures) {
     groupScores.push(['Hand gesture', compareExpressions(handFeatures, best.meme.handFeatures, HAND_FEATURE_WEIGHTS)?.percentage])

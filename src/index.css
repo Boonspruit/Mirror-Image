@@ -357,32 +357,3 @@ footer { padding-top: 38px; }
 .strip-review { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-bottom: 24px; }
 .strip-review img { display: block; width: 100%; border: 1px solid #dce1d4; border-radius: 8px; margin-bottom: 10px; }
 @media (max-width: 600px) { .strip-choices, .strip-progress { grid-template-columns: repeat(2, minmax(0, 1fr)); } .strip-review { grid-template-columns: 1fr; } .booth-format button { font-size: 12px; } }
-.photobooth .view-heading { padding: 24px 0 18px; }
-.booth-picker { display: grid; gap: 8px; max-width: 360px; margin-bottom: 16px; font-size: 12px; color: #56614f; }
-.booth-picker select { width: 100%; padding: 12px; border: 1px solid #ced6c6; border-radius: 8px; background: #fffefa; color: #222a25; font: inherit; font-size: 15px; }
-.booth-picker select:focus-visible { outline: 3px solid #60884a; outline-offset: 3px; }
-.booth-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.booth-frame { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 14px; background: #e8ecdf; }
-.booth-frame video, .booth-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.booth-frame video { transform: scaleX(-1); }
-.booth-placeholder, .booth-countdown { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 20px; color: #56614f; }
-.booth-countdown { color: white; background: #222a252b; pointer-events: none; }
-.booth-countdown strong { font: 700 clamp(72px, 10vw, 128px)/1 ui-monospace, monospace; text-shadow: 0 2px 12px #222a25; }
-.booth-feedback { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 76px; }
-.booth-feedback p { margin: 12px 0 6px; font-size: 15px; }
-.booth-feedback small, .booth-hint { color: #66715e; font-size: 12px; line-height: 1.6; }
-.booth-feedback progress { width: 120px; accent-color: #60884a; }
-.booth-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.booth-hint { max-width: 620px; margin-top: 18px; }
-.booth-download { display: inline-flex; padding: 13px 20px; color: white; background: #3b5437; border-radius: 8px; text-decoration: none; font-size: 14px; }
-.booth-review h2 { margin-bottom: 20px; }
-.booth-review > img { display: block; width: 100%; height: auto; border: 1px solid #dce1d4; border-radius: 12px; margin-bottom: 24px; }
-@media (min-width: 601px) { .booth-frame { aspect-ratio: auto; height: clamp(180px, 36dvh, 400px); } }
-@media (max-width: 600px) {
-  .app-nav a { padding: 8px 6px; font-size: 12px; }
-  .booth-pair { gap: 10px; }
-  .booth-frame { border-radius: 8px; }
-  .booth-feedback { align-items: flex-start; }
-  .booth-feedback progress { width: 60px; margin-top: 20px; }
-  .booth-actions button, .booth-download { padding: 12px 14px; }
-}

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { readFileSync } from 'node:fs'
-import { compareExpressions, DEFAULT_FEATURE_WEIGHTS } from '../src/matching/similarity.js'
-import { findBestMatch, rankMemes } from '../src/matching/matcher.js'
+import { compareExpressions, DEFAULT_FEATURE_WEIGHTS } from '../src/matching/similarity.ts'
+import { findBestMatch, rankMemes } from '../src/matching/matcher.ts'
 
 const memes = JSON.parse(readFileSync(new URL('../src/data/memes.json', import.meta.url), 'utf8'))
 
@@ -86,6 +86,23 @@ test('hand readings improve hand-aware scores while face-only scores stay unchan
   expect(handAwareWithoutHand.comparison).not.toBeNull()
   expect(handAwareWithHand.comparison.percentage).toBeGreaterThan(handAwareWithoutHand.comparison.percentage)
   expect(withHand.find(({ meme }) => meme.id === 'face-only').comparison.percentage).toBe(100)
+})
+
+test('a close hand-to-mouth pose can make its combined profile beat a nearby face-only profile', () => {
+  const monkey = memes.find(({ id }) => id === 'thinking-monkey')
+  const cryingCat = memes.find(({ id }) => id === 'crying-cat')
+  const userFeatures = {
+    ...monkey.features,
+    handPresent: 1,
+    twoHandsPresent: 1,
+    handNearFace: 1,
+    fingertipNearMouth: 1,
+  }
+
+  const ranked = rankMemes(userFeatures, [cryingCat, monkey])
+
+  expect(ranked[0].meme.id).toBe('thinking-monkey')
+  expect(ranked[0].comparison.percentage).toBeGreaterThan(93)
 })
 
 test('partial hand gestures remain comparable instead of filtering either profile type', () => {

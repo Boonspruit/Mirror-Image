@@ -5,7 +5,7 @@ export async function createFaceTracker() {
   const base = import.meta.env.BASE_URL
   const vision = await FilesetResolver.forVisionTasks(base + 'mediapipe/wasm')
   const options = {
-    runningMode: 'VIDEO',
+    runningMode: 'VIDEO' as const,
     numFaces: 1,
     outputFaceBlendshapes: true,
     outputFacialTransformationMatrixes: true,

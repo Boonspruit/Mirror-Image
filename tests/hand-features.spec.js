@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { EMPTY_HAND_FEATURES, extractHandFeatures } from '../src/tracking/handFeatureExtractor.js'
+import { EMPTY_HAND_FEATURES, extractHandFeatures } from '../src/tracking/handFeatureExtractor.ts'
 
 function faceLandmarks() {
   const landmarks = []

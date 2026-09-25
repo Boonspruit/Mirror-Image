@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 async function trackingFixture(page) {
-  await page.route('**/src/tracking/faceTracker.js*', route => route.fulfill({
+  await page.route('**/src/tracking/faceTracker.ts*', route => route.fulfill({
     contentType: 'application/javascript',
     body: `
       export async function createFaceTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }
@@ -12,7 +12,7 @@ async function trackingFixture(page) {
       }
     `,
   }))
-  await page.route('**/src/tracking/handTracker.js*', route => route.fulfill({
+  await page.route('**/src/tracking/handTracker.ts*', route => route.fulfill({
     contentType: 'application/javascript',
     body: `
       export async function createHandTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }

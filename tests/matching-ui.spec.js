@@ -33,7 +33,7 @@ async function installControlledTracker(page, initialFeatures, { handToMouth = f
     const landmarks = Array.from({ length: 21 }, () => ({ x: coordinate, y: coordinate, z: 0 }))
     window.handFixture = { landmarks: Array.from({ length: count }, () => landmarks), worldLandmarks: [], handedness: [] }
   }, { count: handCount, nearMouth: handToMouth })
-  await page.route('**/src/tracking/faceTracker.js*', (route) => route.fulfill({
+  await page.route('**/src/tracking/faceTracker.ts*', (route) => route.fulfill({
     contentType: 'application/javascript',
     body: `
       export async function createFaceTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }
@@ -43,7 +43,7 @@ async function installControlledTracker(page, initialFeatures, { handToMouth = f
       }
     `,
   }))
-  await page.route('**/src/tracking/handTracker.js*', (route) => route.fulfill({
+  await page.route('**/src/tracking/handTracker.ts*', (route) => route.fulfill({
     contentType: 'application/javascript',
     body: `
       export async function createHandTracker() { return { tracker: { close() {} }, delegate: 'CPU' } }

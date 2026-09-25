@@ -1,4 +1,4 @@
-import { DEFAULT_FEATURE_WEIGHTS } from '../matching/similarity.js'
+import { DEFAULT_FEATURE_WEIGHTS } from '../matching/similarity.ts'
 
 export default function SimilarityPanel({ expression, memeCount }) {
   const readyFeatures = expression
