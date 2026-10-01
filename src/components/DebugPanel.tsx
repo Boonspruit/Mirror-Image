@@ -32,7 +32,7 @@ export default function DebugPanel({ categories, phase, hasFace }) {
 
   return (
     <section className="debug-panel" aria-labelledby="debug-title">
-      <div className="debug-heading"><div><p className="eyebrow">EXPRESSION LAB</p><h2 id="debug-title">Live blendshapes</h2></div><span className="debug-status">{status}</span></div>
+      <div className="debug-heading"><div><h2 id="debug-title">Live blendshapes</h2></div><span className="debug-status">{status}</span></div>
       <p className="debug-description">Raw scores from 0 to 1: higher means a stronger signal for that facial movement. These are not emotion labels or match percentages. Left and right follow MediaPipe’s labels.</p>
       <div className="feature-groups">
         {FEATURE_GROUPS.map(({ title, names }) => (
@@ -49,7 +49,7 @@ export default function DebugPanel({ categories, phase, hasFace }) {
             <FeatureRow key={categoryName} name={categoryName} value={score} />)}
         </div> : <p>Values appear when a face is being tracked.</p>}
       </details>
-      <p className="debug-hint">Try opening your mouth, raising your brows, squinting, or smiling. A dash means no reading. Scores are not yet calibrated or smoothed by this app.</p>
+      <p className="debug-hint">Try opening your mouth, raising your brows, squinting, or smiling. A dash indicates that no reading is available. Scores are not yet calibrated or smoothed by this app.</p>
     </section>
   )
 }

@@ -3,7 +3,7 @@ import { EXPRESSION_FEATURES } from '../tracking/featureExtractor.ts'
 export default function ExpressionPanel({ vector }) {
   return (
     <section className="debug-panel expression-panel" aria-labelledby="expression-title">
-      <div className="debug-heading"><div><p className="eyebrow">THE BUILDING BLOCKS</p><h2 id="expression-title">Expression vector</h2></div><span className="debug-status">10 expression features · 3 head angles</span></div>
+      <div className="debug-heading"><div><h2 id="expression-title">Expression vector</h2></div><span className="debug-status">10 expression features · 3 head angles</span></div>
       <p className="debug-description">Left and right signals are averaged into one value, then every feature uses an exponential moving average: 80% of the previous value plus 20% of the newest reading. Compare these steadier values with the raw readings below.</p>
       <div className="expression-grid">
         {Object.entries(EXPRESSION_FEATURES).map(([name, sources]) => {

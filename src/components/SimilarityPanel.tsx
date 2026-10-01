@@ -8,7 +8,7 @@ export default function SimilarityPanel({ expression, memeCount }) {
   return (
     <section className="debug-panel similarity-panel" aria-labelledby="similarity-title">
       <div className="debug-heading">
-        <div><p className="eyebrow">MATCHING ENGINE</p><h2 id="similarity-title">Weighted similarity</h2></div>
+        <div><h2 id="similarity-title">Weighted similarity</h2></div>
         <span className="debug-status">{readyFeatures} / {Object.keys(DEFAULT_FEATURE_WEIGHTS).length} features ready</span>
       </div>
       <p className="debug-description">Each difference is squared, multiplied by its weight, then combined into a normalized distance from 0 to 1. A smaller distance means a closer expression.</p>

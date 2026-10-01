@@ -28,7 +28,7 @@ test('browser import persists, exports the trained values, and rejects malformed
   const changed = { ...memes[0], features: { ...memes[0].features, smile: .987 } }
   const backup = createProfileBackup([changed], [memes[1].id])
   await fileInput.setInputFiles({ name: 'profiles.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) })
-  await expect(page.getByText('Imported 1 profiles. Your other custom memes are still here.')).toBeVisible()
+  await expect(page.getByText('Imported 1 profiles. Other custom profiles and hidden built-ins were preserved.')).toBeVisible()
   await page.reload()
   await expect(page.getByRole('button', { name: 'Export profiles' })).toBeEnabled()
   const downloadEvent = page.waitForEvent('download')

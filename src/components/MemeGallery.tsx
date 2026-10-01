@@ -37,7 +37,7 @@ function AddMemeForm({ onAdd }) {
     const form = event.currentTarget
 
     if (!file) {
-      setStatus('Choose an image first.')
+      setStatus('Select an image to continue.')
       return
     }
 
@@ -65,7 +65,7 @@ function AddMemeForm({ onAdd }) {
       setExpression('')
       setFile(null)
       setFeatures(EMPTY_FEATURES)
-      setStatus(`${meme.name} added.`)
+      setStatus(`${meme.name} added to the library.`)
       setIsOpen(false)
     } catch (error) {
       setStatus(error instanceof Error ? error.message : 'Could not add that image.')
@@ -75,25 +75,25 @@ function AddMemeForm({ onAdd }) {
   }
 
   return (
-    <section className="meme-manager" aria-label="Manage meme faces">
+    <section className="meme-manager" aria-label="Manage meme profiles">
       <button
         className="manager-toggle"
         type="button"
         aria-expanded={isOpen}
         onClick={() => setIsOpen((open) => !open)}
       >
-        <span>{isOpen ? 'Close editor' : 'Add a meme face'}</span>
-        <span aria-hidden="true">{isOpen ? '−' : '+'}</span>
+        <span>{isOpen ? 'Close editor' : 'Add profile'}</span>
+
       </button>
 
       {isOpen ? (
         <form className="add-meme-form" onSubmit={handleSubmit}>
           <div className="form-intro">
             <div>
-              <p className="eyebrow">New profile</p>
-              <h3>Teach Mirror Image a face</h3>
+
+              <h3>Add a meme profile</h3>
             </div>
-            <p>Upload an image, then set the expression sliders to describe it.</p>
+            <p>Upload an image and set the expression values used for matching.</p>
           </div>
 
           <div className="meme-form-fields">
@@ -103,13 +103,13 @@ function AddMemeForm({ onAdd }) {
                 name="name"
                 required
                 maxLength={60}
-                placeholder="Suspicious hamster"
+                placeholder="e.g., Surprised Pikachu"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
             </label>
             <label>
-              <span>Expression label</span>
+              <span>Expression description</span>
               <input
                 name="expression"
                 maxLength={80}
@@ -119,7 +119,7 @@ function AddMemeForm({ onAdd }) {
               />
             </label>
             <label className="file-field">
-              <span>Face image</span>
+              <span>Meme image</span>
               <input
                 name="image"
                 type="file"
@@ -149,7 +149,7 @@ function AddMemeForm({ onAdd }) {
 
           <div className="form-actions">
             <button className="primary-action" type="submit" disabled={isSaving}>
-              {isSaving ? 'Adding…' : 'Add to collection'}
+              {isSaving ? 'Adding…' : 'Add profile'}
             </button>
             <span role="status">{status}</span>
           </div>
@@ -203,7 +203,7 @@ export default function MemeGallery({
         ? Object.fromEntries(handFeatureNames.map((name) => [name, liveHandFeatures[name]]))
         : undefined
       await updateMemeFeatures(selectedMeme.id, capturedFeatures, capturedHandFeatures)
-      setTrainingStatus(`${selectedMeme.name} now matches this ${capturedHandFeatures ? 'expression and hand pose' : 'expression'}.`)
+      setTrainingStatus(`Saved the current ${capturedHandFeatures ? 'expression and hand pose' : 'expression'} to this profile.`)
     } catch (cause) {
       setTrainingStatus(cause instanceof Error ? cause.message : 'The expression could not be saved.')
     }
@@ -212,15 +212,15 @@ export default function MemeGallery({
   function handleResetProfile() {
     if (!selectedMeme) return
     resetMemeFeatures(selectedMeme.id)
-    setTrainingStatus(`${selectedMeme.name} restored to its original profile.`)
+    setTrainingStatus(`Restored the original profile values for ${selectedMeme.name}.`)
   }
 
   return (
-    <section className="meme-gallery debug-panel" id="meme-collection" aria-label="Meet your meme counterparts">
+    <section className="meme-gallery" id="library-content" aria-label="Meme profiles">
       <div className="gallery-heading">
         <div>
-          <p className="eyebrow">Local expression library</p>
-          <h2 id="meme-gallery-title">Your meme collection.</h2><p className="library-hint">Choose a face to teach it your expression.</p>
+
+          <h1 id="meme-gallery-title">Meme profiles</h1><p className="library-hint">Select a profile to review or update its expression values.</p>
         </div>
         <div className="collection-summary">
           <span>{memes.length} profiles</span>
@@ -256,39 +256,39 @@ export default function MemeGallery({
                 </div>
                 <span className="meme-name">{meme.name}</span>
                 <small className="meme-expression">{meme.expressionLabel}</small>
-                {meme.handFeatures ? <small className="hand-aware-label">HAND-AWARE</small> : null}
+                {meme.handFeatures ? <small className="hand-aware-label">Hand gesture</small> : null}
               </button>
             ))}
           </div>
 
           {selectedMeme ? (
             <dialog ref={dialogRef} className="training-dialog" aria-labelledby="training-title">
-              <div className="dialog-heading"><div><p className="eyebrow">TEACH AN EXPRESSION</p><h2 id="training-title">{selectedMeme.name}</h2></div><button type="button" className="close-dialog" onClick={() => dialogRef.current.close()}>Close</button></div>
+              <div className="dialog-heading"><div><h2 id="training-title">{selectedMeme.name}</h2></div><button type="button" className="close-dialog" onClick={() => dialogRef.current.close()}>Close</button></div>
             <article className="meme-inspector" role="region" aria-label="Selected meme profile">
               <div className="training-comparison">
               <TrainingPreview stream={stream} phase={phase} onStart={onStart} onStop={onStop} cameraError={cameraError} />
-              <div className="training-target"><p className="eyebrow">CHOSEN MEME</p>
+              <div className="training-target"><p className="preview-caption">Profile image</p>
               <div className="inspector-image meme-selected-image">
                 <MemeImage key={selectedMeme.id} meme={selectedMeme} />
               </div>
               </div></div>
               <div className="inspector-copy meme-profile">
 
-                {selectedMeme.browserTrained ? <span className="trained-badge">TRAINED WITH YOUR FACE{selectedMeme.handsTrained ? ' + HANDS' : ''}</span> : null}
+                {selectedMeme.browserTrained ? <span className="trained-badge">Updated from camera{selectedMeme.handsTrained ? ' · Includes hand gesture' : ''}</span> : null}
                 <div className="profile-training">
                   <div>
-                    <strong>Teach this meme your expression</strong>
+                    <strong>Update expression profile</strong>
                     <p>{canTrain
                       ? (selectedMeme.handFeatures
-                        ? 'Hold the face and hand pose you want, then save both live profiles together.'
-                        : 'Hold the face you want to associate with this meme, then save it.')
+                        ? 'Hold the expression and hand pose to associate with this profile, then save the current readings.'
+                        : 'Hold the expression to associate with this profile, then save the current readings.')
                       : (selectedMeme.handFeatures
-                        ? 'Start the camera, keep your face visible, and show at least one hand before saving.'
-                        : 'Start the camera and keep your face visible to capture all ten values.')}</p>
+                        ? 'Start the camera, keep your face visible, and show at least one hand to capture the full profile.'
+                        : 'Start the camera and keep your face visible to capture all 10 expression values.')}</p>
                   </div>
                   <div className="profile-training-actions">
                     <button className="train-meme-button" type="button" onClick={handleTrain} disabled={!canTrain}>
-                      {selectedMeme.handFeatures ? 'Match this meme to my face + hands' : 'Match this meme to my face'}
+                      {selectedMeme.handFeatures ? 'Save expression and hand profile' : 'Save expression profile'}
                     </button>
                     {selectedMeme.browserTrained && !selectedMeme.id.startsWith('custom-') ? (
                       <button className="reset-profile-button" type="button" onClick={handleResetProfile}>
@@ -298,7 +298,7 @@ export default function MemeGallery({
                   </div>
                   <span className="training-status" aria-live="polite">{trainingStatus}</span>
                 </div>
-                <details className="profile-details"><summary>Expression values & notes</summary>                <p className="debug-description">{selectedMeme.notes || selectedMeme.expressionLabel}</p>
+                <details className="profile-details"><summary>Profile details</summary>                <p className="debug-description">{selectedMeme.notes || selectedMeme.expressionLabel}</p>
                 <dl className="meme-features">
                   {Object.entries(selectedMeme.features).map(([feature, value]) => (
                     <div key={feature}>
@@ -333,8 +333,8 @@ export default function MemeGallery({
         </>
       ) : (
         <div className="empty-library">
-          <p>Your collection is empty.</p>
-          <p>Add a meme face above or restore the built-in profiles.</p>
+          <p>No meme profiles available.</p>
+          <p>Add a profile or restore the built-in profiles.</p>
         </div>
       )}
     </section>

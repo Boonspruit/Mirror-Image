@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 1,
+  "name": "Mirror Image",
+  "direction": "Light studio",
+  "approvedReference": ".impeccable/mocks/decision/studio.png",
+  "audience": {
+    "primary": "Demo visitors",
+    "secondary": "Recruiters and technical reviewers",
+    "source": "PRODUCT.md"
+  },
+  "sources": {
+    "product": "PRODUCT.md",
+    "contract": ".impeccable/surfaces/src-app-tsx.md",
+    "styles": "src/index.css",
+    "navigation": "src/App.tsx",
+    "camera": "src/components/Camera.tsx",
+    "match": "src/components/MemeDisplay.tsx",
+    "library": "src/components/MemeGallery.tsx",
+    "backup": "src/components/ProfileTransfer.tsx"
+  },
+  "tokens": {
+    "colors": {
+      "source": "src/index.css: :root",
+      "canvas": "#f7f8f5",
+      "surface": "#fff",
+      "well": "#e9edef",
+      "ink": "#111817",
+      "muted": "#59635f",
+      "accent": "#285947",
+      "accentHover": "#1d4436",
+      "line": "#d4dcda",
+      "soft": "#eef2ee",
+      "danger": "#9c3425"
+    },
+    "interactionColors": {
+      "source": "src/index.css",
+      "focus": "#52826c",
+      "disabledText": "#727e77",
+      "disabledBackground": "#e9eeeb",
+      "disabledBorder": "#d7ded9",
+      "activeSignal": "#32805c",
+      "inactiveSignal": "#929f98",
+      "errorBackground": "#fff0ea",
+      "errorBorder": "#ebc3b9"
+    },
+    "typography": {
+      "source": "src/index.css",
+      "family": "'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      "bundledWeights": [
+        400,
+        600,
+        700,
+        900
+      ],
+      "usedWeights": [
+        400,
+        600,
+        700
+      ],
+      "fontDisplay": "swap",
+      "fontSynthesis": "none",
+      "bodyLineHeight": 1.6,
+      "mirrorTitle": {
+        "size": "clamp(34px, 4.65vw, 70px)",
+        "lineHeight": 1.12,
+        "letterSpacing": "-.035em",
+        "weight": 700
+      },
+      "sectionTitle": {
+        "size": "clamp(32px, 3.2vw, 46px)",
+        "lineHeight": 1.15,
+        "letterSpacing": "-.035em",
+        "weight": 700
+      },
+      "panelTitle": {
+        "size": "clamp(23px, 2.12vw, 32px)",
+        "lineHeight": 1.2
+      },
+      "button": {
+        "sizePx": 15,
+        "weight": 600,
+        "lineHeight": 1.4
+      },
+      "field": {
+        "sizePx": 16
+      }
+    },
+    "radii": {
+      "source": "src/index.css",
+      "standardPx": 14,
+      "controlPx": 8,
+      "trainingFramePx": 12,
+      "dialogPx": 16,
+      "badgePx": 5,
+      "previewLabelPx": 6,
+      "meterPx": 4
+    },
+    "dimensions": {
+      "source": "src/index.css",
+      "bodyMinWidthPx": 320,
+      "appMaxWidthPx": 1600,
+      "appPaddingInline": "clamp(24px, 3.86vw, 62px)",
+      "appMinHeight": "100dvh",
+      "headerMinHeight": "clamp(72px, 5.91vw, 89px)",
+      "headingPaddingBlock": "clamp(36px, 4.25vw, 64px) clamp(28px, 3.19vw, 48px)",
+      "workspaceGap": "clamp(20px, 2.4vw, 36px)",
+      "previewAspectRatio": "1.291 / 1",
+      "libraryColumns": 4,
+      "libraryGapPx": 26,
+      "thumbnailAspectRatio": "4 / 3",
+      "buttonMinHeightPx": 46,
+      "fieldMinHeightPx": 46,
+      "checkboxSizePx": 20,
+      "rangeMinHeightPx": 44,
+      "primaryCameraActionWidth": "clamp(180px, 16.95vw, 255px)",
+      "primaryCameraActionMinHeight": "clamp(48px, 4.38vw, 66px)",
+      "settingsMaxWidthPx": 1080,
+      "settingsCameraColumns": "minmax(0, 360px) minmax(0, 1fr)",
+      "settingsCameraGapPx": 36,
+      "dialogWidth": "min(940px, calc(100vw - 48px))",
+      "dialogMaxHeight": "calc(100dvh - 48px)",
+      "dialogPaddingPx": 30,
+      "trainingComparisonGapPx": 24,
+      "meterHeightPx": 6
+    },
+    "effects": {
+      "source": "src/index.css",
+      "focusOutline": "3px solid #52826c",
+      "focusOffsetPx": 4,
+      "dialogShadow": "0 24px 80px #172c2438",
+      "dialogBackdrop": "#182a2473",
+      "matchMeterTransition": "width 180ms ease-out",
+      "cardTransition": "border-color 160ms ease-out, background-color 160ms ease-out",
+      "matchAnimation": "match-appear 180ms ease-out",
+      "matchOpacityFrom": 0.65
+    }
+  },
+  "responsive": [
+    {
+      "query": "(max-width: 1100px)",
+      "source": "src/index.css",
+      "rules": {
+        "libraryColumns": 3,
+        "libraryGapPx": 20,
+        "formColumns": 2,
+        "fileFieldColumn": "1 / -1",
+        "expressionColumns": 3,
+        "weightColumns": 3,
+        "featureGroupColumns": 2,
+        "allFeatureColumns": 2
+      }
+    },
+    {
+      "query": "(max-width: 760px)",
+      "source": "src/index.css",
+      "rules": {
+        "settingsCameraColumns": 1,
+        "settingsCameraGapPx": 24,
+        "settingsPreviewMaxWidthPx": 400,
+        "libraryHeadingDirection": "column",
+        "featureEditorColumns": 1,
+        "trackingReadoutColumns": 1,
+        "trackingReadoutGapPx": 24,
+        "poseColumns": 1,
+        "poseGapPx": 8,
+        "profileValueColumns": 3
+      }
+    },
+    {
+      "query": "(max-width: 600px)",
+      "source": "src/index.css",
+      "rules": {
+        "appPaddingInlinePx": 20,
+        "headerDirection": "column",
+        "headerPaddingTopPx": 18,
+        "wordmarkSizePx": 25,
+        "navigationWidth": "100%",
+        "navigationLinkSizePx": 15,
+        "headingPaddingBlock": "28px 24px",
+        "mirrorTitleSizePx": 30,
+        "mirrorTitleMaxWidth": "17ch",
+        "mirrorTitleLineHeight": 1.15,
+        "descriptionSizePx": 15,
+        "panelTitleSizePx": 21,
+        "workspaceColumns": 1,
+        "workspaceGapPx": 26,
+        "previewAspectRatio": "4 / 3",
+        "emptyMatchAspectRatio": "auto",
+        "emptyMatchMinHeightPx": 196,
+        "primaryCameraActionWidth": "100%",
+        "primaryCameraActionMinHeightPx": 48,
+        "libraryColumns": 2,
+        "libraryGapPx": 14,
+        "formColumns": 1,
+        "dialogWidth": "calc(100vw - 24px)",
+        "dialogMaxHeight": "calc(100dvh - 24px)",
+        "dialogPaddingPx": 20,
+        "dialogRadiusPx": 14,
+        "trainingComparisonColumns": 2,
+        "trainingComparisonGapPx": 12,
+        "trainingActionDirection": "column",
+        "settingsPreviewAspectRatio": "16 / 10",
+        "expressionColumns": 2,
+        "weightColumns": 2,
+        "featureGroupColumns": 1,
+        "allFeatureColumns": 1
+      }
+    },
+    {
+      "query": "(max-width: 360px)",
+      "source": "src/index.css",
+      "rules": {
+        "appPaddingInlinePx": 16,
+        "cameraAspectRatio": "auto",
+        "cameraMinHeightPx": 244,
+        "cameraVideoPosition": "absolute",
+        "mirrorTitleSizePx": 28,
+        "trainingComparisonColumns": 1
+      }
+    },
+    {
+      "query": "(prefers-reduced-motion: reduce)",
+      "source": "src/index.css",
+      "rules": {
+        "transition": "none !important",
+        "animation": "none !important",
+        "scrollBehavior": "auto !important"
+      }
+    }
+  ],
+  "patterns": {
+    "navigation": {
+      "source": "src/App.tsx",
+      "items": [
+        {
+          "label": "Mirror",
+          "hash": "#mirror"
+        },
+        {
+          "label": "Library",
+          "hash": "#meme-collection"
+        },
+        {
+          "label": "Settings",
+          "hash": "#settings"
+        }
+      ],
+      "activeAttribute": "aria-current=page",
+      "activeBorderBottomPx": 3
+    },
+    "disclosures": {
+      "sources": [
+        "src/components/MemeDisplay.tsx",
+        "src/components/MemeGallery.tsx",
+        "src/components/Camera.tsx"
+      ],
+      "initiallyClosed": [
+        "Scoring details",
+        "Profile details",
+        "Advanced diagnostics"
+      ]
+    },
+    "cameraStates": {
+      "source": "src/components/Camera.tsx",
+      "phases": [
+        "idle",
+        "requesting",
+        "loading",
+        "running",
+        "error"
+      ],
+      "statusLabels": [
+        "Offline",
+        "Connecting",
+        "Preparing",
+        "Live"
+      ],
+      "errorRole": "alert"
+    },
+    "profileEditor": {
+      "source": "src/components/MemeGallery.tsx",
+      "element": "dialog",
+      "openingMethod": "showModal",
+      "headingAttribute": "aria-labelledby",
+      "selectionAttribute": "aria-pressed",
+      "feedbackLive": "polite"
+    },
+    "copy": {
+      "source": "PRODUCT.md",
+      "rules": [
+        "Use straightforward professional wording",
+        "Give concrete recovery steps for errors",
+        "Retain Mirror Image",
+        "Avoid unsupported customer claims or benchmarks"
+      ],
+      "matchCaveatSource": "src/components/MemeDisplay.tsx",
+      "matchPercentageMeaning": "Relative similarity, not model confidence"
+    }
+  }
+}

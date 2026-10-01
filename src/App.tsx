@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Camera from './components/Camera.tsx'
+import Icon from './components/Icon.tsx'
 import useMemeLibrary from './hooks/useMemeLibrary.ts'
 
 function currentView() {
@@ -16,6 +17,7 @@ export default function App() {
   }, [])
   return (
     <main className="app">
+      <a className="skip-link" href="#page-content" onClick={(event) => { event.preventDefault(); document.getElementById('page-content')?.focus() }}>Skip to content</a>
       <header className="page-header">
         <a className="wordmark" href="#mirror" aria-label="Mirror Image home">mirror image<span className="brand-period">.</span></a>
         <nav className="app-nav" aria-label="Main navigation">
@@ -24,9 +26,11 @@ export default function App() {
           ))}
         </nav>
       </header>
-      {view === 'mirror' && <div className="view-heading"><div><p className="eyebrow">LIVE MIRROR</p><h1>A face for every feeling.</h1></div><p>Make a face. Meet your meme.</p></div>}
+      <div id="page-content" tabIndex={-1}>
+      {view === 'mirror' && <div className="view-heading"><div><h1>Live expression matching</h1></div><p>Compare your expression with meme profiles in real time.</p></div>}
       <Camera library={library} view={view} />
-      <footer><span>Processed on your device.</span><span>Your expressions, your collection.</span></footer>
+      </div>
+      <footer><Icon name="lock" /><span>Camera processing stays in your browser.</span></footer>
     </main>
   )
 }

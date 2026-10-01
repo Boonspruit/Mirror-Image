@@ -21,14 +21,14 @@ export default function ProfileTransfer({ library }) {
     try {
       if (file.size > MAX_BACKUP_BYTES) throw new Error('Choose a profile backup smaller than 30 MB.')
       const count = await library.importProfiles(JSON.parse(await file.text()))
-      setMessage(`Imported ${count} profiles. Your other custom memes are still here.`)
+      setMessage(`Imported ${count} profiles. Other custom profiles and hidden built-ins were preserved.`)
     } catch (cause) { setFailed(true); setMessage(cause instanceof SyntaxError ? 'This file is not valid JSON.' : cause.message) }
     finally { setBusy(false) }
   }
-  return <section className="settings-controls" aria-label="Profile backup"><h2>Take your expressions with you.</h2>
-    <p>Back up your images, saved poses, and hidden memes. Import adds or updates matching profiles; it keeps your other custom memes and existing hidden choices.</p>
+  return <section className="settings-controls" aria-label="Profile backup"><h2>Profile backup</h2>
+    <p>Save a backup of your custom images, profile edits, and hidden profiles. Import a backup to add or update profiles in this browser.</p>
     <div className="booth-actions"><button className="secondary" disabled={!library.ready || busy} onClick={download}>Export profiles</button>
-      <label className="profile-import">{busy ? 'Importing profiles…' : 'Import profiles'}<input type="file" accept="application/json,.json" disabled={!library.ready || busy} onChange={upload} /></label></div>
+      <label className={`profile-import ${!library.ready || busy ? 'is-disabled' : ''}`}>{busy ? 'Importing profiles…' : 'Import profiles'}<input type="file" accept="application/json,.json" disabled={!library.ready || busy} onChange={upload} /></label></div>
     {message && <p role={failed ? 'alert' : 'status'}>{message}</p>}
   </section>
 }

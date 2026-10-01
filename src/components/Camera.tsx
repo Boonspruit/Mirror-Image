@@ -9,6 +9,7 @@ import DebugPanel from './DebugPanel.tsx'
 import ExpressionPanel from './ExpressionPanel.tsx'
 import SimilarityPanel from './SimilarityPanel.tsx'
 import MemeDisplay from './MemeDisplay.tsx'
+import Icon from './Icon.tsx'
 import MemeGallery from './MemeGallery.tsx'
 import TrainingPreview from './TrainingPreview.tsx'
 import ProfileTransfer from './ProfileTransfer.tsx'
@@ -23,7 +24,7 @@ interface CameraResources { cancelCalibration?: () => void; startHandTimer?: num
 const EMPTY_RESULT = { faces: 0, landmarks: 0, blendshapes: 0, pose: false, hands: 0, handLandmarks: 0, handFeatures: EMPTY_HAND_FEATURES as FeatureValues, categories: [], vector: null, rawVector: null }
 const EMPTY_MATCH = { matches: [], pendingId: null }
 const LABELS = {
-  idle: 'Camera is off', requesting: 'Waiting for permission',
+  idle: 'Camera is off', requesting: 'Waiting for camera access',
   loading: 'Loading face and hand trackers', running: 'Tracking is running', error: 'Session stopped',
 }
 function cameraErrorMessage(error) {
@@ -299,7 +300,7 @@ export default function Camera({ library, view }) {
       resources.current.cancelCalibration = undefined
       const baseline = capture.samples.length >= 5 ? averageFeatureVectors(capture.samples) : null
       if (!baseline) {
-        setCalibration((current) => ({ ...current, status: 'error', count: null, message: 'Calibration missed your face. Look toward the camera and try again.' }))
+        setCalibration((current) => ({ ...current, status: 'error', count: null, message: 'No face detected. Look toward the camera and try calibration again.' }))
         return
       }
 
@@ -308,7 +309,7 @@ export default function Camera({ library, view }) {
       pipeline.current?.stabilizer.reset()
       setMatchView(EMPTY_MATCH)
       setResult((current) => ({ ...current, vector: applyNeutralBaseline(current.rawVector, baseline) }))
-      setCalibration({ status: 'ready', count: null, baseline, message: `Neutral baseline saved from ${capture.samples.length} readings.` })
+      setCalibration({ status: 'ready', count: null, baseline, message: `Neutral calibration completed using ${capture.samples.length} readings.` })
     }, 3000)
   }
 
@@ -318,48 +319,54 @@ export default function Camera({ library, view }) {
     <>
     <section hidden={view !== 'mirror'} className="workspace" aria-label="Live camera and meme match">
       <div className="camera-panel">
-        <div className="panel-heading"><div><p className="eyebrow">LIVE INPUT</p><h2>Your camera</h2></div><span className={`status ${active ? 'active' : ''}`}><span />{active ? 'LIVE SESSION' : 'OFFLINE'}</span></div>
+        <div className="panel-heading"><h2>Camera</h2><span className={`status ${phase === 'running' ? 'active' : ''}`}><span />{phase === 'running' ? 'Live' : phase === 'loading' ? 'Preparing' : phase === 'requesting' ? 'Connecting' : 'Offline'}</span></div>
         <div className="camera-stage">
           <video ref={videoRef} autoPlay muted playsInline className={videoVisible ? 'visible' : ''} aria-label="Mirrored webcam preview" />
           <FaceOverlay ref={overlayRef} enabled={showOverlay} />
           <HandOverlay ref={handOverlayRef} enabled={showOverlay} />
-          {!videoVisible && <div className="camera-placeholder"><div className="face-frame" aria-hidden="true"><span>· ·</span><span>⌣</span></div><h3>{phase === 'requesting' ? 'A quick permission check.' : 'Ready when you are.'}</h3><p>{phase === 'requesting' ? 'Allow camera access in your browser to begin.' : 'Your next expression starts here.'}</p></div>}
-          {videoVisible && <span className="preview-label">MIRRORED PREVIEW</span>}
-          {phase === 'loading' && <div className="loading-label">Preparing MediaPipe…</div>}
+          {!videoVisible && <div className="camera-placeholder">
+            <Icon name="camera" className="empty-icon" />
+            <h3>{phase === 'requesting' ? 'Allow camera access' : phase === 'error' ? 'Camera unavailable' : 'Camera is off'}</h3>
+            <p>{phase === 'requesting' ? 'Allow access in your browser to continue.' : phase === 'error' ? 'Review the message below and try again.' : 'Start your camera to begin.'}</p>
+            <button onClick={phase === 'requesting' ? stop : start} className="primary">{phase === 'requesting' ? 'Cancel' : phase === 'error' ? 'Try again' : 'Start camera'}</button>
+          </div>}
+          {videoVisible && <span className="preview-label">Mirrored preview</span>}
+          {phase === 'loading' && <div className="loading-label">Preparing face and hand tracking…</div>}
           {calibration.status === 'countdown' && <div className="calibration-countdown" role="status" aria-live="assertive"><span>NEUTRAL FACE</span><strong>{calibration.count}</strong><p>{calibration.message}</p></div>}
         </div>
-        <div className="camera-controls"><p>{phase === 'running' ? (result.faces ? `Face detected${result.hands ? ` · ${result.hands} hand${result.hands === 1 ? '' : 's'} detected` : ''}` : 'Look toward the camera') : 'Your camera stays private.'}</p><button onClick={active ? stop : start} className={active ? 'secondary' : 'primary'}>{active ? (phase === 'requesting' ? 'Cancel' : 'Stop camera') : 'Start camera'}</button></div>
+        {videoVisible && <div className="camera-controls"><p role="status">{phase === 'loading' ? 'Preparing face and hand tracking…' : result.faces ? `Face detected${result.hands ? ` · ${result.hands} hand${result.hands === 1 ? '' : 's'} detected` : ''}` : 'No face detected. Look toward the camera.'}</p><button onClick={stop} className="secondary">Stop camera</button></div>}
         {error && <p className="error-message" role="alert">{error}</p>}
       </div>
       <MemeDisplay matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} handFeatures={result.handFeatures} phase={phase} calibrated={Boolean(calibration.baseline)} />
     </section>
     <section hidden={view !== 'settings'} className="settings-view" aria-label="Settings">
-      <div className="view-heading"><div><p className="eyebrow">PREFERENCES</p><h1>Make it yours.</h1></div><p>Camera controls and tracking diagnostics.</p></div>
-      <ProfileTransfer library={library} />
+      <div className="view-heading"><div><h1>Settings</h1></div><p>Camera, calibration, profile backups, and tracking diagnostics.</p></div>
       <section className="settings-controls" aria-label="Camera preferences"><h2>Camera & calibration</h2>
-        <div className="settings-preview"><TrainingPreview stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError="" /></div>
-        <label className="overlay-toggle"><input type="checkbox" checked={showOverlay} onChange={(event) => setShowOverlay(event.target.checked)} />Show face mesh + hands<span>Follows your face and hand landmarks</span></label>
-        <p className={`calibration-feedback ${calibration.status}`} aria-live="polite">{calibration.message || 'Calibrate once with a relaxed, neutral expression.'}</p>
-        <div className="camera-controls"><p><span className="privacy-dot" /> Camera frames stay in this browser.</p><div className="camera-actions"><button onClick={beginCalibration} className="calibrate-button" disabled={phase !== 'running' || !result.faces || calibration.status === 'countdown'}>{calibration.baseline ? 'Recalibrate face' : 'Calibrate face'}</button><button onClick={active ? stop : start} className={active ? 'secondary' : 'primary'}>{active ? (phase === 'requesting' ? 'Cancel' : 'Stop camera') : 'Start camera'}<span aria-hidden="true">{active ? '■' : '↗'}</span></button></div></div>
-
+        <div className="settings-camera-layout"><div className="settings-preview"><TrainingPreview stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError={error} /></div><div className="camera-preferences">
+        <label className="overlay-toggle"><input type="checkbox" checked={showOverlay} onChange={(event) => setShowOverlay(event.target.checked)} />Show face and hand landmarks<span>Overlay landmarks on the camera preview.</span></label>
+        <p className={`calibration-feedback ${calibration.status}`} aria-live="polite">{calibration.message || 'Calibrate with a relaxed, neutral expression.'}</p>
+        <div className="camera-controls"><p><span className="privacy-dot" /> Camera frames are processed in your browser.</p><div className="camera-actions"><button onClick={beginCalibration} className="calibrate-button" disabled={phase !== 'running' || !result.faces || calibration.status === 'countdown'}>{calibration.baseline ? 'Recalibrate face' : 'Calibrate face'}</button><button onClick={active ? stop : start} className={active ? 'secondary' : 'primary'}>{active ? (phase === 'requesting' ? 'Cancel' : 'Stop camera') : 'Start camera'}</button></div></div>
+      </div></div>
       </section>
+      <ProfileTransfer library={library} />
       {calibration.status === 'countdown' && <p role="status">Look at the camera with a relaxed face. {calibration.count}</p>}
+      <details className="advanced-diagnostics"><summary><span>Advanced diagnostics</span><span className="summary-description">Tracking signals and matching calculations</span></summary>
       <aside className="tracking-panel tracking-strip">
         <div className="tracking-intro">
-        <p className="eyebrow">UNDER THE HOOD</p><h2>A face, two hands, a set of signals.</h2><p className="panel-description">MediaPipe finds facial and hand landmarks directly on your device.</p>
+        <h2>Tracking diagnostics</h2><p className="panel-description">MediaPipe detects facial and hand landmarks in your browser.</p>
         </div>
         <div className="tracking-readout">
-        <div className="tracking-status" role="status" aria-live="polite"><span className={`signal-dot ${phase === 'running' ? 'on' : ''}`} /><div><strong>{LABELS[phase]}</strong><p>{phase === 'running' ? (result.faces ? `Face detected.${result.hands ? ` ${result.hands} hand${result.hands === 1 ? '' : 's'} detected.` : ' Show a hand for gesture-aware memes.'}` : 'No face detected. Look toward the camera.') : 'One face and up to two hands at a time.'}</p></div></div>
+        <div className="tracking-status" role="status" aria-live="polite"><span className={`signal-dot ${phase === 'running' ? 'on' : ''}`} /><div><strong>{LABELS[phase]}</strong><p>{phase === 'running' ? (result.faces ? `Face detected.${result.hands ? ` ${result.hands} hand${result.hands === 1 ? '' : 's'} detected.` : ' Show a hand to match profiles that include a gesture.'}` : 'No face detected. Look toward the camera.') : 'Tracks one face and up to two hands.'}</p></div></div>
         <dl className="metrics"><div><dt>Faces detected</dt><dd>{result.faces} <small>/ 1</small></dd></div><div><dt>Hands detected</dt><dd>{result.hands} <small>/ 2</small></dd></div><div><dt>Facial landmarks</dt><dd>{result.landmarks}</dd></div><div><dt>Hand landmarks</dt><dd>{result.handLandmarks}</dd></div><div><dt>Fingertip near mouth</dt><dd>{Math.round((result.handFeatures.fingertipNearMouth ?? 0) * 100)}<small>%</small></dd></div><div><dt>Blendshape signals</dt><dd>{result.blendshapes}</dd></div><div><dt>Head transform</dt><dd className="text-value">{result.pose ? 'Available' : 'Waiting'}</dd></div><div><dt>Processing</dt><dd className="text-value">{delegate}</dd></div></dl>
         </div>
         <div className="tracking-notes">
-        {error && <p className="error-message" role="alert">{error}</p>}
-        <div className="next-note"><span>STEP 11 ACTIVE</span><p>{calibration.baseline ? 'Your neutral baseline is active for expression values and head angles.' : 'Calibrate a neutral face to account for your personal resting expression.'}</p></div>
+        <div className="next-note"><span>NEUTRAL CALIBRATION</span><p>{calibration.baseline ? 'Neutral calibration is applied to expression values and head angles.' : 'Calibrate with a neutral expression to account for your resting facial features.'}</p></div>
         </div>
       </aside>
     <ExpressionPanel vector={result.vector} />
     <SimilarityPanel expression={result.vector?.expression} memeCount={memes.length} />
     <DebugPanel categories={result.categories} phase={phase} hasFace={result.faces > 0} />
+      </details>
     </section>
     <div hidden={view !== 'library'}>
       <MemeGallery {...library} liveExpression={result.vector?.expression} liveHandFeatures={result.handFeatures} stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError={error} />

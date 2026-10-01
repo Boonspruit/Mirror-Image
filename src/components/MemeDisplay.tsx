@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { compareExpressions, DEFAULT_FEATURE_WEIGHTS, HAND_FEATURE_WEIGHTS } from '../matching/similarity.ts'
 import MatchMeter from './MatchMeter.tsx'
+import Icon from './Icon.tsx'
 
 const GROUPS = {
   Eyes: ['eyeWide', 'eyeSquint'],
@@ -23,13 +24,12 @@ export default function MemeDisplay({ matches, expression, handFeatures, phase, 
   const pending = matches.find(({ meme }) => meme.id === pendingId)
   if (!best?.comparison) {
     const message = phase === 'running'
-      ? 'Look toward the camera to find your closest meme.'
-      : 'Start the camera to reveal your closest meme.'
+      ? 'Keep your face in view to compare your expression with the profiles.'
+      : phase === 'loading' || phase === 'requesting' ? 'Your match will appear when tracking is ready.' : 'Your closest match will appear here.'
     return (
       <section id="live-match" className="match-display match-empty" aria-labelledby="match-title">
-        <div className="match-heading"><div><p className="eyebrow">YOUR MEME MATCH</p><h2 id="match-title">Waiting for an expression</h2></div></div>
-        <div className="match-image match-placeholder-frame" aria-hidden="true"><span className="match-placeholder">?</span></div>
-        <p className="match-empty-message">{message}</p>
+        <div className="match-heading"><h2 id="match-title">Closest match</h2></div>
+        <div className="match-image match-placeholder-frame"><div className="match-placeholder"><Icon name="image" className="empty-icon" /><h3>No match yet</h3><p>{message}</p></div></div>
       </section>
     )
   }
@@ -44,19 +44,20 @@ export default function MemeDisplay({ matches, expression, handFeatures, phase, 
 
   return (
     <section id="live-match" className="match-display" aria-labelledby="match-title">
-      <div className="match-heading"><div><p className="eyebrow">YOUR MEME MATCH</p><h2 id="match-title">{best.meme.name}</h2></div><span className="raw-badge">{calibrated ? 'CALIBRATED MATCH' : 'LIVE MATCH'}</span></div>
+      <div className="match-heading"><h2 id="match-title">Closest match</h2></div>
       <div className="match-visual"><div className="match-image"><MatchImage key={best.meme.id} meme={best.meme} /></div>
       </div>
       <div className="match-copy">
+        <h3 className="matched-name">{best.meme.name}</h3>
 
         <MatchMeter percentage={best.comparison.percentage} />
-        <details className="match-details"><summary>Match details</summary>        <div className="runner-ups"><span>Also close</span>{matches.slice(1, 4).map(({ meme, comparison }) => <div key={meme.id}><span>{meme.name}</span><strong>{Math.round(comparison.percentage)}%</strong></div>)}</div>
+        <details className="match-details"><summary>Scoring details</summary>        <div className="runner-ups"><span>Other close matches</span>{matches.slice(1, 4).map(({ meme, comparison }) => <div key={meme.id}><span>{meme.name}</span><strong>{Math.round(comparison.percentage)}%</strong></div>)}</div>
 
         <dl className="group-matches">
           {groupScores.map(([name, percentage]) => <div key={name}><dt>{name}</dt><dd>{Number.isFinite(percentage) ? `${Math.round(percentage)}%` : '—'}</dd></div>)}
         </dl>
         <div className="match-meta"><span>Distance {best.comparison.distance.toFixed(3)}</span><span>Coverage {Math.round(best.comparison.coverage * 100)}%</span>{pending && <span>Checking {pending.meme.name}…</span>}</div>
-      <p className="match-caveat">{calibrated ? 'Your neutral baseline is subtracted before smoothing. ' : ''}The latest frame contributes 65% of each smoothed face value. Hand-aware memes can compare one or two hands and mouth proximity. Matches are checked every 100 ms, and a satisfied gesture displays immediately. Percentages are distance scores, not confidence.</p>
+      <p className="match-caveat">{calibrated ? 'Your neutral baseline is subtracted before smoothing. ' : ''}The latest frame contributes 65% of each smoothed face value. Profiles with hand gestures can compare up to two hands and mouth proximity. Matches update every 100 ms; a matching gesture appears immediately. Percentages indicate relative similarity, not model confidence.</p>
         </details>
       </div>
 
