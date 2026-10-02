@@ -38,7 +38,7 @@ export function startHandTracking(video, tracker, onResult, onError) {
     try {
       // Keep gestures responsive while limiting the cost of the second model.
       if (video.readyState >= 2 && video.videoWidth > 0 &&
-          video.currentTime !== lastVideoTime && now - lastInferenceTime >= 1000 / 20) {
+          video.currentTime !== lastVideoTime && now - lastInferenceTime >= 1000 / 30) {
         lastVideoTime = video.currentTime
         lastInferenceTime = now
         onResult(tracker.detectForVideo(video, now))

@@ -57,6 +57,8 @@ input::file-selector-button { border: 0; border-radius: 5px; padding: 7px 10px; 
 .camera-stage video { display: block; width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); visibility: hidden; background: #19211e; }
 .camera-stage video.visible { visibility: visible; }
 .face-overlay, .hand-overlay { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); pointer-events: none; }
+.six-seven-overlay { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.six-seven-overlay[hidden] { display: none; }
 .camera-placeholder, .match-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 24px; }
 .camera-placeholder { padding-top: 54px; }
 .empty-icon { color: #8b979a; width: clamp(48px, 6vw, 90px); height: clamp(48px, 5.31vw, 80px); flex-shrink: 0; margin-bottom: clamp(20px, 1.86vw, 28px); }

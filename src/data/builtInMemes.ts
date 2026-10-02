@@ -2,7 +2,7 @@ import originalMemes from './memes.json' with { type: 'json' }
 import importedMemes from './importedMemes.json' with { type: 'json' }
 import defaultImportedIds from '../../scripts/meme-defaults.json' with { type: 'json' }
 import savedProfiles from './profileDefaults.json' with { type: 'json' }
-import { BUILT_IN_GESTURE_KINDS, type PoseKind, type GestureProfile } from '../tracking/gestureProfile.ts'
+import { BUILT_IN_GESTURE_KINDS, validateGestureProfile, type PoseKind, type GestureProfile } from '../tracking/gestureProfile.ts'
 import type { MemeProfile } from '@mimic/core'
 
 interface BundledMeme extends MemeProfile {
@@ -26,5 +26,14 @@ export const DEFAULT_IMPORTED_MEME_IDS = new Set<string>(defaultImportedIds)
 const builtInMemes: BundledMeme[] = [
   ...originalMemes,
   ...importedMemes.filter(({ id }) => DEFAULT_IMPORTED_MEME_IDS.has(id)),
-].map(meme => ({ ...meme, ...savedProfiles[meme.id], poseKind: BUILT_IN_GESTURE_KINDS[meme.id] ?? 'face', gestureProfile: null }))
+].map(meme => {
+  const saved = savedProfiles[meme.id]
+  const gestureProfile = saved?.gestureProfile ? validateGestureProfile(saved.gestureProfile) : null
+  return {
+    ...meme, ...saved,
+    poseKind: BUILT_IN_GESTURE_KINDS[meme.id] ?? saved?.poseKind ?? 'face',
+    gestureProfile,
+    handsTrained: Boolean(gestureProfile),
+  }
+})
 export default builtInMemes

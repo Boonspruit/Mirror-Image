@@ -19,9 +19,15 @@ function MatchImage({ meme }) {
   return <img src={localImage(meme.image)} alt={meme.alt} onError={() => setFailed(true)} />
 }
 
-export default function MemeDisplay({ matches, expression, phase, pendingId, calibrated, message: matchingMessage }) {
+export default function MemeDisplay({ matches, expression, phase, pendingId, calibrated, message: matchingMessage, easterEgg = false }) {
   const best = matches[0]
   const pending = matches.find(({ meme }) => meme.id === pendingId)
+  if (easterEgg) return (
+    <section id="live-match" className="match-display" aria-labelledby="match-title">
+      <div className="match-heading"><h2 id="match-title">6 7</h2></div>
+      <div className="match-visual"><div className="match-image"><img src={localImage('/easter-eggs/67.gif')} alt="Two hands alternating up and down in the 6 7 gesture" /></div></div>
+    </section>
+  )
   if (!best?.comparison) {
     const message = (matchingMessage==='No matching gesture' ? 'Train a gesture in Library or select Face only.' : matchingMessage) || (phase === 'running'
       ? 'Keep your face in view to compare your expression with the profiles.'

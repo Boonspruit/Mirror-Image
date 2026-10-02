@@ -5,6 +5,7 @@ import { createFaceTracker, startFaceTracking } from '../tracking/faceTracker.ts
 import { createHandTracker, startHandTracking } from '../tracking/handTracker.ts'
 import FaceOverlay from './FaceOverlay.tsx'
 import HandOverlay from './HandOverlay.tsx'
+import SixSevenOverlay from './SixSevenOverlay.tsx'
 import DebugPanel from './DebugPanel.tsx'
 import ExpressionPanel from './ExpressionPanel.tsx'
 import SimilarityPanel from './SimilarityPanel.tsx'
@@ -48,6 +49,8 @@ export default function Camera({ library, view }) {
   const memesRef = useRef(memes)
   const overlayRef = useRef(null)
   const handOverlayRef = useRef(null)
+  const sixSevenRef = useRef(null)
+  const [sixSevenVisible, setSixSevenVisible] = useState(false)
   const latestFaceLandmarks = useRef(null)
   const latestHandResult = useRef<{ hands: number; landmarks: number; features: FeatureValues; observedAt?: number }>({ hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES })
   const gestureRef = useRef<GestureObservation>({observedAt: -Infinity, handCount: 0, hands: []})
@@ -106,6 +109,7 @@ export default function Camera({ library, view }) {
     owned.cancelHandLoop?.()
     overlayRef.current?.clear()
     handOverlayRef.current?.clear()
+    sixSevenRef.current?.clear()
     owned.removeListeners?.()
     owned.stream?.getTracks().forEach((track) => track.stop())
     owned.tracker?.close()
@@ -138,7 +142,9 @@ export default function Camera({ library, view }) {
     window.addEventListener('pagehide', stop)
     return () => {
       window.removeEventListener('pagehide', stop)
-      release()
+      // Fast Refresh retains React state after closing the camera resources.
+      if (import.meta.env.DEV) stop()
+      else release()
     }
   }, [release, stop])
 
@@ -223,6 +229,7 @@ export default function Camera({ library, view }) {
           resources.current.cancelHandLoop = startHandTracking(video, handTracking.tracker, (handResult) => {
             if (!isCurrent()) return
             handOverlayRef.current?.draw(handResult.landmarks, video.videoWidth, video.videoHeight)
+            sixSevenRef.current?.observe(handResult.landmarks, video.videoWidth, video.videoHeight, performance.now(), handResult.worldLandmarks)
             const currentFeatures = extractHandFeatures(handResult, latestFaceLandmarks.current)
             gestureRef.current = extractGestureObservation(handResult, latestFaceLandmarks.current, performance.now(), video.videoWidth / video.videoHeight)
             latestHandResult.current = {
@@ -237,6 +244,7 @@ export default function Camera({ library, view }) {
             setHandStatus('unavailable')
             console.error('Hand tracking stopped unexpectedly.', cause)
             handOverlayRef.current?.clear()
+            sixSevenRef.current?.clear()
             latestHandResult.current = { hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES }
             setDelegate(`Face ${activeDelegate} · Hand unavailable`)
           })
@@ -244,6 +252,7 @@ export default function Camera({ library, view }) {
           if (!isCurrent()) return
           handStatusRef.current = 'unavailable'
           setHandStatus('unavailable')
+          sixSevenRef.current?.clear()
           console.warn('Hand tracking is unavailable.', cause)
           setDelegate(`Face ${activeDelegate} · Hand unavailable`)
         })
@@ -364,6 +373,7 @@ export default function Camera({ library, view }) {
           <video ref={videoRef} autoPlay muted playsInline className={videoVisible ? 'visible' : ''} aria-label="Mirrored webcam preview" />
           <FaceOverlay ref={overlayRef} enabled={showOverlay} />
           <HandOverlay ref={handOverlayRef} enabled={showOverlay} />
+          <SixSevenOverlay onReveal={setSixSevenVisible} ref={sixSevenRef} active={view === 'mirror' && phase === 'running'} />
           {!videoVisible && <div className="camera-placeholder">
             <Icon name="camera" className="empty-icon" />
             <h3>{phase === 'requesting' ? 'Allow camera access' : phase === 'error' ? 'Camera unavailable' : 'Camera is off'}</h3>
@@ -377,7 +387,7 @@ export default function Camera({ library, view }) {
         {videoVisible && <div className="camera-controls"><p role="status">{phase === 'loading' ? 'Preparing face and hand tracking…' : result.faces ? `Face detected${result.hands ? ` · ${result.hands} hand${result.hands === 1 ? '' : 's'} detected` : ''}` : 'No face detected. Look toward the camera.'}</p><button onClick={stop} className="secondary">Stop camera</button></div>}
         {error && <p className="error-message" role="alert">{error}</p>}
       </div>
-      <MemeDisplay message={matchView.message} matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} phase={phase} calibrated={Boolean(calibration.baseline)} />
+      <MemeDisplay easterEgg={sixSevenVisible && view === 'mirror' && phase === 'running'} message={matchView.message} matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} phase={phase} calibrated={Boolean(calibration.baseline)} />
     </section>
     <section hidden={view !== 'settings'} className="settings-view" aria-label="Settings">
       <div className="view-heading"><div><h1>Settings</h1></div><p>Camera, calibration, profile backups, and tracking diagnostics.</p></div>

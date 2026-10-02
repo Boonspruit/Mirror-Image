@@ -67,8 +67,8 @@ export default function useMemeLibrary() {
           handFeatures: override.poseKind==='face' ? undefined : override.handFeatures ?? meme.handFeatures,
           browserTrained: true,
           poseKind: override.poseKind ?? meme.poseKind,
-          gestureProfile: override.gestureProfile ?? meme.gestureProfile,
-          handsTrained: Boolean(override.gestureProfile),
+          gestureProfile: override.gestureProfile !== undefined ? override.gestureProfile : meme.gestureProfile,
+          handsTrained: Boolean(override.gestureProfile !== undefined ? override.gestureProfile : meme.gestureProfile),
         } : meme
       }),
     ...customMemes,
