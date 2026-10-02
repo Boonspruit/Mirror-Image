@@ -27,3 +27,4 @@ public/mediapipe/
 public/models/
 playwright-report/
 test-results/
+.cache/

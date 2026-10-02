@@ -1,11 +1,14 @@
+import { BUILT_IN_GESTURE_KINDS, poseKind, type PoseKind } from '../tracking/gestureProfile.ts'
+import { createProfileCapture } from '../tracking/profileCapture.ts'
 import TrainingPreview from './TrainingPreview.tsx'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { EXPRESSION_FEATURES } from '../tracking/featureExtractor'
 import { prepareMemeImage } from '../data/memeLibrary'
 
 const EMPTY_FEATURES = Object.fromEntries(
   Object.keys(EXPRESSION_FEATURES).map((feature) => [feature, 0]),
 )
+const EXPRESSION_FEATURE_NAMES = Object.keys(EXPRESSION_FEATURES)
 
 function imageSource(image) {
   if (!image) return ''
@@ -16,7 +19,7 @@ function imageSource(image) {
 function MemeImage({ meme }) {
   const [failed, setFailed] = useState(false)
   if (failed) return <span className="meme-image-error">Image unavailable: {meme.name}</span>
-  return <img src={imageSource(meme.image)} alt={meme.alt || `${meme.name} meme`} onError={() => setFailed(true)} />
+  return <img loading="lazy" src={imageSource(meme.image)} alt={meme.alt || `${meme.name} meme`} onError={() => setFailed(true)} />
 }
 
 function AddMemeForm({ onAdd }) {
@@ -167,52 +170,92 @@ export default function MemeGallery({
   updateMemeFeatures,
   resetMemeFeatures,
   liveExpression,
-  liveHandFeatures,
+  getLiveSample, handStatus,
   stream, phase, onStart, onStop, cameraError,
   hiddenCount,
   error,
 }) {
   const [selectedId, setSelectedId] = useState(memes[0]?.id ?? '')
   const [trainingStatus, setTrainingStatus] = useState('')
+  const [trainingCapture, setTrainingCapture] = useState<{ memeId: string; kind: PoseKind; startedAt: number } | null>(null)
+  const [captureKind, setCaptureKind] = useState<PoseKind>(poseKind(memes[0]))
+  const [saving, setSaving] = useState(false)
   const dialogRef = useRef(null)
   const selectedMeme = memes.find((meme) => meme.id === selectedId) ?? memes[0]
-  const featureNames = Object.keys(EXPRESSION_FEATURES)
-  const handFeatureNames = Object.keys(selectedMeme?.handFeatures ?? {})
+  const featureNames = EXPRESSION_FEATURE_NAMES
   const liveFeatureCount = featureNames.filter((name) => Number.isFinite(liveExpression?.[name])).length
-  const hasLiveHand = !selectedMeme?.handFeatures ||
-    (liveHandFeatures?.handPresent >= 0.5 && handFeatureNames.every((name) => Number.isFinite(liveHandFeatures?.[name])))
-  const canTrain = Boolean(selectedMeme) && liveFeatureCount === featureNames.length && hasLiveHand
+  const disabledReason = phase !== 'running' ? 'Start the camera to save a profile.'
+    : liveFeatureCount !== featureNames.length ? 'Keep your face visible to save a profile.'
+    : captureKind !== 'face' && handStatus !== 'ready' ? (handStatus === 'unavailable' ? 'Hand tracker unavailable. Restart the camera or select Face only.' : 'Waiting for the hand tracker to load.') : ''
+  const canTrain = Boolean(selectedMeme) && !disabledReason && !saving
+  const trainingDataRef = useRef(null)
+  useEffect(() => { trainingDataRef.current = { selectedMeme, getLiveSample, updateMemeFeatures, phase } }, [selectedMeme, getLiveSample, updateMemeFeatures, phase])
+
+  useEffect(() => {
+    if (!trainingCapture) return undefined
+    const capture = createProfileCapture(trainingCapture.kind, trainingCapture.startedAt, featureNames)
+    let cancelled = false
+    const timer = window.setInterval(() => {
+      const current = trainingDataRef.current
+      if (!current?.selectedMeme || current.selectedMeme.id !== trainingCapture.memeId || current.phase !== 'running') {
+        setTrainingCapture(null)
+        setTrainingStatus('Capture cancelled. Start the camera to try again.')
+        return
+      }
+      const state = capture.update(current.getLiveSample?.(), performance.now())
+      setTrainingStatus(state.message)
+      if (state.failed) { setTrainingCapture(null); return }
+      if (!state.done) return
+      window.clearInterval(timer)
+      setSaving(true)
+      Promise.resolve().then(() => {
+        if (cancelled) return
+        const imageKind = BUILT_IN_GESTURE_KINDS[trainingCapture.memeId]
+        const faceUpdateOnly = imageKind && trainingCapture.kind==='face'
+        return current.updateMemeFeatures(trainingCapture.memeId, state.features,
+          faceUpdateOnly ? current.selectedMeme.handFeatures : state.handFeatures,
+          imageKind ?? trainingCapture.kind,
+          faceUpdateOnly ? current.selectedMeme.gestureProfile ?? null : state.gestureProfile)
+      }).then(() => {
+        if (!cancelled) setTrainingStatus(`Saved the current ${state.gestureProfile ? 'expression and hand pose' : 'expression'} to this profile.`)
+      }).catch(cause => { if (!cancelled) setTrainingStatus(cause.message || 'The profile could not be saved.') })
+        .finally(() => { if (!cancelled) {setSaving(false); setTrainingCapture(null)} })
+    }, 50)
+    return () => { cancelled=true; window.clearInterval(timer) }
+  }, [trainingCapture, featureNames])
 
   async function handleAdd(meme) {
     await addMeme(meme)
     setSelectedId(meme.id)
+    setCaptureKind(poseKind(meme))
     dialogRef.current?.showModal()
   }
 
   async function handleRemove() {
     if (!selectedMeme) return
+    setTrainingCapture(null)
     await removeMeme(selectedMeme.id)
     dialogRef.current?.close()
   }
 
-  async function handleTrain() {
-    if (!selectedMeme || !canTrain) return
-    try {
-      const capturedFeatures = Object.fromEntries(featureNames.map((name) => [name, liveExpression[name]]))
-      const capturedHandFeatures = selectedMeme.handFeatures
-        ? Object.fromEntries(handFeatureNames.map((name) => [name, liveHandFeatures[name]]))
-        : undefined
-      await updateMemeFeatures(selectedMeme.id, capturedFeatures, capturedHandFeatures)
-      setTrainingStatus(`Saved the current ${capturedHandFeatures ? 'expression and hand pose' : 'expression'} to this profile.`)
-    } catch (cause) {
-      setTrainingStatus(cause instanceof Error ? cause.message : 'The expression could not be saved.')
+  function handleTrain() {
+    if (trainingCapture) {
+      setTrainingCapture(null)
+      setTrainingStatus('Capture cancelled.')
+      return
     }
+    if (!selectedMeme || !canTrain) return
+    setTrainingStatus('Prepare your pose… 3')
+    setTrainingCapture({ memeId: selectedMeme.id, kind: captureKind, startedAt: performance.now() })
   }
 
   function handleResetProfile() {
     if (!selectedMeme) return
-    resetMemeFeatures(selectedMeme.id)
-    setTrainingStatus(`Restored the original profile values for ${selectedMeme.name}.`)
+    setTrainingCapture(null)
+    try {
+      setCaptureKind(poseKind(resetMemeFeatures(selectedMeme.id) ?? selectedMeme))
+      setTrainingStatus(`Restored the original profile values for ${selectedMeme.name}.`)
+    } catch (cause) { setTrainingStatus(cause.message || 'The profile could not be reset.') }
   }
 
   return (
@@ -246,7 +289,9 @@ export default function MemeGallery({
                 aria-label={`Inspect ${meme.name}`}
                 aria-pressed={selectedMeme?.id === meme.id}
                 onClick={() => {
+                  setTrainingCapture(null)
                   setSelectedId(meme.id)
+                  setCaptureKind(poseKind(meme))
                   setTrainingStatus('')
                   dialogRef.current?.showModal()
                 }}
@@ -256,13 +301,13 @@ export default function MemeGallery({
                 </div>
                 <span className="meme-name">{meme.name}</span>
                 <small className="meme-expression">{meme.expressionLabel}</small>
-                {meme.handFeatures ? <small className="hand-aware-label">Hand gesture</small> : null}
+                {poseKind(meme)!=='face' ? <small className="hand-aware-label">{meme.gestureProfile ? 'Hand gesture' : 'Hand capture required'}</small> : null}
               </button>
             ))}
           </div>
 
           {selectedMeme ? (
-            <dialog ref={dialogRef} className="training-dialog" aria-labelledby="training-title">
+            <dialog ref={dialogRef} className="training-dialog" aria-labelledby="training-title" onClose={() => { setTrainingCapture(null); setSaving(false) }}>
               <div className="dialog-heading"><div><h2 id="training-title">{selectedMeme.name}</h2></div><button type="button" className="close-dialog" onClick={() => dialogRef.current.close()}>Close</button></div>
             <article className="meme-inspector" role="region" aria-label="Selected meme profile">
               <div className="training-comparison">
@@ -275,28 +320,26 @@ export default function MemeGallery({
               <div className="inspector-copy meme-profile">
 
                 {selectedMeme.browserTrained ? <span className="trained-badge">Updated from camera{selectedMeme.handsTrained ? ' · Includes hand gesture' : ''}</span> : null}
+                {selectedMeme.profileSource === 'automatic' ? <p className="preview-caption">Automatically analyzed</p> : null}
                 <div className="profile-training">
                   <div>
                     <strong>Update expression profile</strong>
-                    <p>{canTrain
-                      ? (selectedMeme.handFeatures
-                        ? 'Hold the expression and hand pose to associate with this profile, then save the current readings.'
-                        : 'Hold the expression to associate with this profile, then save the current readings.')
-                      : (selectedMeme.handFeatures
-                        ? 'Start the camera, keep your face visible, and show at least one hand to capture the full profile.'
-                        : 'Start the camera and keep your face visible to capture all 10 expression values.')}</p>
+                    <p>{disabledReason || 'Click Save, then position your face and hands during the three-second countdown. Hold steady while the profile is captured.'}</p>
+                    {poseKind(selectedMeme)!=='face' && !selectedMeme.gestureProfile && <p className="hand-aware-label">Hand capture required. Your saved facial values are preserved.</p>}
+                    {captureKind==='face' && BUILT_IN_GESTURE_KINDS[selectedMeme.id] && <p>Face only updates the expression values. This image still requires its hand gesture for matching.</p>}
+                    <label className="pose-choice">Profile pose<select aria-label="Profile pose" value={captureKind} disabled={Boolean(trainingCapture) || saving} onChange={event=>setCaptureKind(event.target.value as PoseKind)}><option value="face">Face only</option><option value="one-hand" disabled={BUILT_IN_GESTURE_KINDS[selectedMeme.id]==='two-hands'}>Face + one hand</option><option value="two-hands" disabled={BUILT_IN_GESTURE_KINDS[selectedMeme.id]==='one-hand'}>Face + two hands</option></select></label>
                   </div>
                   <div className="profile-training-actions">
-                    <button className="train-meme-button" type="button" onClick={handleTrain} disabled={!canTrain}>
-                      {selectedMeme.handFeatures ? 'Save expression and hand profile' : 'Save expression profile'}
+                    <button className="train-meme-button" type="button" onClick={handleTrain} disabled={saving || !trainingCapture && !canTrain}>
+                      {saving ? 'Saving profile…' : trainingCapture ? 'Cancel capture' : captureKind!=='face' ? 'Save expression and hand profile' : 'Save expression profile'}
                     </button>
                     {selectedMeme.browserTrained && !selectedMeme.id.startsWith('custom-') ? (
-                      <button className="reset-profile-button" type="button" onClick={handleResetProfile}>
+                      <button className="reset-profile-button" type="button" disabled={saving} onClick={handleResetProfile}>
                         Reset original values
                       </button>
                     ) : null}
                   </div>
-                  <span className="training-status" aria-live="polite">{trainingStatus}</span>
+                  <span className="training-status" role="status" aria-live="polite">{trainingStatus}</span>
                 </div>
                 <details className="profile-details"><summary>Profile details</summary>                <p className="debug-description">{selectedMeme.notes || selectedMeme.expressionLabel}</p>
                 <dl className="meme-features">
@@ -307,6 +350,7 @@ export default function MemeGallery({
                     </div>
                   ))}
                 </dl>
+                {selectedMeme.gestureProfile && <p>Trained gesture: {selectedMeme.gestureProfile.handCount} hand{selectedMeme.gestureProfile.handCount===2 ? 's' : ''}. Finger shape, palm direction, and position are required.</p>}
                 {selectedMeme.handFeatures ? <><h3 className="hand-profile-title">Required hand gesture</h3><dl className="meme-features hand-features">
                   {Object.entries(selectedMeme.handFeatures).map(([feature, value]) => (
                     <div key={feature}>
@@ -322,7 +366,7 @@ export default function MemeGallery({
                       Image source
                     </a>
                   ) : <span>Stored in this browser</span>}
-                  <button className="remove-meme-button" type="button" onClick={handleRemove}>
+                  <button className="remove-meme-button" type="button" disabled={saving} onClick={handleRemove}>
                     Remove meme
                   </button>
                 </div>

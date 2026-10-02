@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { compareExpressions, DEFAULT_FEATURE_WEIGHTS, HAND_FEATURE_WEIGHTS } from '../matching/similarity.ts'
+import { compareExpressions, DEFAULT_FEATURE_WEIGHTS } from '../matching/similarity.ts'
 import MatchMeter from './MatchMeter.tsx'
 import Icon from './Icon.tsx'
 
@@ -19,17 +19,17 @@ function MatchImage({ meme }) {
   return <img src={localImage(meme.image)} alt={meme.alt} onError={() => setFailed(true)} />
 }
 
-export default function MemeDisplay({ matches, expression, handFeatures, phase, pendingId, calibrated }) {
+export default function MemeDisplay({ matches, expression, phase, pendingId, calibrated, message: matchingMessage }) {
   const best = matches[0]
   const pending = matches.find(({ meme }) => meme.id === pendingId)
   if (!best?.comparison) {
-    const message = phase === 'running'
+    const message = (matchingMessage==='No matching gesture' ? 'Train a gesture in Library or select Face only.' : matchingMessage) || (phase === 'running'
       ? 'Keep your face in view to compare your expression with the profiles.'
-      : phase === 'loading' || phase === 'requesting' ? 'Your match will appear when tracking is ready.' : 'Your closest match will appear here.'
+      : phase === 'loading' || phase === 'requesting' ? 'Your match will appear when tracking is ready.' : 'Your closest match will appear here.')
     return (
       <section id="live-match" className="match-display match-empty" aria-labelledby="match-title">
         <div className="match-heading"><h2 id="match-title">Closest match</h2></div>
-        <div className="match-image match-placeholder-frame"><div className="match-placeholder"><Icon name="image" className="empty-icon" /><h3>No match yet</h3><p>{message}</p></div></div>
+        <div className="match-image match-placeholder-frame"><div className="match-placeholder"><Icon name="image" className="empty-icon" /><h3>{matchingMessage==='No matching gesture' ? matchingMessage : 'No match yet'}</h3><p>{message}</p></div></div>
       </section>
     )
   }
@@ -38,8 +38,8 @@ export default function MemeDisplay({ matches, expression, handFeatures, phase, 
     const weights = Object.fromEntries(features.map((feature) => [feature, DEFAULT_FEATURE_WEIGHTS[feature]]))
     return [name, compareExpressions(expression, best.meme.features, weights)?.percentage] as [string, number | undefined]
   })
-  if (best.meme.handFeatures) {
-    groupScores.push(['Hand gesture', compareExpressions(handFeatures, best.meme.handFeatures, HAND_FEATURE_WEIGHTS)?.percentage])
+  if (best.meme.gestureProfile) {
+    groupScores.push(['Hand gesture', best.comparison.gesturePercentage])
   }
 
   return (
@@ -57,7 +57,7 @@ export default function MemeDisplay({ matches, expression, handFeatures, phase, 
           {groupScores.map(([name, percentage]) => <div key={name}><dt>{name}</dt><dd>{Number.isFinite(percentage) ? `${Math.round(percentage)}%` : '—'}</dd></div>)}
         </dl>
         <div className="match-meta"><span>Distance {best.comparison.distance.toFixed(3)}</span><span>Coverage {Math.round(best.comparison.coverage * 100)}%</span>{pending && <span>Checking {pending.meme.name}…</span>}</div>
-      <p className="match-caveat">{calibrated ? 'Your neutral baseline is subtracted before smoothing. ' : ''}The latest frame contributes 65% of each smoothed face value. Profiles with hand gestures can compare up to two hands and mouth proximity. Matches update every 100 ms; a matching gesture appears immediately. Percentages indicate relative similarity, not model confidence.</p>
+      <p className="match-caveat">{calibrated ? 'Your neutral baseline is subtracted before smoothing. ' : ''}The latest frame contributes 65% of each smoothed face value. Gesture profiles require matching finger shape, hand direction, position, and hand count before facial scoring. Scores update every 100 ms. A new match must stay ahead for 600 ms before replacing the current match. Percentages indicate relative similarity, not model confidence.</p>
         </details>
       </div>
 

@@ -325,3 +325,12 @@ footer svg { width: 18px; height: 18px; flex-shrink: 0; }
   .view-heading h1 { font-size: 28px; }
   .training-comparison { grid-template-columns: 1fr; }
 }
+
+.pose-choice { display:flex; flex-wrap:wrap; align-items:center; gap:12px; font-weight:600; }
+.pose-choice select { max-width:100%; padding:10px 12px; border:1px solid #bac3b4; border-radius:8px; background:var(--surface, #fff); color:inherit; font:inherit; }
+.pose-choice { margin:12px 0; }
+.matching-mode-setting { margin:0; }
+.matching-help, .matching-error { margin: -8px 0 0; color:var(--muted); font-size:14px; }
+.matching-error { color:var(--danger); }
+.settings-controls textarea { display:block; width:100%; max-width:100%; box-sizing:border-box; margin-top:12px; font:12px/1.5 monospace; }
+@media (max-width:600px) { .pose-choice { align-items:flex-start; flex-direction:column; } }

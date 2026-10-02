@@ -11,7 +11,8 @@
     "setup": "node scripts/prepareAssets.js",
     "postinstall": "npm run setup",
     "test": "playwright test",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "memes:sync": "node scripts/syncMemes.js"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "1.0.1",

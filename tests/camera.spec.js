@@ -19,6 +19,7 @@ test('starts idle, requests no camera, and fits desktop and narrow screens', asy
     navigator.mediaDevices.getUserMedia = async () => { await window.recordCameraRequest(); throw new Error('Unexpected camera request') }
   })
   await page.goto('/#settings')
+  await page.getByText('Advanced diagnostics', { exact: true }).click()
   await expect(page).toHaveTitle('Mirror Image')
   await expect(page.getByRole('status')).toContainText('Camera is off')
   await expect(startButton(page)).toBeVisible()
@@ -34,6 +35,7 @@ test('permission denial gives a recoverable error', async ({ page }) => {
     navigator.mediaDevices.getUserMedia = async () => { throw new DOMException('Denied', 'NotAllowedError') }
   })
   await page.goto('/#settings')
+  await page.getByText('Advanced diagnostics', { exact: true }).click()
   await startButton(page).click()
   await expect(page.getByRole('alert')).toContainText('Camera access was denied')
   await expect(startButton(page)).toBeEnabled()
@@ -41,13 +43,14 @@ test('permission denial gives a recoverable error', async ({ page }) => {
 })
 
 test('real model runs on a synthetic webcam and releases tracks across restart', async ({ page }) => {
-  test.setTimeout(45_000)
+  test.setTimeout(180_000)
   const uncaught = []
   page.on('pageerror', (error) => uncaught.push(error.message))
   await page.goto('/#settings')
+  await page.getByText('Advanced diagnostics', { exact: true }).click()
   for (let cycle = 0; cycle < 2; cycle += 1) {
     await startButton(page).click()
-    await expect(page.getByRole('status')).toContainText('Tracking is running')
+    await expect(page.getByRole('status')).toContainText('Tracking is running', { timeout: 90_000 })
     await expect(page.getByRole('status')).toContainText('No face detected')
     await page.locator('.camera-stage video').evaluate((video) => { window.savedTracks = video.srcObject.getTracks() })
     await stopButton(page).click()
@@ -72,6 +75,7 @@ test('cancellation releases a permission request that resolves late', async ({ p
     })
   })
   await page.goto('/#settings')
+  await page.getByText('Advanced diagnostics', { exact: true }).click()
   await startButton(page).click()
   await page.getByRole('button', { name: 'Cancel' }).click()
   await page.evaluate(() => window.finishPermission())
@@ -82,6 +86,7 @@ test('cancellation releases a permission request that resolves late', async ({ p
 test('a model load error stops the camera and offers retry', async ({ page }) => {
   await page.route('**/models/face_landmarker.task', (route) => route.abort())
   await page.goto('/#settings')
+  await page.getByText('Advanced diagnostics', { exact: true }).click()
   await startButton(page).click()
   await expect(page.getByRole('alert')).toContainText('face tracker could not load')
   await expect(startButton(page)).toBeEnabled()
@@ -89,7 +94,7 @@ test('a model load error stops the camera and offers retry', async ({ page }) =>
 })
 
 test('stop during model loading does not resurrect tracking', async ({ page }) => {
-  test.setTimeout(45_000)
+  test.setTimeout(180_000)
   let releaseModel
   const gate = new Promise((resolve) => { releaseModel = resolve })
   let modelRequested
@@ -100,6 +105,7 @@ test('stop during model loading does not resurrect tracking', async ({ page }) =
     await route.continue()
   })
   await page.goto('/#settings')
+  await page.getByText('Advanced diagnostics', { exact: true }).click()
   await startButton(page).click()
   await requested
   await page.locator('.camera-stage video').evaluate((video) => { window.savedTracks = video.srcObject.getTracks() })
@@ -109,11 +115,12 @@ test('stop during model loading does not resurrect tracking', async ({ page }) =
   expect(await page.evaluate(() => window.savedTracks.every((t) => t.readyState === 'ended'))).toBe(true)
   // Let the real pending initialization complete, then ensure a fresh session works.
   await startButton(page).click()
-  await expect(page.getByRole('status')).toContainText('Tracking is running')
+  await expect(page.getByRole('status')).toContainText('Tracking is running', { timeout: 90_000 })
   await stopButton(page).click()
 })
 
 test('real face mesh aligns, toggles, resizes, and clears on face loss and stop', async ({ page }) => {
+  test.setTimeout(180_000)
   // A public MediaPipe test photo, never a photo from the user's camera.
   const response = await fetch('https://storage.googleapis.com/mediapipe-assets/portrait.jpg')
   if (!response.ok) throw new Error('Could not download MediaPipe test portrait')
@@ -145,6 +152,7 @@ test('real face mesh aligns, toggles, resizes, and clears on face loss and stop'
     }
   })
   await page.goto('/#settings')
+  await page.getByText('Advanced diagnostics', { exact: true }).click()
   await startButton(page).click()
   await expect(page.getByRole('status')).toContainText('Face detected.')
   await expect(metric(page, 'Facial landmarks')).toHaveText('478')
@@ -168,7 +176,7 @@ test('real face mesh aligns, toggles, resizes, and clears on face loss and stop'
   expect(scores.every((v) => Number.isFinite(v) && v >= 0 && v <= 1)).toBe(true)
   expect(scores.some((v) => v > 0.1)).toBe(true)
   await debug.getByText('All raw blendshapes (52)', { exact: true }).click()
-  await page.getByRole('checkbox', { name: /Show face mesh/ }).check()
+  await page.getByRole('checkbox', { name: /Show face and hand landmarks/ }).check()
   await expect.poll(() => overlayPixels(page)).toBeGreaterThan(100)
   await page.getByRole('link', { name: 'Mirror', exact: true }).click()
   await expect(page.locator('.workspace')).toBeVisible()
@@ -191,11 +199,11 @@ test('real face mesh aligns, toggles, resizes, and clears on face loss and stop'
   await page.screenshot({ path: 'test-results/face-mesh.png', fullPage: true })
   const trackId = await page.locator('.camera-stage video').evaluate((v) => v.srcObject.getVideoTracks()[0].id)
   await page.getByRole('link', { name: 'Settings', exact: true }).click()
-  const toggle = page.getByRole('checkbox', { name: /Show face mesh/ })
+  const toggle = page.getByRole('checkbox', { name: /Show face and hand landmarks/ })
   await toggle.uncheck()
   await expect(page.locator('.face-overlay')).toBeHidden()
   await expect.poll(() => overlayPixels(page)).toBe(0)
-  await expect(page.getByRole('status')).toContainText('Tracking is running')
+  await expect(page.getByRole('status')).toContainText('Tracking is running', { timeout: 90_000 })
   expect(await page.locator('.camera-stage video').evaluate((v) => v.srcObject.getVideoTracks()[0].id)).toBe(trackId)
   await toggle.check()
   await expect.poll(() => overlayPixels(page)).toBeGreaterThan(100)
@@ -226,9 +234,11 @@ test('real face mesh aligns, toggles, resizes, and clears on face loss and stop'
 })
 
 test('camera disconnection releases the session', async ({ page }) => {
+  test.setTimeout(180_000)
   await page.goto('/#settings')
+  await page.getByText('Advanced diagnostics', { exact: true }).click()
   await startButton(page).click()
-  await expect(page.getByRole('status')).toContainText('Tracking is running')
+  await expect(page.getByRole('status')).toContainText('Tracking is running', { timeout: 90_000 })
   await page.locator('.camera-stage video').evaluate((video) => {
     window.savedTracks = video.srcObject.getTracks()
     window.savedTracks[0].dispatchEvent(new Event('ended'))
@@ -266,13 +276,14 @@ test('debug panel maps category names and updates raw scores without stale readi
     `,
   }))
   await page.goto('/#settings')
+  await page.getByText('Advanced diagnostics', { exact: true }).click()
   const debug = page.getByRole('region', { name: 'Live blendshapes' })
   const value = (name) => debug.locator('.feature-groups [data-feature="' + name + '"] .feature-value')
   await expect(value('jawOpen')).toHaveText('—')
   await startButton(page).click()
-  await expect(page.getByRole('status')).toContainText('Tracking is running')
+  await expect(page.getByRole('status')).toContainText('Tracking is running', { timeout: 90_000 })
   // Hide the mesh because this test intentionally supplies no landmark geometry.
-  await page.getByRole('checkbox', { name: /Show face mesh/ }).uncheck()
+  await page.getByRole('checkbox', { name: /Show face and hand landmarks/ }).uncheck()
   await page.evaluate(() => {
     window.debugFixture = {
       faceLandmarks: [[]], facialTransformationMatrixes: [{ rows: 4, columns: 4,

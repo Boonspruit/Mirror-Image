@@ -12,11 +12,11 @@
       "browInnerUp": 0.607292621358517,
       "browDown": 0.00033804091107995644,
       "jawOpen": 0.2940450440138602,
-      "smile": 0.000026608926597154433,
-      "frown": 0.00001777289241524989,
+      "smile": 2.6608926597154433e-05,
+      "frown": 1.777289241524989e-05,
       "mouthPucker": 0.2011068723358129,
-      "cheekSquint": 3.6374815121534614e-7,
-      "noseSneer": 6.808652409454688e-7
+      "cheekSquint": 3.6374815121534614e-07,
+      "noseSneer": 6.808652409454688e-07
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
@@ -39,11 +39,11 @@
       "browInnerUp": 0.021850053804911413,
       "browDown": 0.0676791825024621,
       "jawOpen": 0.057086752051867806,
-      "smile": 1.7492762122734596e-7,
+      "smile": 1.7492762122734596e-07,
       "frown": 0.00022876985157307598,
       "mouthPucker": 0.8824304928282688,
-      "cheekSquint": 4.6364348471653124e-7,
-      "noseSneer": 7.986173512003305e-7
+      "cheekSquint": 4.6364348471653124e-07,
+      "noseSneer": 7.986173512003305e-07
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
@@ -66,11 +66,11 @@
       "browInnerUp": 0.1461953883206636,
       "browDown": 0.012116744595576621,
       "jawOpen": 0.01805347765060875,
-      "smile": 0.000022451959261317005,
+      "smile": 2.2451959261317005e-05,
       "frown": 0.08245452480679678,
       "mouthPucker": 0.02273573263211151,
-      "cheekSquint": 3.849387893628451e-7,
-      "noseSneer": 8.970075052005158e-7
+      "cheekSquint": 3.849387893628451e-07,
+      "noseSneer": 8.970075052005158e-07
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
@@ -94,43 +94,16 @@
       "browDown": 0.010075756690262425,
       "jawOpen": 0.14266008757100568,
       "smile": 0.2772911416901024,
-      "frown": 0.000017179615277239574,
+      "frown": 1.7179615277239574e-05,
       "mouthPucker": 0.003555303832387646,
-      "cheekSquint": 6.48027245706774e-7,
-      "noseSneer": 0.000001664376479862594
+      "cheekSquint": 6.48027245706774e-07,
+      "noseSneer": 1.664376479862594e-06
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
     "source": {
       "pageUrl": "https://imgflip.com/memetemplate/81332206/Hide-the-Pain-Harold",
       "imageUrl": "https://i.imgflip.com/1cf8by.jpg",
-      "retrievedAt": "2026-09-18"
-    }
-  },
-  {
-    "id": "leonardo-cheers",
-    "name": "Leonardo Cheers",
-    "image": "/memes/leonardo_cheers.jpg",
-    "alt": "Leonardo DiCaprio raising a glass with a closed-mouth smile.",
-    "expressionLabel": "Knowing smile",
-    "profileSource": "trained",
-    "features": {
-      "eyeWide": 0.00654877707938149,
-      "eyeSquint": 0.14487989507566518,
-      "browInnerUp": 0.6645707149196254,
-      "browDown": 0.00024793868045269675,
-      "jawOpen": 0.004475311985352128,
-      "smile": 0.005787355849545022,
-      "frown": 0.0011118837575560805,
-      "mouthPucker": 0.0026732156109951256,
-      "cheekSquint": 2.8934912848431713e-7,
-      "noseSneer": 0.0000011547448184009364
-    },
-    "headPose": null,
-    "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
-    "source": {
-      "pageUrl": "https://imgflip.com/memetemplate/5496396/Leonardo-Dicaprio-Cheers",
-      "imageUrl": "https://i.imgflip.com/39t1o.jpg",
       "retrievedAt": "2026-09-18"
     }
   },
@@ -148,10 +121,10 @@
       "browDown": 0.054036608962372834,
       "jawOpen": 0.38074818899735885,
       "smile": 0.6999232361978256,
-      "frown": 0.00000327828709871892,
+      "frown": 3.27828709871892e-06,
       "mouthPucker": 0.021310853595279462,
-      "cheekSquint": 3.803705572023038e-7,
-      "noseSneer": 0.0000017749502926008945
+      "cheekSquint": 3.803705572023038e-07,
+      "noseSneer": 1.7749502926008945e-06
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
@@ -174,11 +147,11 @@
       "browInnerUp": 0.1430861074190995,
       "browDown": 0.013350116676059487,
       "jawOpen": 0.89999665397824,
-      "smile": 0.000015386183192628765,
-      "frown": 0.00003436144725253129,
+      "smile": 1.5386183192628765e-05,
+      "frown": 3.436144725253129e-05,
       "mouthPucker": 0.4718630460196605,
-      "cheekSquint": 3.0067931558707586e-7,
-      "noseSneer": 9.216638467984676e-7
+      "cheekSquint": 3.0067931558707586e-07,
+      "noseSneer": 9.216638467984676e-07
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
@@ -196,16 +169,16 @@
     "expressionLabel": "Empty neutral stare",
     "profileSource": "trained",
     "features": {
-      "eyeWide": 0.005775133747464524,
-      "eyeSquint": 0.23301652052236982,
-      "browInnerUp": 0.307393940332087,
-      "browDown": 0.008581657120121246,
-      "jawOpen": 0.03745015574213018,
-      "smile": 0.000003618969973558981,
-      "frown": 0.0002839066174552436,
-      "mouthPucker": 0.33778981256266827,
-      "cheekSquint": 2.6477809611036955e-7,
-      "noseSneer": 4.788787392421176e-7
+      "eyeWide": 0.0034867014289326538,
+      "eyeSquint": 0.28374963161393424,
+      "browInnerUp": 0.21958736628710085,
+      "browDown": 0.006982203554235859,
+      "jawOpen": 0.03333764908208529,
+      "smile": 2.3431799430392774e-06,
+      "frown": 0.00032802796132571683,
+      "mouthPucker": 0.48513508584216297,
+      "cheekSquint": 2.655452334157248e-07,
+      "noseSneer": 6.287194226140874e-07
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
@@ -231,8 +204,8 @@
       "smile": 0.6341835638051642,
       "frown": 0.0001700417127843611,
       "mouthPucker": 0.021826384619009834,
-      "cheekSquint": 7.258209958130573e-7,
-      "noseSneer": 0.0000035045740498264556
+      "cheekSquint": 7.258209958130573e-07,
+      "noseSneer": 3.5045740498264556e-06
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to the project default.",
@@ -255,11 +228,11 @@
       "browInnerUp": 0.6874466256797995,
       "browDown": 0.00024275274309274272,
       "jawOpen": 0.757329703514761,
-      "smile": 0.000006947022943491045,
-      "frown": 0.00005167342401420491,
+      "smile": 6.947022943491045e-06,
+      "frown": 5.167342401420491e-05,
       "mouthPucker": 0.5960171865796416,
-      "cheekSquint": 8.420969475252273e-7,
-      "noseSneer": 0.0000012276126859356638
+      "cheekSquint": 8.420969475252273e-07,
+      "noseSneer": 1.2276126859356638e-06
     },
     "headPose": null,
     "notes": "Expression profile trained from the saved browser library and promoted to a built-in meme.",
@@ -281,8 +254,8 @@
       "smile": 0.0040145664109541975,
       "frown": 0.005284832623487338,
       "mouthPucker": 0.00027850101939025796,
-      "cheekSquint": 4.2621188223598883e-7,
-      "noseSneer": 8.162090175829909e-7
+      "cheekSquint": 4.2621188223598883e-07,
+      "noseSneer": 8.162090175829909e-07
     },
     "handFeatures": {
       "handPresent": 1,
@@ -309,8 +282,8 @@
       "smile": 0.12013020242973203,
       "frown": 0.00020825556262310229,
       "mouthPucker": 0.007733485041054918,
-      "cheekSquint": 9.192963010545869e-7,
-      "noseSneer": 0.000003697886885624771
+      "cheekSquint": 9.192963010545869e-07,
+      "noseSneer": 3.697886885624771e-06
     },
     "handFeatures": {
       "handPresent": 1,
@@ -334,11 +307,11 @@
       "browInnerUp": 0.24761720087824163,
       "browDown": 0.0014358926931165425,
       "jawOpen": 0.01717847076107165,
-      "smile": 0.00008090019913934315,
+      "smile": 8.090019913934315e-05,
       "frown": 0.0011353651922631715,
       "mouthPucker": 0.029708866164836926,
-      "cheekSquint": 2.913061681160347e-7,
-      "noseSneer": 6.649880203398597e-7
+      "cheekSquint": 2.913061681160347e-07,
+      "noseSneer": 6.649880203398597e-07
     },
     "handFeatures": {
       "handPresent": 1,
@@ -362,11 +335,11 @@
       "browInnerUp": 0.1754256481951228,
       "browDown": 0.0026587840794037735,
       "jawOpen": 0.019502722662080106,
-      "smile": 0.000019403022444566574,
+      "smile": 1.9403022444566574e-05,
       "frown": 0.0036347600869082826,
       "mouthPucker": 0.06559888382167281,
-      "cheekSquint": 3.026658897117963e-7,
-      "noseSneer": 8.693306752844046e-7
+      "cheekSquint": 3.026658897117963e-07,
+      "noseSneer": 8.693306752844046e-07
     },
     "handFeatures": {
       "handPresent": 1,

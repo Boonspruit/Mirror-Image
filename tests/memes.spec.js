@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test'
 import { readFileSync, readdirSync } from 'node:fs'
 import { EXPRESSION_FEATURES } from '../src/tracking/featureExtractor.ts'
 
+const imported = JSON.parse(readFileSync(new URL('../src/data/importedMemes.json', import.meta.url), 'utf8'))
 const memes = JSON.parse(readFileSync(new URL('../src/data/memes.json', import.meta.url), 'utf8'))
 
 test('retained Almarts27 hamster references are stored locally with valid image files', () => {
@@ -16,9 +17,9 @@ test('retained Almarts27 hamster references are stored locally with valid image 
 })
 
 test('all default meme profiles share the exact expression schema and have local image files', () => {
-  expect(memes).toHaveLength(14)
-  expect(new Set(memes.map((m) => m.id)).size).toBe(14)
-  expect(new Set(memes.map((m) => m.image)).size).toBe(14)
+  expect(memes).toHaveLength(13)
+  expect(new Set(memes.map((m) => m.id)).size).toBe(13)
+  expect(new Set(memes.map((m) => m.image)).size).toBe(13)
   for (const meme of memes) {
     expect(meme.id).toMatch(/^[a-z0-9-]+$/)
     expect(meme.name.length).toBeGreaterThan(0)
@@ -42,6 +43,24 @@ test('all default meme profiles share the exact expression schema and have local
   }
 })
 
+test('imported profiles have complete expression vectors, local images, and pinned provenance', () => {
+  expect(imported.length).toBeGreaterThan(0)
+  expect(new Set([...memes, ...imported].map((m) => m.id)).size).toBe(memes.length + imported.length)
+  const report = JSON.parse(readFileSync(new URL('../docs/memes/import-report.json', import.meta.url)))
+  expect(report.profileCount).toBe(imported.length)
+  for (const meme of imported) {
+    expect(Object.keys(meme.features).sort()).toEqual(Object.keys(EXPRESSION_FEATURES).sort())
+    expect(Object.values(meme.features).every((v) => Number.isFinite(v) && v >= 0 && v <= 1)).toBe(true)
+    expect(meme.handFeatures).toBeUndefined()
+    const retained = report.retainedProfiles.find((entry) => entry.id === meme.id)
+    expect(meme.source.revision).toBe(retained?.revision ?? report.revision)
+    expect(meme.source.imageHash).toMatch(/^[a-f0-9]{64}$/)
+    expect(meme.source.rights).toBeTruthy()
+    if (!retained) expect(report.records.find((r) => r.id === meme.id)).toMatchObject({ status: 'accepted', faces: 1 })
+    expect(readFileSync(new URL('../public' + meme.image, import.meta.url)).subarray(0, 3).toString('hex')).toBe('ffd8ff')
+  }
+})
+
 test('gallery loads local images, switches profiles, and works without webcam or external requests', async ({ page }) => {
   const externalRequests = []
   await page.route('**/*', (route) => {
@@ -60,23 +79,23 @@ test('gallery loads local images, switches profiles, and works without webcam or
   })
   await page.goto('/')
   await page.getByRole('link', { name: 'Library', exact: true }).click()
-  const gallery = page.getByRole('region', { name: 'Meet your meme counterparts' })
+  const gallery = page.getByRole('region', { name: 'Meme profiles', exact: true })
   const inspector = gallery.getByRole('region', { name: 'Selected meme profile' })
-  await expect(gallery.locator('.meme-card')).toHaveCount(14)
-  await expect.poll(() => gallery.locator('.meme-thumbnail img').evaluateAll((images) => images.every((i) => i.complete && i.naturalWidth > 0))).toBe(true)
+  await expect(gallery.locator('.meme-card')).toHaveCount(13 + imported.length)
+  await expect.poll(() => gallery.locator('.meme-thumbnail img').first().evaluate((i) => i.complete && i.naturalWidth > 0)).toBe(true)
   const imagesClearLabels = await gallery.locator('.meme-card').evaluateAll((cards) => cards.every((card) => {
     const image = card.querySelector('img').getBoundingClientRect()
     const label = card.querySelector('.meme-name').getBoundingClientRect()
     return image.bottom <= label.top
   }))
   expect(imagesClearLabels).toBe(true)
-  for (const meme of memes) {
+  for (const meme of [...memes, ...imported.slice(0, 1)]) {
     const card = gallery.getByRole('button', { name: 'Inspect ' + meme.name, exact: true })
     await card.click()
     await expect(gallery.getByRole('dialog')).toBeVisible()
     await expect(gallery.locator('.meme-card[aria-pressed="true"]')).toHaveCount(1)
     await expect(gallery.getByRole('dialog').getByRole('heading', { name: meme.name, exact: true })).toBeVisible()
-    await gallery.getByText('Expression values & notes', { exact: true }).click()
+    await gallery.getByText('Profile details', { exact: true }).click()
     await expect(inspector.locator('dt')).toHaveCount(meme.handFeatures ? 13 : 10)
     await expect(inspector.locator('dd')).toHaveText([...Object.values(meme.features), ...Object.values(meme.handFeatures ?? {})].map((v) => v.toFixed(2)))
     if (meme.source) await expect(inspector.getByRole('link', { name: 'Image source' })).toHaveAttribute('href', meme.source.pageUrl)
@@ -98,7 +117,7 @@ test('gallery loads local images, switches profiles, and works without webcam or
 test('missing images display a fallback and other cards still work', async ({ page }) => {
   await page.route('**/memes/surprised_pikachu.jpg', (route) => route.abort())
   await page.goto('/#meme-collection')
-  const gallery = page.getByRole('region', { name: 'Meet your meme counterparts' })
+  const gallery = page.getByRole('region', { name: 'Meme profiles', exact: true })
   await expect(gallery.locator('.meme-grid').getByText('Image unavailable: Surprised Pikachu', { exact: true })).toHaveCount(1)
   await gallery.getByRole('button', { name: 'Inspect The Rock Eyebrow', exact: true }).click()
   const inspector = gallery.getByRole('region', { name: 'Selected meme profile' })

@@ -40,3 +40,22 @@ test('an empty ranking clears held state', () => {
   expect(stabilizer.update([], 100)).toEqual({ selectedId: null, pendingId: null })
   expect(stabilizer.update([result('b', 0.1)], 200).selectedId).toBe('b')
 })
+
+test('a sustained challenger confirms at 600 ms and removed selections switch immediately', () => {
+  const stabilizer = createMatchStabilizer({ holdMs: 600, switchMargin: .005 })
+  stabilizer.update([result('a', .1), result('b', .2)], 0)
+  expect(stabilizer.update([result('b', .05), result('a', .2)], 100).pendingId).toBe('b')
+  expect(stabilizer.update([result('b', .05), result('a', .2)], 699).selectedId).toBe('a')
+  expect(stabilizer.update([result('b', .05), result('a', .2)], 700).selectedId).toBe('b')
+  expect(stabilizer.update([result('a', .1)], 1700)).toEqual({ selectedId: 'a', pendingId: null })
+})
+
+test('another challenger or a marginal lead cancels continuous confirmation', () => {
+  const stabilizer = createMatchStabilizer({ holdMs: 600, switchMargin: .005 })
+  stabilizer.update([result('a', .1)], 0)
+  stabilizer.update([result('b', .05), result('a', .2)], 100)
+  expect(stabilizer.update([result('c', .03), result('a', .2)], 1500)).toEqual({ selectedId: 'a', pendingId: 'c' })
+  expect(stabilizer.update([result('c', .098), result('a', .1)], 1700)).toEqual({ selectedId: 'a', pendingId: null })
+  stabilizer.reset()
+  expect(stabilizer.update([result('c', .1)], 1800).selectedId).toBe('c')
+})

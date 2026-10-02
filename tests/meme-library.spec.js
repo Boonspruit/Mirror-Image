@@ -1,5 +1,9 @@
 import { test, expect } from '@playwright/test'
+import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+
+const imported = JSON.parse(readFileSync(new URL('../src/data/importedMemes.json', import.meta.url)))
+const total = 13 + imported.length
 
 const sampleImage = fileURLToPath(new URL(
   '../public/memes/alma-hamsters/alma-hamster-3132149.jpg',
@@ -8,17 +12,17 @@ const sampleImage = fileURLToPath(new URL(
 
 test('a custom meme can be added, persists across reloads, and can be removed', async ({ page }) => {
   await page.goto('/#meme-collection')
-  const gallery = page.getByRole('region', { name: 'Meet your meme counterparts' })
+  const gallery = page.getByRole('region', { name: 'Meme profiles', exact: true })
 
-  await gallery.getByRole('button', { name: 'Add a meme face' }).click()
+  await gallery.getByRole('button', { name: 'Add profile' }).click()
   await gallery.getByLabel('Meme name').fill('My Test Hamster')
-  await gallery.getByLabel('Expression label').fill('A very suspicious squint')
-  await gallery.getByLabel('Face image').setInputFiles(sampleImage)
+  await gallery.getByLabel('Expression description').fill('A very suspicious squint')
+  await gallery.getByLabel('Meme image').setInputFiles(sampleImage)
   await gallery.getByRole('slider', { name: 'eyeSquint' }).fill('0.84')
   await gallery.getByRole('slider', { name: 'browDown' }).fill('0.61')
-  await gallery.getByRole('button', { name: 'Add to collection' }).click()
+  await gallery.locator('form').getByRole('button', { name: 'Add profile' }).click()
 
-  await expect(gallery.locator('.meme-card')).toHaveCount(15)
+  await expect(gallery.locator('.meme-card')).toHaveCount(total + 1)
   await expect(gallery.getByRole('heading', { name: 'My Test Hamster' })).toBeVisible()
   await expect(gallery.getByText('Stored in this browser')).toBeVisible()
 
@@ -28,19 +32,19 @@ test('a custom meme can be added, persists across reloads, and can be removed', 
   await expect(gallery.getByRole('heading', { name: 'My Test Hamster' })).toBeVisible()
   await gallery.getByRole('button', { name: 'Remove meme' }).click()
   await expect(gallery.getByRole('button', { name: 'Inspect My Test Hamster' })).toHaveCount(0)
-  await expect(gallery.locator('.meme-card')).toHaveCount(14)
+  await expect(gallery.locator('.meme-card')).toHaveCount(total)
 })
 
 test('a built-in meme can be hidden and restored', async ({ page }) => {
   await page.goto('/#meme-collection')
-  const gallery = page.getByRole('region', { name: 'Meet your meme counterparts' })
+  const gallery = page.getByRole('region', { name: 'Meme profiles', exact: true })
 
   await gallery.getByRole('button', { name: 'Inspect Surprised Pikachu' }).click()
   await gallery.getByRole('button', { name: 'Remove meme' }).click()
   await expect(gallery.getByRole('button', { name: 'Inspect Surprised Pikachu' })).toHaveCount(0)
-  await expect(gallery.locator('.meme-card')).toHaveCount(13)
+  await expect(gallery.locator('.meme-card')).toHaveCount(total - 1)
 
   await gallery.getByRole('button', { name: 'Restore 1 built-in' }).click()
   await expect(gallery.getByRole('button', { name: 'Inspect Surprised Pikachu' })).toBeVisible()
-  await expect(gallery.locator('.meme-card')).toHaveCount(14)
+  await expect(gallery.locator('.meme-card')).toHaveCount(total)
 })

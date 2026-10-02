@@ -1,0 +1,188 @@
+[
+  {
+    "id": "memegen-aag-default-jpg",
+    "name": "Ancient Aliens Guy",
+    "image": "/memes/imported/bee1dffa3ba45a242300514e4993efd0d53a947e88ef1ea5bb4e94554669ad01.jpg",
+    "alt": "Ancient Aliens Guy meme",
+    "expressionLabel": "Automatically analyzed expression",
+    "profileSource": "automatic",
+    "features": {
+      "eyeWide": 0.005379769881778672,
+      "eyeSquint": 0.2932412318012606,
+      "browInnerUp": 0.11119262019537592,
+      "browDown": 0.02044024831683151,
+      "jawOpen": 0.02437004298879398,
+      "smile": 2.3323727834824636e-05,
+      "frown": 0.0053320534862374555,
+      "mouthPucker": 0.19917400232882582,
+      "cheekSquint": 2.575790192292058e-07,
+      "noseSneer": 6.153166616474667e-07
+    },
+    "headPose": null,
+    "notes": "Expression values extracted from the source image. You can refine them using your camera.",
+    "source": {
+      "pageUrl": "https://github.com/jacebrowning/memegen/blob/285330c4aac902024f599e0faa44754481801991/templates/aag/default.jpg",
+      "originalPageUrl": "http://knowyourmeme.com/memes/ancient-aliens",
+      "imageUrl": "https://raw.githubusercontent.com/jacebrowning/memegen/285330c4aac902024f599e0faa44754481801991/templates/aag/default.jpg",
+      "repository": "jacebrowning/memegen",
+      "revision": "285330c4aac902024f599e0faa44754481801991",
+      "imageHash": "f62c6a747788b22496ecf4b60c809272d7b73fa5c35d28de826dd02c8716a029",
+      "rights": "Image rights not specified by upstream."
+    }
+  },
+  {
+    "id": "memegen-agnes-default-jpg",
+    "name": "Agnes Harkness Winking",
+    "image": "/memes/imported/e1a5a1e8440823560517ef92e43b686fd2f3b3b5e320cc56f535e0bbeb3b5001.jpg",
+    "alt": "Agnes Harkness Winking meme",
+    "expressionLabel": "Automatically analyzed expression",
+    "profileSource": "automatic",
+    "features": {
+      "eyeWide": 0.0034584954164288933,
+      "eyeSquint": 0.6378943509645361,
+      "browInnerUp": 0.026142898374545948,
+      "browDown": 0.03429197347833871,
+      "jawOpen": 0.505805203754341,
+      "smile": 0.5806256128780655,
+      "frown": 0.0013808159859898727,
+      "mouthPucker": 0.0015122266955635397,
+      "cheekSquint": 2.510655741713715e-06,
+      "noseSneer": 4.464626252694749e-06
+    },
+    "headPose": null,
+    "notes": "Expression values extracted from the source image. You can refine them using your camera.",
+    "source": {
+      "pageUrl": "https://github.com/jacebrowning/memegen/blob/285330c4aac902024f599e0faa44754481801991/templates/agnes/default.jpg",
+      "originalPageUrl": "https://knowyourmeme.com/memes/agnes-harkness-winking",
+      "imageUrl": "https://raw.githubusercontent.com/jacebrowning/memegen/285330c4aac902024f599e0faa44754481801991/templates/agnes/default.jpg",
+      "repository": "jacebrowning/memegen",
+      "revision": "285330c4aac902024f599e0faa44754481801991",
+      "imageHash": "154e09fcb3f2c98e1f55e03b589d606f4bcd1823ed9d57ab85cd81134a3b39d2",
+      "rights": "Image rights not specified by upstream."
+    }
+  },
+  {
+    "id": "memegen-captain-default-jpg",
+    "name": "I am the Captain Now",
+    "image": "/memes/imported/595fa7ce2cc17e045f57e56da0f039d417ecf28344e408804a782909932f023e.jpg",
+    "alt": "I am the Captain Now meme",
+    "expressionLabel": "Automatically analyzed expression",
+    "profileSource": "automatic",
+    "features": {
+      "eyeWide": 0.01668645871973678,
+      "eyeSquint": 0.3021568371379668,
+      "browInnerUp": 0.2588791601699813,
+      "browDown": 0.005313640437488405,
+      "jawOpen": 0.011038659241738271,
+      "smile": 0.00016843213632799654,
+      "frown": 0.05925316125239631,
+      "mouthPucker": 0.13356868845403871,
+      "cheekSquint": 2.455222021134067e-07,
+      "noseSneer": 2.292778188244351e-06
+    },
+    "headPose": null,
+    "notes": "Expression values extracted from the source image. You can refine them using your camera.",
+    "source": {
+      "pageUrl": "https://github.com/jacebrowning/memegen/blob/285330c4aac902024f599e0faa44754481801991/templates/captain/default.jpg",
+      "originalPageUrl": "https://www.youtube.com/watch?v=dvA-mimf2yg",
+      "imageUrl": "https://raw.githubusercontent.com/jacebrowning/memegen/285330c4aac902024f599e0faa44754481801991/templates/captain/default.jpg",
+      "repository": "jacebrowning/memegen",
+      "revision": "285330c4aac902024f599e0faa44754481801991",
+      "imageHash": "db53c27674024fb2f7686f4c8d77b9353f2638ffe5bbcc9f763b5399af837229",
+      "rights": "Image rights not specified by upstream."
+    }
+  },
+  {
+    "id": "memegen-drake-yes-jpg",
+    "name": "Drakeposting \u00b7 yes",
+    "image": "/memes/imported/909d5b9d2edb7e44f7388dcf3bdc23863b4844214f2e72547f3ae6175e1744dd.jpg",
+    "alt": "Drakeposting \u00b7 yes meme",
+    "expressionLabel": "Automatically analyzed expression",
+    "profileSource": "automatic",
+    "features": {
+      "eyeWide": 0.0012080668927189429,
+      "eyeSquint": 0.19864021280215383,
+      "browInnerUp": 0.08521451337107427,
+      "browDown": 0.019870664359713523,
+      "jawOpen": 0.001473277698140962,
+      "smile": 0.007279891604132636,
+      "frown": 0.010049381753261153,
+      "mouthPucker": 0.004653916637282458,
+      "cheekSquint": 3.7211677929122696e-07,
+      "noseSneer": 1.7239387262209308e-06
+    },
+    "headPose": null,
+    "notes": "Expression values extracted from the source image. You can refine them using your camera.",
+    "source": {
+      "pageUrl": "https://github.com/jacebrowning/memegen/blob/285330c4aac902024f599e0faa44754481801991/templates/drake/yes.jpg",
+      "originalPageUrl": "http://knowyourmeme.com/memes/drakeposting",
+      "imageUrl": "https://raw.githubusercontent.com/jacebrowning/memegen/285330c4aac902024f599e0faa44754481801991/templates/drake/yes.jpg",
+      "repository": "jacebrowning/memegen",
+      "revision": "285330c4aac902024f599e0faa44754481801991",
+      "imageHash": "fd8454d0bfdf91c97fb6b544be6ba162d104b148f0ef0b28e3ec2f146af71740",
+      "rights": "Image rights not specified by upstream."
+    }
+  },
+  {
+    "id": "memegen-rollsafe-default-jpg",
+    "name": "Roll Safe",
+    "image": "/memes/imported/677c7596f15cc2747a61f79f42192003b78f639eb54a725d6b3b911d59cdd9fe.jpg",
+    "alt": "Roll Safe meme",
+    "expressionLabel": "Automatically analyzed expression",
+    "profileSource": "automatic",
+    "features": {
+      "eyeWide": 0.009642917059991938,
+      "eyeSquint": 0.31858137383039487,
+      "browInnerUp": 0.09532796978255713,
+      "browDown": 0.015729846992909052,
+      "jawOpen": 0.01460828384664349,
+      "smile": 0.003284823013149151,
+      "frown": 0.0002824102234518651,
+      "mouthPucker": 0.2394906998076015,
+      "cheekSquint": 5.277495570415588e-07,
+      "noseSneer": 1.8773991789396702e-06
+    },
+    "headPose": null,
+    "notes": "Expression values extracted from the source image. You can refine them using your camera.",
+    "source": {
+      "pageUrl": "https://github.com/jacebrowning/memegen/blob/285330c4aac902024f599e0faa44754481801991/templates/rollsafe/default.jpg",
+      "originalPageUrl": "http://knowyourmeme.com/memes/roll-safe",
+      "imageUrl": "https://raw.githubusercontent.com/jacebrowning/memegen/285330c4aac902024f599e0faa44754481801991/templates/rollsafe/default.jpg",
+      "repository": "jacebrowning/memegen",
+      "revision": "285330c4aac902024f599e0faa44754481801991",
+      "imageHash": "e453d625591ae3a200f240ab96d44d2dcfe5a2b2ce5b49e6ede43c3b5f5bbc3c",
+      "rights": "Image rights not specified by upstream."
+    }
+  },
+  {
+    "id": "memegen-saltbae-default-jpg",
+    "name": "Salt Bae",
+    "image": "/memes/imported/f4231ecc192959b9faa92d3d96d749e21ea5d28bd6ad8d39b075cb6542c0fd9c.jpg",
+    "alt": "Salt Bae meme",
+    "expressionLabel": "Automatically analyzed expression",
+    "profileSource": "automatic",
+    "features": {
+      "eyeWide": 0.0060215859147838375,
+      "eyeSquint": 0.37265048389345956,
+      "browInnerUp": 0.0837354440820903,
+      "browDown": 0.042243197147644775,
+      "jawOpen": 0.017470753500134054,
+      "smile": 7.502441928542809e-05,
+      "frown": 0.0003745540847550116,
+      "mouthPucker": 0.06305122969745185,
+      "cheekSquint": 2.0924832668772446e-07,
+      "noseSneer": 5.944318161540304e-07
+    },
+    "headPose": null,
+    "notes": "Expression values extracted from the source image. You can refine them using your camera.",
+    "source": {
+      "pageUrl": "https://github.com/jacebrowning/memegen/blob/285330c4aac902024f599e0faa44754481801991/templates/saltbae/default.jpg",
+      "originalPageUrl": "http://knowyourmeme.com/memes/saltbae",
+      "imageUrl": "https://raw.githubusercontent.com/jacebrowning/memegen/285330c4aac902024f599e0faa44754481801991/templates/saltbae/default.jpg",
+      "repository": "jacebrowning/memegen",
+      "revision": "285330c4aac902024f599e0faa44754481801991",
+      "imageHash": "1679315ffd104d14209a2ae1e80c8a8b2f1780a9e662db3be7ffb0ca4e258c99",
+      "rights": "Image rights not specified by upstream."
+    }
+  }
+]

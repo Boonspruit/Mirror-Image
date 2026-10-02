@@ -15,14 +15,17 @@ import TrainingPreview from './TrainingPreview.tsx'
 import ProfileTransfer from './ProfileTransfer.tsx'
 import { extractFeatureVector } from '../tracking/featureExtractor.ts'
 import { EMPTY_HAND_FEATURES, extractHandFeatures } from '../tracking/handFeatureExtractor.ts'
-import { rankMemes } from '../matching/matcher.ts'
-import { createVectorSmoother, smoothValues } from '../matching/smoothing.ts'
+import { rankPoseMemes } from '../matching/gestureMatcher.ts'
+import { extractGestureObservation, freshGesture, type GestureObservation } from '../tracking/gestureProfile.ts'
+import { readCameraPreferences, writeCameraPreferences } from '../data/cameraPreferences.ts'
+import { createVectorSmoother } from '../matching/smoothing.ts'
 import { createMatchStabilizer } from '../matching/matchStabilizer.ts'
 import { applyNeutralBaseline, averageFeatureVectors } from '../tracking/faceCalibration.ts'
 
 interface CameraResources { cancelCalibration?: () => void; startHandTimer?: number; cancelLoop?: () => void; cancelHandLoop?: () => void; removeListeners?: () => void; stream?: MediaStream; tracker?: FaceLandmarker; handTracker?: HandLandmarker }
 const EMPTY_RESULT = { faces: 0, landmarks: 0, blendshapes: 0, pose: false, hands: 0, handLandmarks: 0, handFeatures: EMPTY_HAND_FEATURES as FeatureValues, categories: [], vector: null, rawVector: null }
-const EMPTY_MATCH = { matches: [], pendingId: null }
+const EMPTY_MATCH = { matches: [], pendingId: null, message: '' }
+const INITIAL_CAMERA_PREFERENCES = readCameraPreferences()
 const LABELS = {
   idle: 'Camera is off', requesting: 'Waiting for camera access',
   loading: 'Loading face and hand trackers', running: 'Tracking is running', error: 'Session stopped',
@@ -47,22 +50,48 @@ export default function Camera({ library, view }) {
   const handOverlayRef = useRef(null)
   const latestFaceLandmarks = useRef(null)
   const latestHandResult = useRef<{ hands: number; landmarks: number; features: FeatureValues; observedAt?: number }>({ hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES })
+  const gestureRef = useRef<GestureObservation>({observedAt: -Infinity, handCount: 0, hands: []})
+  const liveSampleRef = useRef(null)
+  const handStatusRef = useRef('loading')
+  const [handStatus, setHandStatus] = useState('loading')
+  const [matchingMode, setMatchingMode] = useState(INITIAL_CAMERA_PREFERENCES.matchingMode)
+  const matchingModeRef = useRef(matchingMode)
   const resources = useRef<CameraResources>({})
   const session = useRef(0)
   const pipeline = useRef(null)
-  const baselineRef = useRef(null)
+  const baselineRef = useRef(INITIAL_CAMERA_PREFERENCES.baseline)
   const calibrationCapture = useRef(null)
   const [phase, setPhase] = useState('idle')
   const [error, setError] = useState('')
   const [result, setResult] = useState(EMPTY_RESULT)
   const [delegate, setDelegate] = useState('—')
-  const [showOverlay, setShowOverlay] = useState(false)
+  const [showOverlay, setShowOverlay] = useState(INITIAL_CAMERA_PREFERENCES.showOverlay)
   const [matchView, setMatchView] = useState(EMPTY_MATCH)
-  const [calibration, setCalibration] = useState({ status: 'idle', count: null, baseline: null, message: '' })
+  const [calibration, setCalibration] = useState(() => ({
+    status: INITIAL_CAMERA_PREFERENCES.baseline ? 'ready' : 'idle',
+    count: null,
+    baseline: INITIAL_CAMERA_PREFERENCES.baseline,
+    message: INITIAL_CAMERA_PREFERENCES.baseline ? 'Saved neutral calibration restored from this browser.' : '',
+  }))
 
   useEffect(() => {
     memesRef.current = memes
   }, [memes])
+
+  useEffect(() => {
+    try { writeCameraPreferences({ showOverlay, matchingMode, baseline: calibration.baseline }) } catch { /* Keep preferences usable without storage. */ }
+  }, [showOverlay, matchingMode, calibration.baseline])
+  function changeMatchingMode(mode: 'auto' | 'face-only') {
+    matchingModeRef.current = mode
+    pipeline.current?.stabilizer.reset()
+    setMatchView(EMPTY_MATCH)
+    setMatchingMode(mode)
+  }
+  useEffect(() => {
+    const restore = () => { const saved=readCameraPreferences(); setShowOverlay(saved.showOverlay); changeMatchingMode(saved.matchingMode) }
+    window.addEventListener('mirror-preferences-imported',restore)
+    return () => window.removeEventListener('mirror-preferences-imported',restore)
+  }, [])
 
 
   // Invalidate async work first, then release every resource owned by the session.
@@ -84,6 +113,10 @@ export default function Camera({ library, view }) {
     pipeline.current = null
     calibrationCapture.current = null
     latestFaceLandmarks.current = null
+    liveSampleRef.current = null
+    gestureRef.current = {observedAt:-Infinity,handCount:0,hands:[]}
+    handStatusRef.current = 'loading'
+    setHandStatus('loading')
     latestHandResult.current = { hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES }
     if (videoRef.current) {
       videoRef.current.pause()
@@ -172,7 +205,7 @@ export default function Camera({ library, view }) {
       let lastMatchEvaluation = -Infinity
       let hadFace = false
       const smoother = createVectorSmoother({ alpha: 0.65 })
-      const stabilizer = createMatchStabilizer({ holdMs: 0, switchMargin: 0.005 })
+      const stabilizer = createMatchStabilizer({ holdMs: 600, switchMargin: 0.005 })
       pipeline.current = { smoother, stabilizer }
       // Face matching starts immediately. The larger hand model joins the same
       // session when ready and closes itself if the user stopped in the meantime.
@@ -183,20 +216,25 @@ export default function Camera({ library, view }) {
             handTracking.tracker.close()
             return
           }
+          handStatusRef.current = 'ready'
+          setHandStatus('ready')
           resources.current.handTracker = handTracking.tracker
           setDelegate(`Face ${activeDelegate} · Hand ${handTracking.delegate}`)
           resources.current.cancelHandLoop = startHandTracking(video, handTracking.tracker, (handResult) => {
             if (!isCurrent()) return
             handOverlayRef.current?.draw(handResult.landmarks, video.videoWidth, video.videoHeight)
             const currentFeatures = extractHandFeatures(handResult, latestFaceLandmarks.current)
-            const previousFeatures = latestHandResult.current.features
+            gestureRef.current = extractGestureObservation(handResult, latestFaceLandmarks.current, performance.now(), video.videoWidth / video.videoHeight)
             latestHandResult.current = {
               observedAt: performance.now(),
               hands: handResult.landmarks.length,
               landmarks: handResult.landmarks.reduce((total, landmarks) => total + landmarks.length, 0),
-              features: smoothValues(previousFeatures, currentFeatures, 0.55),
+              features: currentFeatures,
             }
           }, (cause) => {
+            if (!isCurrent()) return
+            handStatusRef.current = 'unavailable'
+            setHandStatus('unavailable')
             console.error('Hand tracking stopped unexpectedly.', cause)
             handOverlayRef.current?.clear()
             latestHandResult.current = { hands: 0, landmarks: 0, features: EMPTY_HAND_FEATURES }
@@ -204,7 +242,9 @@ export default function Camera({ library, view }) {
           })
         }, (cause) => {
           if (!isCurrent()) return
-          console.warn('Hand tracking is unavailable; face matching will continue.', cause)
+          handStatusRef.current = 'unavailable'
+          setHandStatus('unavailable')
+          console.warn('Hand tracking is unavailable.', cause)
           setDelegate(`Face ${activeDelegate} · Hand unavailable`)
         })
       }, 300)
@@ -231,21 +271,21 @@ export default function Camera({ library, view }) {
 
         const calibratedVector = rawVector ? applyNeutralBaseline(rawVector, baselineRef.current) : null
         const vector = calibratedVector ? smoother.update(calibratedVector) : null
+        liveSampleRef.current = {expression:vector?.expression ?? null, observedAt:now, gesture:gestureRef.current, handFeatures:latestHandResult.current.features, handStatus:handStatusRef.current}
         if (vector && now - lastMatchEvaluation >= 100) {
           lastMatchEvaluation = now
-          const matchFeatures = { ...vector.expression, ...latestHandResult.current.features }
-          const ranked = rankMemes(matchFeatures, memesRef.current).filter(({ comparison }) => comparison)
+          const {ranked,message} = rankPoseMemes(vector.expression, memesRef.current, matchingModeRef.current, gestureRef.current, now, handStatusRef.current)
           const stabilized = stabilizer.update(ranked, now)
           const selected = ranked.find(({ meme }) => meme.id === stabilized.selectedId)
           const displayMatches = selected
             ? [selected, ...ranked.filter(({ meme }) => meme.id !== stabilized.selectedId)]
             : []
-          setMatchView({ matches: displayMatches, pendingId: stabilized.pendingId })
+          setMatchView({ matches: displayMatches, pendingId: stabilized.pendingId, message })
         }
 
         if (now - lastUpdate < 250) return
         lastUpdate = now
-        const handResult = latestHandResult.current
+        const handResult = freshGesture(gestureRef.current,now) ? latestHandResult.current : {hands:0,landmarks:0,features:EMPTY_HAND_FEATURES}
         setResult({
           faces: trackingResult.faceLandmarks.length,
           landmarks: trackingResult.faceLandmarks[0]?.length ?? 0,
@@ -337,12 +377,15 @@ export default function Camera({ library, view }) {
         {videoVisible && <div className="camera-controls"><p role="status">{phase === 'loading' ? 'Preparing face and hand tracking…' : result.faces ? `Face detected${result.hands ? ` · ${result.hands} hand${result.hands === 1 ? '' : 's'} detected` : ''}` : 'No face detected. Look toward the camera.'}</p><button onClick={stop} className="secondary">Stop camera</button></div>}
         {error && <p className="error-message" role="alert">{error}</p>}
       </div>
-      <MemeDisplay matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} handFeatures={result.handFeatures} phase={phase} calibrated={Boolean(calibration.baseline)} />
+      <MemeDisplay message={matchView.message} matches={matchView.matches} pendingId={matchView.pendingId} expression={result.vector?.expression} phase={phase} calibrated={Boolean(calibration.baseline)} />
     </section>
     <section hidden={view !== 'settings'} className="settings-view" aria-label="Settings">
       <div className="view-heading"><div><h1>Settings</h1></div><p>Camera, calibration, profile backups, and tracking diagnostics.</p></div>
       <section className="settings-controls" aria-label="Camera preferences"><h2>Camera & calibration</h2>
         <div className="settings-camera-layout"><div className="settings-preview"><TrainingPreview stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError={error} /></div><div className="camera-preferences">
+        <label className="pose-choice matching-mode-setting">Matching mode<select aria-label="Settings matching mode" value={matchingMode} onChange={event=>changeMatchingMode(event.target.value as 'auto'|'face-only')}><option value="auto">Auto</option><option value="face-only">Face only</option></select></label>
+        <p className="matching-help">{matchingMode==='face-only' ? 'Matches facial expressions and excludes gesture profiles.' : 'Visible hands require a trained, compatible gesture.'}</p>
+        {phase==='running' && matchingMode==='auto' && handStatus==='unavailable' && <p className="matching-error" role="alert">Hand tracking unavailable. Select Face only to continue.</p>}
         <label className="overlay-toggle"><input type="checkbox" checked={showOverlay} onChange={(event) => setShowOverlay(event.target.checked)} />Show face and hand landmarks<span>Overlay landmarks on the camera preview.</span></label>
         <p className={`calibration-feedback ${calibration.status}`} aria-live="polite">{calibration.message || 'Calibrate with a relaxed, neutral expression.'}</p>
         <div className="camera-controls"><p><span className="privacy-dot" /> Camera frames are processed in your browser.</p><div className="camera-actions"><button onClick={beginCalibration} className="calibrate-button" disabled={phase !== 'running' || !result.faces || calibration.status === 'countdown'}>{calibration.baseline ? 'Recalibrate face' : 'Calibrate face'}</button><button onClick={active ? stop : start} className={active ? 'secondary' : 'primary'}>{active ? (phase === 'requesting' ? 'Cancel' : 'Stop camera') : 'Start camera'}</button></div></div>
@@ -369,7 +412,7 @@ export default function Camera({ library, view }) {
       </details>
     </section>
     <div hidden={view !== 'library'}>
-      <MemeGallery {...library} liveExpression={result.vector?.expression} liveHandFeatures={result.handFeatures} stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError={error} />
+      <MemeGallery getLiveSample={() => liveSampleRef.current} handStatus={handStatus} {...library} liveExpression={result.vector?.expression} stream={previewStream} phase={phase} onStart={start} onStop={stop} cameraError={error} />
     </div>
     </>
   )

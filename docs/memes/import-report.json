@@ -1,0 +1,2323 @@
+{
+  "repository": "jacebrowning/memegen",
+  "revision": "285330c4aac902024f599e0faa44754481801991",
+  "archiveUrl": "https://codeload.github.com/jacebrowning/memegen/tar.gz/285330c4aac902024f599e0faa44754481801991",
+  "profileCount": 6,
+  "retainedProfiles": [],
+  "candidateCount": 7,
+  "records": [
+    {
+      "id": "memegen-3hd-default-jpg",
+      "template": "3hd",
+      "file": "default.jpg",
+      "hash": "a807459d372a6e073dd79c8635583b653075b9276a99539016094f9c55bd5227",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-aag-default-jpg",
+      "template": "aag",
+      "file": "default.jpg",
+      "hash": "f62c6a747788b22496ecf4b60c809272d7b73fa5c35d28de826dd02c8716a029",
+      "status": "accepted",
+      "faces": 1
+    },
+    {
+      "id": "memegen-ackbar-default-jpg",
+      "template": "ackbar",
+      "file": "default.jpg",
+      "hash": "b35f3d179dad05078eba6abb5dc81c397b66ee0334228b3e8217f88df4f3a463",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-afraid-default-jpg",
+      "template": "afraid",
+      "file": "default.jpg",
+      "hash": "62aa038de21f1762a2effb1c2e9ad9d8ffa2577fc4927c59951a640cfb54f842",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-agnes-default-jpg",
+      "template": "agnes",
+      "file": "default.jpg",
+      "hash": "154e09fcb3f2c98e1f55e03b589d606f4bcd1823ed9d57ab85cd81134a3b39d2",
+      "status": "accepted",
+      "faces": 1
+    },
+    {
+      "id": "memegen-aint-got-time-default-jpg",
+      "template": "aint-got-time",
+      "file": "default.jpg",
+      "hash": "312d20067fd8cb80cbcbf8ca6841da2fd44ce3615d334c375044e3f26743010e",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-ams-default-jpg",
+      "template": "ams",
+      "file": "default.jpg",
+      "hash": "3f0cba046c9e649b398167e1f8e8c4e9e8705122824cdddcf189b68ea894a102",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-ants-default-jpg",
+      "template": "ants",
+      "file": "default.jpg",
+      "hash": "11c12db92965f0193f52bfdd9bd7159fe422179f49b68022f52218b0d8c093f2",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-apcr-default-jpg",
+      "template": "apcr",
+      "file": "default.jpg",
+      "hash": "f3223c60cf2e62f7346e0918dea82f39bf04bca546ffadc35258771b8497f20b",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-astronaut-default-png",
+      "template": "astronaut",
+      "file": "default.png",
+      "hash": "db76c4071c012209655f7f0345b552800b62fcc7c7de5cd95876ecb148c81db5",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-atis-default-jpg",
+      "template": "atis",
+      "file": "default.jpg",
+      "hash": "031901c204a44be13ef14d3321395dd312d28ba319c740f056b79847f3abd5e5",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-away-default-jpg",
+      "template": "away",
+      "file": "default.jpg",
+      "hash": "01a243e7e7966015b9384423269913f4795edeb6bef7ab7b16d738cac2285c74",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-awesome-awkward-default-jpg",
+      "template": "awesome-awkward",
+      "file": "default.jpg",
+      "hash": "0d4a97469cfe9cf65e67d03b879639c0868a6c0d0f30f955d09926083995014c",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-awesome-default-jpg",
+      "template": "awesome",
+      "file": "default.jpg",
+      "hash": "c06e29973ab8f97e2d41d3363ba29378fc395a899a8b1888aaf330bf028584c3",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-awkward-awesome-default-jpg",
+      "template": "awkward-awesome",
+      "file": "default.jpg",
+      "hash": "05eca7c025e00d942fe23e4ab7f2ca4d38e8d0593ee4908a99e19aa6c4274081",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-awkward-default-jpg",
+      "template": "awkward",
+      "file": "default.jpg",
+      "hash": "53daf0a0983c460577cfff2818c4f6444e422096449dd78327f13308f4371afe",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-bad-default-jpg",
+      "template": "bad",
+      "file": "default.jpg",
+      "hash": "eee476bb4d333da714513477a2349f750d1c2877b3114068890fc7ee461f3e1f",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-badchoice-default-jpg",
+      "template": "badchoice",
+      "file": "default.jpg",
+      "hash": "107e3665099291b1400aefa162715cd2090112ffc02e5ad98734ef973775e197",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-balloon-default-jpg",
+      "template": "balloon",
+      "file": "default.jpg",
+      "hash": "76db7b0af36ab0f17d82b07b308fd714a8cfaf6ba60a5ff637357e15543c18f0",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-bd-default-jpg",
+      "template": "bd",
+      "file": "default.jpg",
+      "hash": "580be55552ab0057efd5da44a1cddfc730ce73048d4cbd475d9ba09d1735dfd2",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-because-default-png",
+      "template": "because",
+      "file": "default.png",
+      "hash": "8dc46e902b50bd7f47c5dcc6977245487344003e6b364612f972cc085a7ee6a4",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-bender-default-jpg",
+      "template": "bender",
+      "file": "default.jpg",
+      "hash": "19aaa1b991a70ea9e9269f5ac5a2863a54dc36dd988f94547a7faa82cb3d3097",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-bihw-default-jpg",
+      "template": "bihw",
+      "file": "default.jpg",
+      "hash": "d9197308e9308649f3f89c152f6ed49f207affa18838af8fe662fe1e8548dd8e",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-bilbo-default-jpg",
+      "template": "bilbo",
+      "file": "default.jpg",
+      "hash": "cbc684c056a2333a0b2693fa8e3a0e4b61fce49edb178acef41d57519936d8d6",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-biw-default-jpg",
+      "template": "biw",
+      "file": "default.jpg",
+      "hash": "8af19af6ca18be88d9096616843c82aae519912488c35db9effdacc95cbbe2d7",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-blb-default-jpg",
+      "template": "blb",
+      "file": "default.jpg",
+      "hash": "3bc8c54cdcdae6bd27ae1feba5b5ade0882f5b713d1ce4a979e8c4603c77ea4c",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-boat-default-jpg",
+      "template": "boat",
+      "file": "default.jpg",
+      "hash": "75919cffb7b1a7beb7a9f021b723632f30367a7fd48bb27c6c03155d4d95c8f1",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-bongo-default-gif",
+      "template": "bongo",
+      "file": "default.gif",
+      "hash": "9c1efd874a0074fb5a1d4b428162f6f15502350f4ca90f9aae77049da3507321",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-both-default-gif",
+      "template": "both",
+      "file": "default.gif",
+      "hash": "9eba5fee0746eda4026a094e28b1e01023b44e5348d0b492dc342257be1d6bee",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-both-default-jpg",
+      "template": "both",
+      "file": "default.jpg",
+      "hash": "9ddeadcea42a445290368410a90bd8e20dbf0fe4ab9c49bbcc43080a871bbeb0",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-box-default-gif",
+      "template": "box",
+      "file": "default.gif",
+      "hash": "5be9aaa9a1085768f42097832357e29d32d33c3da06e9a062860b703a9f36e70",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-box-default-png",
+      "template": "box",
+      "file": "default.png",
+      "hash": "6d8136e15e6623f1d0a1a2540e2a4d65bb25da0828eefbac60e1281151b47190",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-bs-default-jpg",
+      "template": "bs",
+      "file": "default.jpg",
+      "hash": "72a158f94007dc6268c392d08344ecf80a6af70c8084db92e7ea06d17cb8d67e",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-bus-default-jpg",
+      "template": "bus",
+      "file": "default.jpg",
+      "hash": "83f8727c28006af914d8df997f622ecb8805a5663b15503bf26c91081ef3609a",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-buzz-default-gif",
+      "template": "buzz",
+      "file": "default.gif",
+      "hash": "a7ae113ddb1f12e1e797cdd612a743ab614d331cf34231515684a2947028e0db",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-buzz-default-jpg",
+      "template": "buzz",
+      "file": "default.jpg",
+      "hash": "dfee851809943cc2dd55698caf8717e349b615b3682e653b0d10d0a1fda629c7",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-cake-default-gif",
+      "template": "cake",
+      "file": "default.gif",
+      "hash": "fd5c6fae8d9491c17112d5e6fd052473bb1bdf2c6b497a8558481f85167e758d",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-cake-default-jpg",
+      "template": "cake",
+      "file": "default.jpg",
+      "hash": "3ec1a0ab745c7c560afcfe5387f6d45a5a6f2dcbde0c043da3e0e8396b363d13",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-captain-america-default-jpg",
+      "template": "captain-america",
+      "file": "default.jpg",
+      "hash": "0c0ef08790c1cf62edcf5f2e91e479c0a4722d53cc8e7e983ca3b0718f653599",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-captain-default-jpg",
+      "template": "captain",
+      "file": "default.jpg",
+      "hash": "db53c27674024fb2f7686f4c8d77b9353f2638ffe5bbcc9f763b5399af837229",
+      "status": "accepted",
+      "faces": 1
+    },
+    {
+      "id": "memegen-cb-default-jpg",
+      "template": "cb",
+      "file": "default.jpg",
+      "hash": "8dc2a77cc65638bd324138984d7193dcc34f081a265e58040e6842aa1a4a6561",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-cbb-default-jpg",
+      "template": "cbb",
+      "file": "default.jpg",
+      "hash": "f9ea611782df8fd83be572737be2ed995985246c2fceee2bf2650395eaa3dd81",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-cbg-default-jpg",
+      "template": "cbg",
+      "file": "default.jpg",
+      "hash": "ec53e81989c30ca34d748b6ff2f3e57ef68e2cf7d00c0c9d4706a8c1d1f6bc3f",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-center-default-jpg",
+      "template": "center",
+      "file": "default.jpg",
+      "hash": "1d6c2ee5ac7d1e74437b40528d85335d2316ba76e93ab67f49f4f299958add33",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-ch-default-jpg",
+      "template": "ch",
+      "file": "default.jpg",
+      "hash": "31c1176972def2722ab6ad7f4905f418f5c7614b564430ad127e5febdde18e52",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-chair-default-png",
+      "template": "chair",
+      "file": "default.png",
+      "hash": "169ab89d3a2c1d640ede1512afdecb06360873d75f00f41479ac05c0a780d44d",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-cheems-default-jpg",
+      "template": "cheems",
+      "file": "default.jpg",
+      "hash": "4ebf1685db1e04ba1756265146bc4fab1e6f02d24dd5a8237a81a58d5b485dfd",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-chosen-default-jpg",
+      "template": "chosen",
+      "file": "default.jpg",
+      "hash": "493a4af2d19d83e683ae665ed0f87cb928c5ee192a776f51a65935a062057b01",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-cmm-default-png",
+      "template": "cmm",
+      "file": "default.png",
+      "hash": "94287daa9d220c8cd003c6c076c226f3953232d63d849c8252c5836ea3c161f3",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-country-default-jpg",
+      "template": "country",
+      "file": "default.jpg",
+      "hash": "b47f9f742162256f917ce4c0b4c61019fbc64475a104e05d5f30b0b9f6601758",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-crazypills-default-png",
+      "template": "crazypills",
+      "file": "default.png",
+      "hash": "9888cb59772735734be5dedd03481ef0d7536c9a5f03c1b57c5a7f00fd7c2172",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-crow-default-jpg",
+      "template": "crow",
+      "file": "default.jpg",
+      "hash": "d81dbee9500673b42d7283c7679044d597e92bdd1e21d6cfc702c960464c0c20",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-crowd-default-gif",
+      "template": "crowd",
+      "file": "default.gif",
+      "hash": "28e4294d04f70e9bab36d88709bc3200bc55f33ea631332009755115fcb1bb28",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-cryingfloor-default-jpg",
+      "template": "cryingfloor",
+      "file": "default.jpg",
+      "hash": "caa3b8f03f7011fd3e8bdaa141d751f34afc0dc77680713a08174c40a862becc",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-db-default-jpg",
+      "template": "db",
+      "file": "default.jpg",
+      "hash": "4b498053b2748b2b6e5cce79d84b5c0ed060ad4edcc90c62ba08f3cb8eb13796",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-dbg-default-jpg",
+      "template": "dbg",
+      "file": "default.jpg",
+      "hash": "9c71b3f411649aa4e7ecaf5145161ae04f28818f0d4587ede26882b9ecce9c97",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-dg-default-jpg",
+      "template": "dg",
+      "file": "default.jpg",
+      "hash": "f281a0b095f6d22f9fb41db5d59b4f980c225ea24f4be6199bedd0d6aa350ef3",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-disastergirl-default-jpg",
+      "template": "disastergirl",
+      "file": "default.jpg",
+      "hash": "c6be247c792931f0619a1d72df40c0d4df71a343e07e2309b87a38c6203d8d1e",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-dodgson-default-gif",
+      "template": "dodgson",
+      "file": "default.gif",
+      "hash": "51707eedd241e408a4807e340949d30feff1a02edf74b43567fe3019b4078d5c",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-dodgson-default-jpg",
+      "template": "dodgson",
+      "file": "default.jpg",
+      "hash": "0e4ee58103c795799073bc0e1ff0d42ad3aaf34319be1f8cef52637853c0b900",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-doge-bark-jpg",
+      "template": "doge",
+      "file": "bark.jpg",
+      "hash": "64090ee37767a05ec805109f25904c0b62a224b6d25cb1a172d4c7811b26a035",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-doge-bite-jpg",
+      "template": "doge",
+      "file": "bite.jpg",
+      "hash": "cda9aaeeb4f64963fde0bcf7fba2fcf6c0bcc384708d4a264832efc97991c755",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-doge-default-jpg",
+      "template": "doge",
+      "file": "default.jpg",
+      "hash": "17168539cd19221ef3c506b37eb615bbc47c05bf6ac437c589f1abfef8976b98",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-doge-full-jpg",
+      "template": "doge",
+      "file": "full.jpg",
+      "hash": "cbbbb1d894ce2655d3cc2315dd54d3dab141247b7c70e43788f11189b55aeb2e",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-doge-growl-jpg",
+      "template": "doge",
+      "file": "growl.jpg",
+      "hash": "d12104f0e7fa371426330b18b9a43b20c252762984e8c3e6e6c53a7f40ae9074",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-doge-pet-jpg",
+      "template": "doge",
+      "file": "pet.jpg",
+      "hash": "f075f53d48402c9398f230cb6ae911c5004ebd111e01400ccfdaac14f9db5934",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-doge-roll-jpg",
+      "template": "doge",
+      "file": "roll.jpg",
+      "hash": "b8d2f0069778969008e2f6f7e7da6761d9d6ed5206ce231bffff3b0dad3eac4c",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-dragon-default-png",
+      "template": "dragon",
+      "file": "default.png",
+      "hash": "cad3b2078e548611b5a3c2e51898150dfa0f5218d0dde103cf179db5bb2b0d9a",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-drake-beat-jpg",
+      "template": "drake",
+      "file": "beat.jpg",
+      "hash": "d0ac5f36f47c5d1464e5919bdf4a1a06291942b89b30a73f293d30da04c2ca08",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-drake-default-png",
+      "template": "drake",
+      "file": "default.png",
+      "hash": "c09a28f6bdee3d55b67ac2e83c5e151204a5dd8411036e2ed676917b2cffe9af",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-drake-no-jpg",
+      "template": "drake",
+      "file": "no.jpg",
+      "hash": "74bd4b0ccf29dab85a69a023e3466a282a2404556df9c823ead9beb8bb5324b7",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-drake-padding-jpg",
+      "template": "drake",
+      "file": "padding.jpg",
+      "hash": "9d719b2da5f5e7f73f576e59ed303378b2eba7559e4fb9a4a8c3a85cab38edaf",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-drake-yes-jpg",
+      "template": "drake",
+      "file": "yes.jpg",
+      "hash": "fd8454d0bfdf91c97fb6b544be6ba162d104b148f0ef0b28e3ec2f146af71740",
+      "status": "accepted",
+      "faces": 1
+    },
+    {
+      "id": "memegen-drowning-default-png",
+      "template": "drowning",
+      "file": "default.png",
+      "hash": "76ce6b83b36268580a8116829545115b090d62a32a24109921cf05a6756fb302",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-drunk-default-jpg",
+      "template": "drunk",
+      "file": "default.jpg",
+      "hash": "27f36078e217d9f93a52d7c5d30ffac746897885696d5ce49c1092b94daa5929",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-ds-default-jpg",
+      "template": "ds",
+      "file": "default.jpg",
+      "hash": "085f222c6cfb534b0df95a3f8f2a3db77acbd41cf84109d1a33d2678382216ca",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-ds-maga-jpg",
+      "template": "ds",
+      "file": "maga.jpg",
+      "hash": "65d5908c6ea1e6ed258c1a5193b36912a354a6c88fe133293148bea3c9c98591",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-dsm-default-jpg",
+      "template": "dsm",
+      "file": "default.jpg",
+      "hash": "22f4661e57c5a1faa12afc7c24ec44a9d1155f68b99fda04f1fdd97de4e9e659",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-dwight-default-jpg",
+      "template": "dwight",
+      "file": "default.jpg",
+      "hash": "94c37a195c56daac42d58f5351bf4a692001037226d8bfe078a3b4c7157a199d",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-elf-default-jpg",
+      "template": "elf",
+      "file": "default.jpg",
+      "hash": "d746958c8536bc310624b4c98f2696c62bc3564633c5f4b8f637a235c9cd96bb",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-elmo-default-png",
+      "template": "elmo",
+      "file": "default.png",
+      "hash": "49245549df317db1d89315ef8e3179ec370c103f7ed9e866b7084a4d984c73ac",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-ermg-default-jpg",
+      "template": "ermg",
+      "file": "default.jpg",
+      "hash": "3d62036a333891b2fbc05f045b6b4bf41aca52c3e554a1524b1f7a7aefc40a2b",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-exit-default-png",
+      "template": "exit",
+      "file": "default.png",
+      "hash": "92415dff71ca3b986efb3b71f018803577cad0167b13f57173abc9ee0c02d7ed",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-fa-default-jpg",
+      "template": "fa",
+      "file": "default.jpg",
+      "hash": "ac8b6534fc9730dd123949b73b1f67c55e78e303ba5432a4a7817d7bc22b7373",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-facepalm-default-jpg",
+      "template": "facepalm",
+      "file": "default.jpg",
+      "hash": "538850be9b62b9efb19bcdfb0d378041b8cdc90b9bc70efe9c8421f986c17805",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-fbf-default-jpg",
+      "template": "fbf",
+      "file": "default.jpg",
+      "hash": "71e677a2c0ab940f2cb99a0abd153fd4fdf6085145848c9f62d660d6afb15acd",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-feelsgood-default-png",
+      "template": "feelsgood",
+      "file": "default.png",
+      "hash": "cde63049cda8cd1739fcd718211d581b7b720baf0de3091ef9a20dd753bd8bf0",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-fetch-default-jpg",
+      "template": "fetch",
+      "file": "default.jpg",
+      "hash": "f998439493f645d3c4141f799905fe9abe723a65a9802db69748d8dd0bee4f5d",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-fine-default-gif",
+      "template": "fine",
+      "file": "default.gif",
+      "hash": "1aab16389dd9bd052aaba817be7c2b215bb1c601af882461fd536f77ef6bb746",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-fine-default-png",
+      "template": "fine",
+      "file": "default.png",
+      "hash": "afd90312ed4dabbe8223486d51438e26735a8f19cda0dd0bdd834cd2c481bb64",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-firsttry-default-png",
+      "template": "firsttry",
+      "file": "default.png",
+      "hash": "c765adbbeb1a7e33318ecb43ded690d47e54c1652af57312f3c8b38513ff66ee",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-fmr-default-jpg",
+      "template": "fmr",
+      "file": "default.jpg",
+      "hash": "32b5ffe4cef7c250656e8503521c8a611e2542344e5d632cedb42b88ce6e121d",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-friends-default-png",
+      "template": "friends",
+      "file": "default.png",
+      "hash": "4a09bfa4bdc58c0ba04e232e405bf688b5c62c59733876be2935ee2edaa2f101",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-fry-default-gif",
+      "template": "fry",
+      "file": "default.gif",
+      "hash": "5eb2454e3cd01e28ffa9d4bc3a1851037168cbf39c9d8f381d2a1cc7d02eff56",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-fry-default-png",
+      "template": "fry",
+      "file": "default.png",
+      "hash": "2f4e0f4c2fd161a91c08513481ea2b88e9c4ce3ae678f296acd2882386d82426",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-fwp-default-jpg",
+      "template": "fwp",
+      "file": "default.jpg",
+      "hash": "3e0854300e729cae919097cca8a71404e588c65f670e998345a515be282d3d44",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-gandalf-default-jpg",
+      "template": "gandalf",
+      "file": "default.jpg",
+      "hash": "0a8e743afc6cf6e2e1c2a2025f89d5b21348da3950460a475c2744a42bb82df4",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-gb-default-jpg",
+      "template": "gb",
+      "file": "default.jpg",
+      "hash": "5cbc4ec531e027180ea1281b738d91c290fcf65c0b17d77865b02571618a477a",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-gears-default-jpg",
+      "template": "gears",
+      "file": "default.jpg",
+      "hash": "8bf53061902a438ddd87af8bf1f46c8d498dd755148e3ff52b0978c92dc08f10",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-genie-default-png",
+      "template": "genie",
+      "file": "default.png",
+      "hash": "421ed42ef482ee7af53d487eac60926a9541229ebaf77bcfc16c342e3601fbe6",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-ggg-default-jpg",
+      "template": "ggg",
+      "file": "default.jpg",
+      "hash": "0409283ce5ad3f667e189182600a0196901b32bc1f0bd46d04c5835f5d3d195b",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-glasses-default-png",
+      "template": "glasses",
+      "file": "default.png",
+      "hash": "4ce749813fcd89bb1682b25739801f13f23dff3151acfcde4264fca625b4160c",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-gone-default-jpg",
+      "template": "gone",
+      "file": "default.jpg",
+      "hash": "7c1890184b338e9139726d7deb9fe8589c6bc7143ab6dd6d8fd41b083ca2e99e",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-grave-default-png",
+      "template": "grave",
+      "file": "default.png",
+      "hash": "7f7819b01a772f11adce7869b3776687169bf82cbd4b46efa2fa31f15f009d96",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-gru-default-jpg",
+      "template": "gru",
+      "file": "default.jpg",
+      "hash": "311fea28f3f845edff74df730fad6d21aaa304e9051785426ceff04890959af9",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-grumpycat-default-jpg",
+      "template": "grumpycat",
+      "file": "default.jpg",
+      "hash": "e7f54c07211d4f65acb249a1f64c1fb384f6e3bede8f8de8fb5b5f419e9f46a7",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-hagrid-default-jpg",
+      "template": "hagrid",
+      "file": "default.jpg",
+      "hash": "bf85703c5637a80c119bff5b7a916ecdbf6436325c7e9fcae0f6e1caf673b6e1",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-handshake-default-jpg",
+      "template": "handshake",
+      "file": "default.jpg",
+      "hash": "43ccc15c4fe06b7e878b9e8e411c934244b55192444837bb9d59a7cbe8754ec8",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-happening-default-gif",
+      "template": "happening",
+      "file": "default.gif",
+      "hash": "e3929389d03fddeeedf522e411e7f19137cd7c3df94e4bca01ecb6d8d947c3e6",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-happening-default-jpg",
+      "template": "happening",
+      "file": "default.jpg",
+      "hash": "97570ac0e3ef81de30a18673b3176ffd55b5ede97553bd04823674c49f9adc24",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-harold-default-jpg",
+      "template": "harold",
+      "file": "default.jpg",
+      "hash": "349045f2fc28d1450a122e2d797dd34c276a4dc06ef01e6388cd56b3d9b36da4",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-headaches-default-png",
+      "template": "headaches",
+      "file": "default.png",
+      "hash": "803b6d8de31007f6f98ce8ef4b6600bee9bf9f591585ac5ffb852f4a3f5f9752",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-hipster-default-jpg",
+      "template": "hipster",
+      "file": "default.jpg",
+      "hash": "fbb88e22f8ab22afbf6b73be6167a3d6be648428c8d39d366e1888d888c82b93",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-home-default-jpg",
+      "template": "home",
+      "file": "default.jpg",
+      "hash": "d03ebea239865556a923493648b7cd71bf55b7c2a76c7d8b1192eb64b9cca7bb",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-icanhas-default-jpg",
+      "template": "icanhas",
+      "file": "default.jpg",
+      "hash": "5eebf5740ac0c10f61845219d8a973faafe1daaf6157b07295570208f6ed998a",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-imsorry-default-jpg",
+      "template": "imsorry",
+      "file": "default.jpg",
+      "hash": "1e8d7ac065aaab72c2964db2e985747ff48cd760daf21a14e93acb56fa7aed58",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-inigo-default-jpg",
+      "template": "inigo",
+      "file": "default.jpg",
+      "hash": "44932c67d3618fbbec5baf547a8bfc02f0eb8dd6c6fd6d929e3bf97640e12ba6",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-interesting-default-jpg",
+      "template": "interesting",
+      "file": "default.jpg",
+      "hash": "ef8d217f0562cf71f65c655b184f7c848151f363e6f299f45b37bc13a23492dc",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-ive-default-png",
+      "template": "ive",
+      "file": "default.png",
+      "hash": "26c44595f0458c1e4e81c0c83aa7b0878411b682d3490027930a8229760195ec",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-iw-default-png",
+      "template": "iw",
+      "file": "default.png",
+      "hash": "d31212bfc686990119de6e295d360d25c808653ba6c89d35a34d38219ca5b67d",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-jd-default-jpg",
+      "template": "jd",
+      "file": "default.jpg",
+      "hash": "e7e2da3e12a11a2efd9e2d8d7794d360041254d2d8461c23eb29e94fd41a8a32",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-jetpack-default-jpg",
+      "template": "jetpack",
+      "file": "default.jpg",
+      "hash": "2c4086dff98b2728e6d6aa9c77dafc5181eb78bd074e250f7d03298e1e14ed44",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-jim-default-png",
+      "template": "jim",
+      "file": "default.png",
+      "hash": "6eecdf42bf0890cb67d74cefdb9a1b9414da21a7078954d9828647f14fddb1ec",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-joker-default-jpg",
+      "template": "joker",
+      "file": "default.jpg",
+      "hash": "35875d195cd27f208de0be7a06f040f948078bd66a869aa41e1d926ba93c5d46",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-jw-alternate-png",
+      "template": "jw",
+      "file": "alternate.png",
+      "hash": "eb54f7f5df9d955394a9c2f68df7569a6263d6a2f5fb1ae77d8f3a2727561ebb",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-jw-default-png",
+      "template": "jw",
+      "file": "default.png",
+      "hash": "9c6cf93e186ad64a1ab19ce476bb0b566cd58cbe7773b8569cf097f0ca257841",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-keanu-default-jpg",
+      "template": "keanu",
+      "file": "default.jpg",
+      "hash": "f471ca686a2e78e8e9455918433eb20599441362a50624ef2a51dd1f2ccf1d92",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-kermit-default-jpg",
+      "template": "kermit",
+      "file": "default.jpg",
+      "hash": "c48c5ac6abc59ccf0df0b8fceef4a7184b52497f1675cf7af3dd4c04a49fd565",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-khaby-lame-default-jpg",
+      "template": "khaby-lame",
+      "file": "default.jpg",
+      "hash": "ae8f1ac07e8d8bca202e51a51f21d9cda7a9dc5702b2458a3f21cf95b191f1dc",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-kk-default-jpg",
+      "template": "kk",
+      "file": "default.jpg",
+      "hash": "b57243dda547037afe6bd61676eaa5c934cd02f31fc2c3c3b9f133bd0c6ba730",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-kk-luke-jpg",
+      "template": "kk",
+      "file": "luke.jpg",
+      "hash": "99310f91a63b81cc12a2ff472ada3a255ab9c68b4eeb9ca344c0b76f3717dccd",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-kombucha-default-png",
+      "template": "kombucha",
+      "file": "default.png",
+      "hash": "eba60c8a1f08d9ac44d59a8f4096ba2d71b87fdd308d4608828cf3739f11adce",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-kramer-default-png",
+      "template": "kramer",
+      "file": "default.png",
+      "hash": "04009bdb17217a32019c9dd10a0fe1f527fde9f9733e126b03364e003745b717",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-kramer-seinfeld-jpg",
+      "template": "kramer",
+      "file": "seinfeld.jpg",
+      "hash": "ec5f2d50341691cee2127c024b8f75e58ff9ad610f92eb4acaa0dcd38ca163b7",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-leo-default-jpg",
+      "template": "leo",
+      "file": "default.jpg",
+      "hash": "b7f336c3841313d4cac4cdbc6e6574e2bf8873f8fda250409acad2a28e77d1ab",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-light-default-jpg",
+      "template": "light",
+      "file": "default.jpg",
+      "hash": "fc4685198ca92ea945b0d8059a2c901b88b873130e374d65cb0c5cc3a4f46922",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-live-default-gif",
+      "template": "live",
+      "file": "default.gif",
+      "hash": "1666e65e060483811481819df2457374f0d3fb0f006c12c3be66cf96fd92613a",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-live-default-jpg",
+      "template": "live",
+      "file": "default.jpg",
+      "hash": "3e40ecc964b1fbdc79c235aa4c94e3eb984368144884569943e248e8083c9ccb",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-ll-default-jpg",
+      "template": "ll",
+      "file": "default.jpg",
+      "hash": "7c6dc149050c595f8fc04e7df1bb313bca3df655a420e34d475c36e26834792f",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-lrv-default-jpg",
+      "template": "lrv",
+      "file": "default.jpg",
+      "hash": "894cfa19b0f89be33dea874f249a7fd2108cf929bbad55faaa7a4745c08c0a1f",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-made-default-png",
+      "template": "made",
+      "file": "default.png",
+      "hash": "e5d2728ee7774791f6a7fa2985db558237ac6eac9a11b2643fe8074e9533a4e7",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-mb-box-jpg",
+      "template": "mb",
+      "file": "box.jpg",
+      "hash": "483b89b0350ffb87a831219b471d8624354a031f12e76c05c0f0354467f21de6",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-mb-default-gif",
+      "template": "mb",
+      "file": "default.gif",
+      "hash": "0d29cb8e892aec70a8b5f34cbae2e4b4dc7c398086b989ce9b3ea046c39fc9a7",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-mb-default-jpg",
+      "template": "mb",
+      "file": "default.jpg",
+      "hash": "7db67fc30e43e5b298607dddbc9ab51940ce7344e89602565be3ac6419dc4b0a",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-mb-flood-png",
+      "template": "mb",
+      "file": "flood.png",
+      "hash": "93d96f7d2b5a7e5d5f316b21e4bf182a034ae8cc1f84921c75d1ca5998b97e8c",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-michael-scott-default-jpg",
+      "template": "michael-scott",
+      "file": "default.jpg",
+      "hash": "50b21d76d7a159de8dc8b0306bc5b8e7db7a83670a26d76be225265887fb8690",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-midwit-default-jpg",
+      "template": "midwit",
+      "file": "default.jpg",
+      "hash": "e3ea83826a98d4612f8a8be6fde3534a1708c753b3dffeb648ec82379d84e9c0",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-millers-default-png",
+      "template": "millers",
+      "file": "default.png",
+      "hash": "8df7480fc7b74205e7bfbcc444d538a47976ba4e3602fc9803bb3d6534109729",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-mini-keanu-default-jpg",
+      "template": "mini-keanu",
+      "file": "default.jpg",
+      "hash": "5167c5e8ca33c9d6def1c01714cf608034cd64a100e58af4cf7e356061c839b2",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-mmm-default-jpg",
+      "template": "mmm",
+      "file": "default.jpg",
+      "hash": "64911416f620139d90b42e4dcbdb07b85aaccafc6b08dd9ddeb10f7fd03f2c07",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-money-default-gif",
+      "template": "money",
+      "file": "default.gif",
+      "hash": "4aa76e1b0a7feab13ed05ba479d1b105591c6738153b6fbedf110f7893fcb83c",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-money-default-jpg",
+      "template": "money",
+      "file": "default.jpg",
+      "hash": "a67d75fe1f02c2bb4d46d24fced185c6dba77ef40036e383af573ab23669c19a",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-mordor-default-jpg",
+      "template": "mordor",
+      "file": "default.jpg",
+      "hash": "d972c872cad19ca223359524424c0c5c19d3de0693ee0a56a4b11202cf2cac6c",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-morpheus-default-jpg",
+      "template": "morpheus",
+      "file": "default.jpg",
+      "hash": "6409d3012ce8dcce9541a0562d13762f31c4245dd038b01901db3e2b4cdeb66a",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-mouth-default-png",
+      "template": "mouth",
+      "file": "default.png",
+      "hash": "af0148c3a0a7239a0c3128a2e52c1954a754c7e9eedb7fc5261638cf9b71817b",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-mw-default-jpg",
+      "template": "mw",
+      "file": "default.jpg",
+      "hash": "c100cf095d042cc3e892cf58d4a335b6d70ca89207c7fe0f38f9ca2112928dcb",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-nails-default-png",
+      "template": "nails",
+      "file": "default.png",
+      "hash": "96732b66f694be3cbdfc37867c5d2d20e9330a546bdaa4f46990c272b01ff68d",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-nice-default-jpg",
+      "template": "nice",
+      "file": "default.jpg",
+      "hash": "30a36c1500ce14171c2b1f0a0b6af7ffa92ffae160f41d0e54e9dbf02651f258",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-noah-default-jpg",
+      "template": "noah",
+      "file": "default.jpg",
+      "hash": "09bf0ec888068401d23159821a59a1fc5c09977b374b0a57b848679ededc33f4",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-noidea-default-jpg",
+      "template": "noidea",
+      "file": "default.jpg",
+      "hash": "1ec0191b52b0596adab3e74a9ab96ae0fb52624fbc150b40711c49fd3c73fd9c",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-ntot-default-png",
+      "template": "ntot",
+      "file": "default.png",
+      "hash": "52e0416f7741ffd908aaf7c48983bbbabc33ab4dc03da4bbfb34287047c09d14",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-oag-default-jpg",
+      "template": "oag",
+      "file": "default.jpg",
+      "hash": "f0f44ab853594bd3b7b67f3fde92f70302fd630e4b2c27d16082f8db7547417f",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-officespace-default-jpg",
+      "template": "officespace",
+      "file": "default.jpg",
+      "hash": "852093481440bcc58d8a25c4ec2cfc1235e9fc3f4ce3bc699c6e4ddd6dad8460",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-older-default-jpg",
+      "template": "older",
+      "file": "default.jpg",
+      "hash": "d6e91596cf46ebc514f00617e192f0a62f6f061cd422d0ced2e32ff7ad4864b1",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-oprah-default-gif",
+      "template": "oprah",
+      "file": "default.gif",
+      "hash": "410cccc013820cd4e7975f1701b7f1d2df76f676909a542a176f06cbe20127eb",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-oprah-default-jpg",
+      "template": "oprah",
+      "file": "default.jpg",
+      "hash": "6470b6c3e90b3f210e4a89dbf8a80c237e5372b34d0711481a89df01363e6f39",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-panik-kalm-panik-default-png",
+      "template": "panik-kalm-panik",
+      "file": "default.png",
+      "hash": "f0fd69dfc9936cd1475d0cc8702554dccc217cc845899b2635579218e37acc73",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-patrick-default-gif",
+      "template": "patrick",
+      "file": "default.gif",
+      "hash": "1523b150fda4664874eb4ebcffd02e097b988b8f7822aedb7a0779e50656f6c4",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-patrick-default-jpg",
+      "template": "patrick",
+      "file": "default.jpg",
+      "hash": "f4a00f1995f7bd6e778aded290948c077a80488eb3fec9b0c8badbe6378cc3fa",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-perfection-default-jpg",
+      "template": "perfection",
+      "file": "default.jpg",
+      "hash": "040aff10a6fea7636baff836b467cfd45416cec378b43bf9806092ccc1cbcdb6",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-persian-default-jpg",
+      "template": "persian",
+      "file": "default.jpg",
+      "hash": "22dbcc13678c4225f2d639bc5468ec78ded50d5caf3cc074cb77195d890d9019",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-philosoraptor-default-jpg",
+      "template": "philosoraptor",
+      "file": "default.jpg",
+      "hash": "1133ad6d24d73503a5501b7c18280cc6bae92c410ed11b3e367672d102eb6ebf",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-pigeon-default-jpg",
+      "template": "pigeon",
+      "file": "default.jpg",
+      "hash": "e2d84dd6bb2754b03f8219a4a942494529655e8e9fc83a8799abd4fb2977730a",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-pooh-default-png",
+      "template": "pooh",
+      "file": "default.png",
+      "hash": "bc70df5ac4a7ca531e5e379e71e59ba80caa8452233a59f3e52d6a90a5254aac",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-pool-default-png",
+      "template": "pool",
+      "file": "default.png",
+      "hash": "016fca0438a4736bef36c12e41749a4ac7a66d97f65590a4ce3b885c3425d5ad",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-prop3-default-png",
+      "template": "prop3",
+      "file": "default.png",
+      "hash": "f019b538f38adaa31b292aa6c65c72407390f11a310852af9975982c982e654a",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-ptj-default-jpg",
+      "template": "ptj",
+      "file": "default.jpg",
+      "hash": "497d0a8ab5e33c9a2a906dacc66ca2747e9f7723b1c19763c447b63522b12bcd",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-puffin-default-jpg",
+      "template": "puffin",
+      "file": "default.jpg",
+      "hash": "039b8afdcc037a8d6ad227a02552b4bbdafed1e7da9c3cab9b5098d68f526ba5",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-red-default-jpg",
+      "template": "red",
+      "file": "default.jpg",
+      "hash": "efab1a5f22a9870c254adcfa06e24d27c7c43c0f7ddf4856de0db22d41e9b67f",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-regret-default-jpg",
+      "template": "regret",
+      "file": "default.jpg",
+      "hash": "3330257ddc99ef7f127d7e24c337481b66fc90523d855bf0621e447d0bf9fdb0",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-remembers-default-jpg",
+      "template": "remembers",
+      "file": "default.jpg",
+      "hash": "da27c3e124f0be8d5fc8566d20131abdac0769c6e6d5e358b472da4acf487c95",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-reveal-default-png",
+      "template": "reveal",
+      "file": "default.png",
+      "hash": "da1cabf7cad587da1e3f0ba01fe5bb8b40326bea2b9420a550af6f67dbea48a7",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-right-default-png",
+      "template": "right",
+      "file": "default.png",
+      "hash": "d2b4b5f72633508bf042fcd96c64af3a5e1d0a5dfd702b1a496a8a366c1d0923",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-rollsafe-default-gif",
+      "template": "rollsafe",
+      "file": "default.gif",
+      "hash": "92797157e699fec799534e21f77e08fccd1d8f1a59855b415406a17fee71f103",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-rollsafe-default-jpg",
+      "template": "rollsafe",
+      "file": "default.jpg",
+      "hash": "e453d625591ae3a200f240ab96d44d2dcfe5a2b2ce5b49e6ede43c3b5f5bbc3c",
+      "status": "accepted",
+      "faces": 1
+    },
+    {
+      "id": "memegen-sad-biden-default-jpg",
+      "template": "sad-biden",
+      "file": "default.jpg",
+      "hash": "2171ad2db6406dfcd4c23d021ddd09c31a1985402c1bfe6eb244851f842047a5",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-biden-down-jpg",
+      "template": "sad-biden",
+      "file": "down.jpg",
+      "hash": "5e06ba44fd71ee245cbc23d8911a5a35880da8d0b1d1409e3c3bdbc04a9e39d7",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-biden-scowl-jpg",
+      "template": "sad-biden",
+      "file": "scowl.jpg",
+      "hash": "076c17835083fe73003be977b666c43144964f5d1bcb4b7eb23af5a131bae817",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-biden-window-jpg",
+      "template": "sad-biden",
+      "file": "window.jpg",
+      "hash": "2171ad2db6406dfcd4c23d021ddd09c31a1985402c1bfe6eb244851f842047a5",
+      "status": "skipped",
+      "reason": "duplicate-image"
+    },
+    {
+      "id": "memegen-sad-boehner-default-jpg",
+      "template": "sad-boehner",
+      "file": "default.jpg",
+      "hash": "f9689b8b508c696bb845ef076f7a5fbed015de2b922a7ceb57ba7c16ae76a0e5",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-sad-boehner-frown-jpg",
+      "template": "sad-boehner",
+      "file": "frown.jpg",
+      "hash": "576597be85c526a1f8581a510ea0e39d5e0b3f0d0ac6aef3c5e771326c5e8d4a",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-sad-boehner-really-jpg",
+      "template": "sad-boehner",
+      "file": "really.jpg",
+      "hash": "734866491aa507295bf3f38990cfc2222c707804f2c7b77985769b0983b72a68",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-sad-boehner-sad-jpg",
+      "template": "sad-boehner",
+      "file": "sad.jpg",
+      "hash": "1502fc773fdbc1e8ed2d71b9e4f2192c1ea89fc5904954a83d91c49d1fdae20f",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-sad-boehner-what-jpg",
+      "template": "sad-boehner",
+      "file": "what.jpg",
+      "hash": "79824b597eae61e2e47cb8e144f01839846aec40fb0aba6a4f3c4d919e149a17",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-sad-bush-default-jpg",
+      "template": "sad-bush",
+      "file": "default.jpg",
+      "hash": "3495050040c415031877cd2fa9c6334659c7c9bedeee414365db2ed65aece1f0",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-bush-facebook-jpg",
+      "template": "sad-bush",
+      "file": "facebook.jpg",
+      "hash": "1e2924a4465b81a3d76afd1dffaf80d6b14972e7eb2a309803cf938257d62287",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-bush-nervous-jpg",
+      "template": "sad-bush",
+      "file": "nervous.jpg",
+      "hash": "37692e8d4639c1cf42472f520a700a7ee6455f9f7328ea24e80c34c7b53db775",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-bush-unsure-jpg",
+      "template": "sad-bush",
+      "file": "unsure.jpg",
+      "hash": "b2b50812e616d325e3c9707cdf9b6dc41ac0919b3ea61e7095df69378bd7c0d6",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-bush-upset-jpg",
+      "template": "sad-bush",
+      "file": "upset.jpg",
+      "hash": "3495050040c415031877cd2fa9c6334659c7c9bedeee414365db2ed65aece1f0",
+      "status": "skipped",
+      "reason": "duplicate-image"
+    },
+    {
+      "id": "memegen-sad-clinton-ashamed-jpg",
+      "template": "sad-clinton",
+      "file": "ashamed.jpg",
+      "hash": "38de39bbee0cad661f58a5f5a2ce12d6fb1aec77c501bfbade03ef8d9125b48e",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-clinton-default-jpg",
+      "template": "sad-clinton",
+      "file": "default.jpg",
+      "hash": "649bbb1392603f069341cab4a2cfae3596c8c165f648c6cff322584972662d87",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-clinton-frown-jpg",
+      "template": "sad-clinton",
+      "file": "frown.jpg",
+      "hash": "09bad5ac2bd066dce603022d615b1e1b986033e197ec8d4ecbbc5a55662d2d01",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-clinton-nervous-jpg",
+      "template": "sad-clinton",
+      "file": "nervous.jpg",
+      "hash": "5929104ff150f4db9697ac9d498b7f9002ecb94a613796845b67cc7ea20496a7",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-clinton-sad-jpg",
+      "template": "sad-clinton",
+      "file": "sad.jpg",
+      "hash": "646a4db3a2a8ffc2fad1aedd4b862f9b3781bf1141ee46386963b8bdea6c51ff",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-obama-bow-jpg",
+      "template": "sad-obama",
+      "file": "bow.jpg",
+      "hash": "6b52a51383d59861b64a03f063485c9bdbabe2c59f76dbe32afe98f7bb15b89c",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-obama-default-jpg",
+      "template": "sad-obama",
+      "file": "default.jpg",
+      "hash": "6b52a51383d59861b64a03f063485c9bdbabe2c59f76dbe32afe98f7bb15b89c",
+      "status": "skipped",
+      "reason": "duplicate-image"
+    },
+    {
+      "id": "memegen-sad-obama-down-jpg",
+      "template": "sad-obama",
+      "file": "down.jpg",
+      "hash": "54a13c43050a12589dbbf95573d86d59f23657993f7ba535287726899c8807ef",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-obama-frown-jpg",
+      "template": "sad-obama",
+      "file": "frown.jpg",
+      "hash": "de9c59cfffa255cb16755a7c31c4d78d65a8eb414f254963c63d8745f4e6999e",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-obama-mad-jpg",
+      "template": "sad-obama",
+      "file": "mad.jpg",
+      "hash": "d9e80efdd7d8b652280732bfd6fcd0cbedc250863d6fd8772ded95155124efaf",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sad-obama-really-jpg",
+      "template": "sad-obama",
+      "file": "really.jpg",
+      "hash": "86cba96d5a0f2b2a3162a76270daebe8645c1719115a1eba3834ea02870ad820",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-sadfrog-default-jpg",
+      "template": "sadfrog",
+      "file": "default.jpg",
+      "hash": "1b1d9a3318cf05933613b299ece3ed9bf0e05ad43cf8b85c205a4a53efc4c07f",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-saltbae-default-jpg",
+      "template": "saltbae",
+      "file": "default.jpg",
+      "hash": "1679315ffd104d14209a2ae1e80c8a8b2f1780a9e662db3be7ffb0ca4e258c99",
+      "status": "accepted",
+      "faces": 1
+    },
+    {
+      "id": "memegen-same-default-jpg",
+      "template": "same",
+      "file": "default.jpg",
+      "hash": "1b7a11a2c96a3fd0ab9bf48db6394a8ca32df6152ee5278911b29148b322c1d8",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-sarcasticbear-default-jpg",
+      "template": "sarcasticbear",
+      "file": "default.jpg",
+      "hash": "35124148bc0330362e2a810094b8cf8301d5f9b4a2eb7b8f294855aaa865ef89",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-say-default-jpg",
+      "template": "say",
+      "file": "default.jpg",
+      "hash": "9e3f8f2077f55df076c100be85db35489c0fba448a1bd4f1b615f0558d41e3c8",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-sb-default-jpg",
+      "template": "sb",
+      "file": "default.jpg",
+      "hash": "a8e939b91f552338dcdbf300195b1f3d72dbbadcb8dad5d0407d960e379d4b09",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-scc-default-jpg",
+      "template": "scc",
+      "file": "default.jpg",
+      "hash": "3a679467f6c69a237f8ee4c3d20eccadb182aa401fc907b09cfec8adffee039b",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-seagull-default-jpg",
+      "template": "seagull",
+      "file": "default.jpg",
+      "hash": "10e5810c92ac605d3c2512b245e217b8fe4d445de5d835c814ac0b3537881360",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-sf-default-jpg",
+      "template": "sf",
+      "file": "default.jpg",
+      "hash": "f92aa270434d63771468945a89e541c69f54a8141f4f271dd181522724168b39",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-sk-default-jpg",
+      "template": "sk",
+      "file": "default.jpg",
+      "hash": "b340e74509953dc01d6652801ba9224cf31a972e860c176dcb89bf2beeee9736",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-ski-default-png",
+      "template": "ski",
+      "file": "default.png",
+      "hash": "6fada5a6b82554dfa9f7af3b1a0a886a1bf0291e4b2589e8c3fd4272274c8ebf",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-slap-default-png",
+      "template": "slap",
+      "file": "default.png",
+      "hash": "157f637f9fb3ec4dc090e64c60ca262fd90807814af213fdbcfe8c1076d024b3",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-snek-default-png",
+      "template": "snek",
+      "file": "default.png",
+      "hash": "4c8439a3d3c0a21575ae92f0d1eb24eaaee64236837971f911c9bbfc5ceceb7b",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-soa-default-jpg",
+      "template": "soa",
+      "file": "default.jpg",
+      "hash": "d148bccd6e7105e592dddd9acc1226c0a5317cec0b9a33db0b4ad62cc808bafe",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-sohappy-default-jpg",
+      "template": "sohappy",
+      "file": "default.jpg",
+      "hash": "ffd71992a2b9901088c869a35b6e78dda05420aa8eef002a9c563747eead7dcf",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-sohot-default-png",
+      "template": "sohot",
+      "file": "default.png",
+      "hash": "65b0bfc9908bf2d9500b7e7f0b360261d478cb270f29583526abc109e6df0d92",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-soup-nazi-default-jpg",
+      "template": "soup-nazi",
+      "file": "default.jpg",
+      "hash": "2e4f51c722ea9f7b852cc963d717f3afcb0099da0a84ccfec6c533f534b08fc1",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-sparta-default-jpg",
+      "template": "sparta",
+      "file": "default.jpg",
+      "hash": "563e0c9d3729e0160de7f5dae36f21efa933b5b488d328ece053b1ccc5373b61",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-spiderman-default-jpg",
+      "template": "spiderman",
+      "file": "default.jpg",
+      "hash": "8c62dca59315345e16ace9500a064acc563c4eac2a00d3f6d10fa396aa15882a",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-spirit-default-jpg",
+      "template": "spirit",
+      "file": "default.jpg",
+      "hash": "20d240024ad5103364f5e4f51b7fe4108b43a67cb7825d5cfac566fae34d3db8",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-spongebob-default-jpg",
+      "template": "spongebob",
+      "file": "default.jpg",
+      "hash": "9a5a757b1fbd418caaf27478aba3a835548b251328ab03ce29d8bb557cce5362",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-ss-default-jpg",
+      "template": "ss",
+      "file": "default.jpg",
+      "hash": "5d4fe1d344fdfa682cd411665229b80eb53385082b33a7b4518df747c4e01bca",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-stew-default-jpg",
+      "template": "stew",
+      "file": "default.jpg",
+      "hash": "17de0613a34393484c6dbeb7e92934271f7bcf0641169834acf211cac4c0e97b",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-stonks-default-png",
+      "template": "stonks",
+      "file": "default.png",
+      "hash": "4f1d14516f92614b0ff8d0c0624f3e5aa71630159d5c32f1244b20c3224a3528",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-stop-default-jpg",
+      "template": "stop",
+      "file": "default.jpg",
+      "hash": "661331416adc9108541989735a4fbc30990c2eaf4f7f9ddef1ddc87d93a6a7e7",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-stop-it-default-jpg",
+      "template": "stop-it",
+      "file": "default.jpg",
+      "hash": "79bf41c261c98fd3469465c0135b003217b81524e1ed44302f3e736f3f97a1d6",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-success-default-jpg",
+      "template": "success",
+      "file": "default.jpg",
+      "hash": "28fd9db3925bca4487fd70a53770e20829b9afa6772ee31062d7b44e0e0cff1c",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-tenguy-default-jpg",
+      "template": "tenguy",
+      "file": "default.jpg",
+      "hash": "b208a6f1de945544357b2594abfaf18f726a4554b2a1a27da01bf3a7cd9b8151",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-toohigh-default-jpg",
+      "template": "toohigh",
+      "file": "default.jpg",
+      "hash": "e5d2e187e600a0e4a8614af2b683ed29f331eea15ad75f3f17b0ea7ecf2bac81",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-touch-default-jpg",
+      "template": "touch",
+      "file": "default.jpg",
+      "hash": "4b4b7bff96a85584e3eefbe63987a379ae58529a297b0e1b133ecf60b74aecc1",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-tried-default-jpg",
+      "template": "tried",
+      "file": "default.jpg",
+      "hash": "7c9df8e0473342cbb9648b44b3289b7fb2468fc11249313c717aeecb0ce948b6",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-trump-default-jpg",
+      "template": "trump",
+      "file": "default.jpg",
+      "hash": "8adb2feae472136ba10b0f2b0c609a503fa398afb45fc4565e7c0ec11dd56255",
+      "status": "excluded",
+      "reason": "president-meme"
+    },
+    {
+      "id": "memegen-ugandanknuck-default-jpg",
+      "template": "ugandanknuck",
+      "file": "default.jpg",
+      "hash": "b1553e44ea6350441a2e6365ac798a41d4449f983828565710a37700dd92d3d3",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-vince-default-jpg",
+      "template": "vince",
+      "file": "default.jpg",
+      "hash": "e0874ca46c10dfd11d94864a9cbb0c395b9310111e489d2326bcba494604c820",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-wallet-default-jpg",
+      "template": "wallet",
+      "file": "default.jpg",
+      "hash": "d311ad4939637b042874ffec3fc0ea900d370214b444e55a6c9a0e8c65979c5d",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-waygd-default-gif",
+      "template": "waygd",
+      "file": "default.gif",
+      "hash": "760c0433f2efc8913d0ce7a6c097062a0da5ebcceade8157cfe45d4034588370",
+      "status": "skipped",
+      "reason": "animated-image"
+    },
+    {
+      "id": "memegen-waygd-default-jpg",
+      "template": "waygd",
+      "file": "default.jpg",
+      "hash": "1a6e7a6c8f02a608cde690de6e4c7c010c443ed7f13054b02d82c2e63b8f1e3d",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-wddth-default-png",
+      "template": "wddth",
+      "file": "default.png",
+      "hash": "f0179ed198b8ee2a507239d209dba43f02b94c9943113e7af60457dcdea1e358",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-whatyear-default-jpg",
+      "template": "whatyear",
+      "file": "default.jpg",
+      "hash": "f31ccb8fe39cd676f9ddcaccc3abad8a85d1ee5dace8253f5e02a0450e62b8da",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-winter-default-jpg",
+      "template": "winter",
+      "file": "default.jpg",
+      "hash": "401369bb083437c96182510406af5fcf006a0829fac8d606e8c3ed6ec356ecf6",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-wishes-blank-png",
+      "template": "wishes",
+      "file": "blank.png",
+      "hash": "c8c45579aad0df6f3bbd1a1265556e402868d3df63c6cb64a8b3dc97cc6f4e00",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-wishes-default-png",
+      "template": "wishes",
+      "file": "default.png",
+      "hash": "d536d439589be5acf963849f456fe272a29852d6f92751839e81b0ed717014c2",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-wkh-default-jpg",
+      "template": "wkh",
+      "file": "default.jpg",
+      "hash": "f2b101c4aa0947408b892ad8356353effdf0c54d7b1a85cd7ebaf0c9bce54dbc",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-woman-cat-default-jpg",
+      "template": "woman-cat",
+      "file": "default.jpg",
+      "hash": "f99d1e9414b2efe958aa5ddca01e88c87ce2fa5d3ed5614f4c4bc11dfd41d518",
+      "status": "skipped",
+      "reason": "multiple-faces",
+      "faces": 2
+    },
+    {
+      "id": "memegen-wonka-default-jpg",
+      "template": "wonka",
+      "file": "default.jpg",
+      "hash": "a756ebfbfbecccec993f673f67f612ea40ee35c12a096430d0b40372ce9ccc26",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-worst-default-jpg",
+      "template": "worst",
+      "file": "default.jpg",
+      "hash": "267bdae32adc850aaf3dd24e83e3c02a9e65448b2eba5500aace34d66ae951e2",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-xy-default-jpg",
+      "template": "xy",
+      "file": "default.jpg",
+      "hash": "31a4db040802fb2e6bc8bd236b124fddb72d9d1c890faa4c22786d61beaa2e5a",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-yallgot-default-jpg",
+      "template": "yallgot",
+      "file": "default.jpg",
+      "hash": "2d983bb6b65bc05d3fd0fec31888efac8cdd040aa1e838b61529c5875e49c645",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-yodawg-default-jpg",
+      "template": "yodawg",
+      "file": "default.jpg",
+      "hash": "4b4c3f9d3901331aa7f027a12228364a4248f9d3b387bc1e18987941547f85f1",
+      "status": "excluded",
+      "faces": 1,
+      "reason": "removed-from-default-library"
+    },
+    {
+      "id": "memegen-yuno-default-jpg",
+      "template": "yuno",
+      "file": "default.jpg",
+      "hash": "7aecb5117515274608a8192d6f0cf53e1b6ddace6fa3bab7db39180df9671c04",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    },
+    {
+      "id": "memegen-zero-wing-default-jpg",
+      "template": "zero-wing",
+      "file": "default.jpg",
+      "hash": "df02cdf8920e9dae9792fd9b26f691a311c67a48a1ff5e5686144874ea236ac9",
+      "status": "skipped",
+      "reason": "no-face",
+      "faces": 0
+    }
+  ],
+  "excludedProfileCount": 107,
+  "excludedTemplates": [
+    "memegen-sad-biden",
+    "memegen-sad-bush",
+    "memegen-sad-clinton",
+    "memegen-sad-obama",
+    "memegen-trump"
+  ]
+}
